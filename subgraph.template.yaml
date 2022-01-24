@@ -1,0 +1,28 @@
+specVersion: 0.0.2
+description: Subgraph Template
+repository: https://github.com/TomAFrench/subgraph-template
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: erc20
+    network: '{{network}}'
+    source:
+      address: '{{erc20.address}}'
+      abi: erc20
+      # prettier-ignore
+      startBlock: {{ erc20.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      abis:
+        - name: erc20
+          file: ./abis/ERC20Detailed.json
+      entities:
+        - Token
+        - Transfer
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts

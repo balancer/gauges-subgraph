@@ -1,0 +1,6 @@
+mainnet:
+  network: mainnet
+  erc20:
+    address: '0xc1C0472c0C80bCcDC7F5D01A376Bd97a734B8815'
+    transactionHash: '0x92cae1b7a1d48900c767f4ec1024c9c87424283861c9552b88522769b1caf354'
+    startBlock: 9268963
