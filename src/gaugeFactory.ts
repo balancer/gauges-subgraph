@@ -1,7 +1,7 @@
 import { Address } from '@graphprotocol/graph-ts';
-import { Gauge, GaugeFactory } from './types/schema';
-import { AddressZero, ZERO_BD } from './utils/constants';
 import { GaugeCreated } from './types/GaugeFactory/gaugeFactory';
+import { GaugeFactory } from './types/schema';
+import { getGauge } from './utils/gauge';
 
 function getGaugeFactory(address: Address): GaugeFactory {
   let factory = GaugeFactory.load(address.toHexString());
@@ -12,18 +12,6 @@ function getGaugeFactory(address: Address): GaugeFactory {
     factory.save();
   }
   return factory;
-}
-
-function getGauge(address: Address): Gauge {
-  let gauge = Gauge.load(address.toHexString());
-  if (gauge == null) {
-    gauge = new Gauge(address.toHexString());
-    gauge.pool = AddressZero;
-    gauge.totalSupply = ZERO_BD;
-    gauge.workingSupply = ZERO_BD;
-    gauge.save();
-  }
-  return gauge;
 }
 
 export function handleGaugeCreated(event: GaugeCreated): void {

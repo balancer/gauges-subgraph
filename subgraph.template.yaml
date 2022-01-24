@@ -28,3 +28,22 @@ dataSources:
         - event: GaugeImplementationUpdated(address,address)
           handler: handleGaugeImplementationUpdated
       file: ./src/gaugeFactory.ts
+templates:
+  - kind: ethereum/contract
+    name: Gauge
+    network: '{{network}}'
+    source:
+      abi: LiquidityGauge
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gauge.ts
+      entities:
+        - Gauge
+      abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV5.json
+      eventHandlers:
+        - event: UpdateLiquidityLimit(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleUpdateLiquidityLimit
