@@ -12,3 +12,11 @@ type Gauge @entity {
   totalSupply: BigDecimal!
   workingSupply: BigDecimal!
 }
+
+type UserGaugeDeposit @entity {
+  id: ID!
+  user: Bytes!
+  gauge: Gauge!
+  balance: BigDecimal!
+  workingBalance: BigDecimal!
+}

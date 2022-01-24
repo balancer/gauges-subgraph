@@ -1,5 +1,5 @@
 import { Address } from '@graphprotocol/graph-ts';
-import { Gauge } from '../types/schema';
+import { Gauge, UserGaugeDeposit } from '../types/schema';
 import { AddressZero, ZERO_BD } from './constants';
 
 export function getGauge(address: Address): Gauge {
@@ -13,4 +13,28 @@ export function getGauge(address: Address): Gauge {
     gauge.save();
   }
   return gauge;
+}
+
+export function getUserGaugeDepositId(
+  userAddress: Address,
+  gaugeAddress: Address,
+): string {
+  return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
+}
+
+export function getUserGaugeDeposit(
+  user: Address,
+  gauge: Address,
+): UserGaugeDeposit {
+  let id = getUserGaugeDepositId(user, gauge);
+  let deposit = UserGaugeDeposit.load(id);
+  if (deposit == null) {
+    deposit = new UserGaugeDeposit(id);
+    deposit.user = user;
+    deposit.gauge = gauge.toHexString();
+    deposit.balance = ZERO_BD;
+    deposit.workingBalance = ZERO_BD;
+    deposit.save();
+  }
+  return deposit;
 }

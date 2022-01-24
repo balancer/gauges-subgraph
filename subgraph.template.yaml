@@ -41,6 +41,7 @@ templates:
       file: ./src/gauge.ts
       entities:
         - Gauge
+        - UserGaugeDeposit
       abis:
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV5.json
