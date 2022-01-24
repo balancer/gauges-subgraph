@@ -1,13 +1,14 @@
-type Token @entity {
+type GaugeFactory @entity {
   id: ID!
-  decimals: Int
-  name: String
-  symbol: String
+  name: String!
+  gauges: [Gauge!]! @derivedFrom(field: "factory")
+  numGauges: Int!
 }
 
-type Transfer @entity {
+type Gauge @entity {
   id: ID!
-  from: String!
-  to: String!
-  value: BigInt!
+  factory: GaugeFactory!
+  pool: Bytes!
+  totalSupply: BigDecimal!
+  workingSupply: BigDecimal!
 }

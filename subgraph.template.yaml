@@ -5,24 +5,26 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: erc20
+    name: GaugeFactory
     network: '{{network}}'
     source:
-      address: '{{erc20.address}}'
-      abi: erc20
+      address: '{{gaugeFactory.address}}'
+      abi: gaugeFactory
       # prettier-ignore
-      startBlock: {{ erc20.startBlock }}
+      startBlock: {{ gaugeFactory.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       abis:
-        - name: erc20
-          file: ./abis/ERC20Detailed.json
+        - name: gaugeFactory
+          file: ./abis/LiquidityGaugeFactory.json
       entities:
-        - Token
-        - Transfer
+        - GaugeFactory
+        - Gauge
       eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/mapping.ts
+        - event: GaugeCreated(indexed address,indexed address)
+          handler: handleGaugeCreated
+        - event: GaugeImplementationUpdated(address,address)
+          handler: handleGaugeImplementationUpdated
+      file: ./src/gaugeFactory.ts
