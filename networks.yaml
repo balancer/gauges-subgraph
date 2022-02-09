@@ -1,6 +1,6 @@
-mainnet:
-  network: mainnet
+kovan:
+  network: kovan
   gaugeFactory:
-    address: '0xc1C0472c0C80bCcDC7F5D01A376Bd97a734B8815'
-    transactionHash: '0x92cae1b7a1d48900c767f4ec1024c9c87424283861c9552b88522769b1caf354'
-    startBlock: 9268963
+    address: '0xa333c704e96fe7117055e56ce95525d1ef11c006'
+    transactionHash: '0x9c557eaca3c73426c4ec288ffeb2c24b6a7bfe4e499e09096661830676363cfd'
+    startBlock: 29742138
