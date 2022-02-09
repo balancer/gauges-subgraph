@@ -1,37 +1,34 @@
 {
-  "name": "@tomfrench/subgraph-template",
+  "name": "@balancer-labs/gauges-subgraph",
   "version": "1.0.0",
-  "description": "Template for subgraph development boilerplate",
+  "description": "Subgraph tracking Balancer Protocol's gauge system",
   "scripts": {
     "auth": "graph auth https://api.thegraph.com/deploy/",
     "lint": "eslint ./src",
-    "local:create": "graph create --node http://localhost:8020/ ORGANISATION/SUBGRAPH",
-    "local:remove": "graph remove --node http://localhost:8020/ ORGANISATION/SUBGRAPH",
-    "local:deploy": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 ORGANISATION/SUBGRAPH",
+    "local:create": "graph create --node http://localhost:8020/ balancer-labs/gauges",
+    "local:remove": "graph remove --node http://localhost:8020/ balancer-labs/gauges",
+    "local:deploy": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 balancer-labs/gauges",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
-    "deploy:mainnet": "yarn deploy ORGANISATION/SUBGRAPH",
+    "deploy:mainnet": "yarn deploy balancer-labs/gauges",
+    "deploy:kovan": "yarn deploy balancer-labs/gauges-kovan",
     "codegen": "yarn generate-manifests && graph codegen --output-dir src/types/",
     "generate-manifests": "ts-node ./scripts/generate-manifests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TomAFrench/subgraph-template.git"
+    "url": "git+https://github.com/balancer-labs/gauges-subgraph.git"
   },
   "contributors": [
     {
       "name": "Tom French",
       "url": "https://github.com/tomafrench"
-    },
-    {
-      "name": "Dylan Golow",
-      "url": "https://github.com/dylangolow"
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TomAFrench/subgraph-template/issues"
+    "url": "https://github.com/balancer-labs/gauges-subgraph/issues"
   },
-  "homepage": "https://github.com/TomAFrench/subgraph-template#readme",
+  "homepage": "https://github.com/balancer-labs/gauges-subgraph#readme",
   "dependencies": {
     "@graphprotocol/graph-ts": "^0.24.1"
   },
