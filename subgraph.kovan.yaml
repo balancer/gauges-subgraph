@@ -7,19 +7,19 @@ dataSources:
   - kind: ethereum/contract
     name: LiquidityGaugeFactory
     # prettier-ignore
-    network: {{network}}
+    network: kovan
     source:
-      address: '{{gaugeFactory.address}}'
-      abi: GaugeFactory
+      address: '0xa333c704e96fe7117055e56ce95525d1ef11c006'
+      abi: gaugeFactory
       # prettier-ignore
-      startBlock: {{ gaugeFactory.startBlock }}
+      startBlock: 29742138
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
-        - name: GaugeFactory
+        - name: gaugeFactory
           file: ./abis/LiquidityGaugeFactory.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV5.json
@@ -32,12 +32,12 @@ dataSources:
   - kind: ethereum/contract
     name: VotingEscrow
     # prettier-ignore
-    network: {{network}}
+    network: kovan
     source:
-      address: '{{votingEscrow.address}}'
+      address: '0x9b6a0e708290f713eae6b960c02952b9e15ecbc7'
       abi: votingEscrow
       # prettier-ignore
-      startBlock: {{ votingEscrow.startBlock }}
+      startBlock: 29600374
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -57,7 +57,7 @@ templates:
   - kind: ethereum/contract
     name: LiquidityGauge
     # prettier-ignore
-    network: {{network}}
+    network: kovan
     source:
       abi: LiquidityGauge
     mapping:
