@@ -1,22 +1,27 @@
-type GaugeFactory @entity {
+type LiquidityGaugeFactory @entity {
   id: ID!
-  name: String!
-  gauges: [Gauge!]! @derivedFrom(field: "factory")
   numGauges: Int!
+  gauges: [LiquidityGauge!]! @derivedFrom(field: "factory")
 }
 
-type Gauge @entity {
+type LiquidityGauge @entity {
   id: ID!
-  factory: GaugeFactory!
+  symbol: String!
   pool: Bytes!
+  factory: LiquidityGaugeFactory!
   totalSupply: BigDecimal!
-  workingSupply: BigDecimal!
 }
 
-type UserGaugeDeposit @entity {
+type UserGaugeShare @entity {
   id: ID!
-  user: Bytes!
-  gauge: Gauge!
+  userAddress: Bytes!
+  gauge: LiquidityGauge!
   balance: BigDecimal!
-  workingBalance: BigDecimal!
+}
+
+type UserVotingEscrow @entity {
+  id: ID!
+  userAddress: Bytes!
+  lockedBalance: BigDecimal!
+  unlockTime: BigInt
 }

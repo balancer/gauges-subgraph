@@ -1,40 +1,52 @@
 import { Address } from '@graphprotocol/graph-ts';
-import { Gauge, UserGaugeDeposit } from '../types/schema';
-import { AddressZero, ZERO_BD } from './constants';
 
-export function getGauge(address: Address): Gauge {
-  let gauge = Gauge.load(address.toHexString());
+import { LiquidityGauge, UserGaugeShare } from '../types/schema';
+import { ZERO_ADDRESS, ZERO_BD } from './constants';
+
+import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
+
+export function getGauge(address: Address): LiquidityGauge {
+  let gauge = LiquidityGauge.load(address.toHexString());
+
   if (gauge == null) {
-    gauge = new Gauge(address.toHexString());
-    gauge.pool = Address.fromByteArray(AddressZero);
-    gauge.factory = AddressZero.toHexString();
+    gauge = new LiquidityGauge(address.toHexString());
+    gauge.pool = Address.fromString(ZERO_ADDRESS);
+    gauge.factory = ZERO_ADDRESS;
     gauge.totalSupply = ZERO_BD;
-    gauge.workingSupply = ZERO_BD;
+
+    let gaugeToken = LiquidityGaugeTemplate.bind(address);
+    let symbolCall = gaugeToken.try_symbol();
+    if (!symbolCall.reverted) {
+      gauge.symbol = symbolCall.value;
+    }
+
     gauge.save();
   }
+
   return gauge;
 }
 
-export function getUserGaugeDepositId(
+export function getUserGaugeShareId(
   userAddress: Address,
   gaugeAddress: Address,
 ): string {
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function getUserGaugeDeposit(
+export function getUserGaugeShare(
   user: Address,
   gauge: Address,
-): UserGaugeDeposit {
-  let id = getUserGaugeDepositId(user, gauge);
-  let deposit = UserGaugeDeposit.load(id);
-  if (deposit == null) {
-    deposit = new UserGaugeDeposit(id);
-    deposit.user = user;
-    deposit.gauge = gauge.toHexString();
-    deposit.balance = ZERO_BD;
-    deposit.workingBalance = ZERO_BD;
-    deposit.save();
+): UserGaugeShare {
+  let id = getUserGaugeShareId(user, gauge);
+  let userShare = UserGaugeShare.load(id);
+
+  if (userShare == null) {
+    userShare = new UserGaugeShare(id);
+    userShare.userAddress = user;
+    userShare.gauge = gauge.toHexString();
+    userShare.balance = ZERO_BD;
+    userShare.save();
   }
-  return deposit;
+
+  return userShare;
 }
