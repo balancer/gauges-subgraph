@@ -4,6 +4,10 @@ kovan:
     address: '0xa333c704e96fe7117055e56ce95525d1ef11c006'
     transactionHash: '0x9c557eaca3c73426c4ec288ffeb2c24b6a7bfe4e499e09096661830676363cfd'
     startBlock: 29742138
+  gaugeController:
+    address: '0x208e375cf84174030f1b1698ecde8b6b0c85959e'
+    transactionHash: '0x01703ba4727d3c16b32a4229ef66143bcb9de281deab637a1feb0bf1644ef5d4'
+    startBlock: 29739225
   votingEscrow:
     address: '0x9b6a0e708290f713eae6b960c02952b9e15ecbc7'
     transactionHash: '0x5d361f4dc169ae4c858aa1ce5429ec7d61225f1a9bfbf67b1fbb86f724f405b9'

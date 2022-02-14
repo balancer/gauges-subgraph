@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Subgraph Template
+description: Balancer is a non-custodial portfolio manager, liquidity provider, and price sensor.
 repository: https://github.com/TomAFrench/subgraph-template
 schema:
   file: ./schema.graphql
@@ -30,6 +30,28 @@ dataSources:
         - event: GaugeCreated(indexed address,indexed address)
           handler: handleGaugeCreated
   - kind: ethereum/contract
+    name: GaugeController
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{gaugeController.address}}'
+      abi: GaugeController
+      # prettier-ignore
+      startBlock: {{ gaugeController.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gaugeController.ts
+      abis:
+        - name: GaugeController
+          file: ./abis/GaugeController.json
+      entities:
+        - GaugeVote
+      eventHandlers:
+        - event: VoteForGauge(uint256,address,address,uint256)
+          handler: handleVoteForGauge
+  - kind: ethereum/contract
     name: VotingEscrow
     # prettier-ignore
     network: {{network}}
@@ -47,12 +69,14 @@ dataSources:
         - name: votingEscrow
           file: ./abis/VotingEscrow.json
       entities:
-        - UserVotingEscrow
+        - UserVotingEscrowShare
       eventHandlers:
         - event: Deposit(indexed address,uint256,indexed uint256,int128,uint256)
           handler: handleDeposit
         - event: Withdraw(indexed address,uint256,uint256)
           handler: handleWithdraw
+        - event: Supply(uint256,uint256)
+          handler: handleSupply
 templates:
   - kind: ethereum/contract
     name: LiquidityGauge
