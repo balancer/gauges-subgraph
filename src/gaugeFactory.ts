@@ -24,7 +24,7 @@ export function handleGaugeCreated(event: GaugeCreated): void {
   factory.save();
 
   let gauge = getGauge(event.params.gauge);
-  gauge.pool = event.params.pool;
+  gauge.poolId = event.params.pool;
   gauge.factory = event.address.toHexString();
   gauge.save();
 
