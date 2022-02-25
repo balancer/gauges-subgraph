@@ -25,6 +25,15 @@ type LiquidityGauge @entity {
   factory: LiquidityGaugeFactory!
   totalSupply: BigDecimal!
   shares: [GaugeShare!] @derivedFrom(field: "gauge")
+  tokens: [RewardToken!] @derivedFrom(field: "gauge")
+}
+
+type RewardToken @entity {
+  id: ID!
+  symbol: String!
+  decimals: Int!
+  gauge: LiquidityGauge!
+  totalDeposited: BigDecimal!
 }
 
 type GaugeShare @entity {

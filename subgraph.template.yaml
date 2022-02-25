@@ -93,6 +93,8 @@ templates:
         - LiquidityGauge
         - UserGaugeShare
       abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV5.json
       eventHandlers:
@@ -100,3 +102,6 @@ templates:
           handler: handleTransfer
         - event: UpdateLiquidityLimit(indexed address,uint256,uint256,uint256,uint256)
           handler: handleUpdateLiquidityLimit
+      callHandlers:
+        - function: deposit_reward_token(address,uint256)
+          handler: handleDepositRewardToken

@@ -1,9 +1,36 @@
 import { Address } from '@graphprotocol/graph-ts';
 
-import { LiquidityGauge, GaugeShare } from '../types/schema';
+import { LiquidityGauge, GaugeShare, RewardToken } from '../types/schema';
 import { ZERO_ADDRESS, ZERO_BD } from './constants';
 
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
+import { getTokenDecimals, getTokenSymbol } from './misc';
+
+export function getRewardTokenId(
+  tokenAddress: Address,
+  gaugeAddress: Address,
+): string {
+  return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
+}
+
+export function getRewardToken(
+  tokenAddress: Address,
+  gaugeAddress: Address,
+): RewardToken {
+  let id = getRewardTokenId(tokenAddress, gaugeAddress);
+  let rewardToken = RewardToken.load(id);
+
+  if (rewardToken == null) {
+    rewardToken = new RewardToken(id);
+    rewardToken.gauge = gaugeAddress.toHexString();
+    rewardToken.symbol = getTokenSymbol(tokenAddress);
+    rewardToken.decimals = getTokenDecimals(tokenAddress);
+    rewardToken.totalDeposited = ZERO_BD;
+    rewardToken.save();
+  }
+
+  return rewardToken;
+}
 
 export function getGauge(address: Address): LiquidityGauge {
   let gauge = LiquidityGauge.load(address.toHexString());

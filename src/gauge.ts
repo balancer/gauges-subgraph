@@ -1,11 +1,13 @@
 import { ZERO_ADDRESS } from './utils/constants';
-import { getGauge, getGaugeShare } from './utils/gauge';
-import { scaleDownBPT } from './utils/maths';
+import { getGauge, getGaugeShare, getRewardToken } from './utils/gauge';
+import { scaleDown, scaleDownBPT } from './utils/maths';
 import { LiquidityGauge } from './types/schema';
 
 import {
   Transfer,
   UpdateLiquidityLimit,
+  // eslint-disable-next-line camelcase
+  Deposit_reward_tokenCall,
 } from './types/templates/LiquidityGauge/LiquidityGauge';
 import { createUserEntity } from './utils/misc';
 
@@ -17,6 +19,19 @@ export function handleUpdateLiquidityLimit(event: UpdateLiquidityLimit): void {
   let gaugeShare = getGaugeShare(event.params.user, event.address);
   gaugeShare.balance = scaleDownBPT(event.params.original_balance);
   gaugeShare.save();
+}
+
+// eslint-disable-next-line camelcase
+export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
+  /* eslint-disable no-underscore-dangle */
+  const address = call.inputs._reward_token;
+  const amount = call.inputs._amount;
+  /* eslint-enable no-underscore-dangle */
+
+  const rewardToken = getRewardToken(address, call.to);
+  const amountScaled = scaleDown(amount, rewardToken.decimals);
+  rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
+  rewardToken.save();
 }
 
 export function handleTransfer(event: Transfer): void {
