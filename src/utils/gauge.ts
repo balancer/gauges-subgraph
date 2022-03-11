@@ -1,8 +1,12 @@
-import { Address } from '@graphprotocol/graph-ts';
+import { Address, BigInt } from '@graphprotocol/graph-ts';
 
-import { LiquidityGauge, GaugeShare, RewardToken } from '../types/schema';
+import {
+  LiquidityGauge,
+  GaugeShare,
+  RewardToken,
+  GaugeVote,
+} from '../types/schema';
 import { ZERO_ADDRESS, ZERO_BD } from './constants';
-
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
 import { getTokenDecimals, getTokenSymbol } from './misc';
 
@@ -76,4 +80,42 @@ export function getGaugeShare(
   }
 
   return userShare;
+}
+
+export function getVotingGaugeId(
+  gaugeAddress: Address,
+  gaugeType: BigInt,
+): string {
+  return gaugeAddress.toHex().concat('-').concat(gaugeType.toString());
+}
+
+export function getVotingEscrowId(
+  userAddress: Address,
+  votingEscrowAddress: Address,
+): string {
+  return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
+}
+
+export function getGaugeVoteId(
+  userAddress: Address,
+  gaugeAddress: Address,
+): string {
+  return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
+}
+
+export function getGaugeVote(
+  userAddress: Address,
+  gaugeAddress: Address,
+): GaugeVote {
+  let id = getGaugeVoteId(userAddress, gaugeAddress);
+  let gaugeVote = GaugeVote.load(id);
+
+  if (gaugeVote == null) {
+    gaugeVote = new GaugeVote(id);
+    gaugeVote.user = userAddress.toHexString();
+    gaugeVote.gauge = gaugeAddress.toHexString();
+    gaugeVote.save();
+  }
+
+  return gaugeVote;
 }
