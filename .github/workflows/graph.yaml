@@ -8,11 +8,6 @@ jobs:
   deploy-mainnet:
     runs-on: ubuntu-latest
     environment: graph
-    env:
-      GRAPH_SUBGRAPH_ACCOUNT: ${{ github.repository_owner }}
-      GRAPH_SUBGRAPH_NAME: balancer-gauges
-      GRAPH_CONFIG_FILE: subgraph.yaml
-      NETWORK_NAME: mainnet
     steps:
       - uses: actions/checkout@v2
       - name: Install node
@@ -26,17 +21,12 @@ jobs:
       - uses: gtaschuk/graph-deploy@v0.1.5
         with:
           graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
-          graph_subgraph_name: $GRAPH_SUBGRAPH_NAME
-          graph_account: $GRAPH_SUBGRAPH_ACCOUNT
-          graph_config_file: $GRAPH_CONFIG_FILE
+          graph_subgraph_name: "balancer-gauges"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.yaml"
   deploy-kovan:
     runs-on: ubuntu-latest
     environment: graph
-    env:
-      GRAPH_SUBGRAPH_ACCOUNT: ${{ github.repository_owner }}
-      GRAPH_SUBGRAPH_NAME: balancer-gauges-kovan
-      GRAPH_CONFIG_FILE: subgraph-kovan.yaml
-      NETWORK_NAME: kovan
     steps:
       - uses: actions/checkout@v2
       - name: Install node
@@ -50,6 +40,6 @@ jobs:
       - uses: gtaschuk/graph-deploy@v0.1.5
         with:
           graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
-          graph_subgraph_name: $GRAPH_SUBGRAPH_NAME
-          graph_account: $GRAPH_SUBGRAPH_ACCOUNT
-          graph_config_file: $GRAPH_CONFIG_FILE
+          graph_subgraph_name: "balancer-gauges-kovan"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.kovan.yaml"
