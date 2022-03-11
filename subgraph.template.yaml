@@ -1,6 +1,6 @@
 specVersion: 0.0.2
-description: Balancer is a non-custodial portfolio manager, liquidity provider, and price sensor.
-repository: https://github.com/TomAFrench/subgraph-template
+description: Liquidity Gauges of the Balancer Protocol.
+repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
 dataSources:
