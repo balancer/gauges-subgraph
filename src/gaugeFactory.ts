@@ -1,16 +1,17 @@
 import { Address } from '@graphprotocol/graph-ts';
 
-import { GaugeCreated } from './types/LiquidityGaugeFactory/gaugeFactory';
-import { LiquidityGaugeFactory } from './types/schema';
+import { GaugeCreated } from './types/GaugeFactory/GaugeFactory';
+import { GaugeFactory } from './types/schema';
 import { getGauge } from './utils/gauge';
 
 import { LiquidityGauge as LiquidityGaugeTemplate } from './types/templates';
+import { getPoolId } from './utils/misc';
 
-function getGaugeFactory(address: Address): LiquidityGaugeFactory {
-  let factory = LiquidityGaugeFactory.load(address.toHexString());
+function getGaugeFactory(address: Address): GaugeFactory {
+  let factory = GaugeFactory.load(address.toHexString());
 
   if (factory == null) {
-    factory = new LiquidityGaugeFactory(address.toHexString());
+    factory = new GaugeFactory(address.toHexString());
     factory.numGauges = 0;
     factory.save();
   }
@@ -24,7 +25,8 @@ export function handleGaugeCreated(event: GaugeCreated): void {
   factory.save();
 
   let gauge = getGauge(event.params.gauge);
-  gauge.poolId = event.params.pool;
+  gauge.poolAddress = event.params.pool;
+  gauge.poolId = getPoolId(event.params.pool);
   gauge.factory = event.address.toHexString();
   gauge.save();
 

@@ -12,7 +12,7 @@ type VotingEscrowLock @entity {
   votingEscrowID: VotingEscrow!
 }
 
-type LiquidityGaugeFactory @entity {
+type GaugeFactory @entity {
   id: ID!
   numGauges: Int!
   gauges: [LiquidityGauge!] @derivedFrom(field: "factory")
@@ -21,11 +21,18 @@ type LiquidityGaugeFactory @entity {
 type LiquidityGauge @entity {
   id: ID!
   symbol: String!
-  poolId: Bytes!
-  factory: LiquidityGaugeFactory!
+  poolAddress: Bytes!
+  poolId: Bytes
+  factory: GaugeFactory!
   totalSupply: BigDecimal!
   shares: [GaugeShare!] @derivedFrom(field: "gauge")
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
+}
+
+type VotingGauge @entity {
+  id: ID!
+  gauge: LiquidityGauge!
+  type: GaugeType!
 }
 
 type RewardToken @entity {
@@ -41,6 +48,11 @@ type GaugeShare @entity {
   user: User!
   gauge: LiquidityGauge!
   balance: BigDecimal!
+}
+
+type GaugeType @entity {
+  id: ID!
+  name: String!
 }
 
 type GaugeVote @entity {

@@ -1,31 +1,11 @@
-import { Address } from '@graphprotocol/graph-ts';
-import { VoteForGauge } from './types/GaugeController/GaugeController';
-import { GaugeVote } from './types/schema';
+import {
+  AddType,
+  NewGauge,
+  VoteForGauge,
+} from './types/GaugeController/GaugeController';
+import { GaugeType, VotingGauge } from './types/schema';
+import { getGaugeVote, getVotingGaugeId } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
-
-export function getGaugeVoteId(
-  userAddress: Address,
-  gaugeAddress: Address,
-): string {
-  return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
-}
-
-export function getGaugeVote(
-  userAddress: Address,
-  gaugeAddress: Address,
-): GaugeVote {
-  let id = getGaugeVoteId(userAddress, gaugeAddress);
-  let gaugeVote = GaugeVote.load(id);
-
-  if (gaugeVote == null) {
-    gaugeVote = new GaugeVote(id);
-    gaugeVote.user = userAddress.toHexString();
-    gaugeVote.gauge = gaugeAddress.toHexString();
-    gaugeVote.save();
-  }
-
-  return gaugeVote;
-}
 
 export function handleVoteForGauge(event: VoteForGauge): void {
   let userAddress = event.params.user;
@@ -35,4 +15,23 @@ export function handleVoteForGauge(event: VoteForGauge): void {
   gaugeVote.weight = scaleDownBPT(event.params.weight);
   gaugeVote.timestamp = event.params.time;
   gaugeVote.save();
+}
+
+export function handleAddType(event: AddType): void {
+  let type = new GaugeType(event.params.type_id.toString());
+  type.name = event.params.name;
+  type.save();
+}
+
+export function handleNewGauge(event: NewGauge): void {
+  let id = getVotingGaugeId(event.params.addr, event.params.gauge_type);
+  let votingGauge = VotingGauge.load(id);
+
+  if (votingGauge == null) {
+    votingGauge = new VotingGauge(id);
+    votingGauge.gauge = event.params.addr.toHex();
+    votingGauge.type = event.params.gauge_type.toString();
+  }
+
+  votingGauge.save();
 }

@@ -1,7 +1,8 @@
-import { Address } from '@graphprotocol/graph-ts';
+import { Address, Bytes } from '@graphprotocol/graph-ts';
 
 import { User } from '../types/schema';
 import { ERC20 } from '../types/templates/LiquidityGauge/ERC20';
+import { WeightedPool } from '../types/GaugeFactory/WeightedPool';
 
 export function createUserEntity(address: Address): void {
   let addressHex = address.toHex();
@@ -23,4 +24,11 @@ export function getTokenSymbol(tokenAddress: Address): string {
   let result = token.try_symbol();
 
   return result.reverted ? '' : result.value;
+}
+
+export function getPoolId(poolAddress: Address): Bytes | null {
+  let pool = WeightedPool.bind(poolAddress);
+  let result = pool.try_getPoolId();
+
+  return result.reverted ? null : result.value;
 }

@@ -1,17 +1,9 @@
-import { Address } from '@graphprotocol/graph-ts';
-
 import { VotingEscrowLock, VotingEscrow } from './types/schema';
 import { Deposit, Supply, Withdraw } from './types/VotingEscrow/votingEscrow';
 import { ZERO_BD } from './utils/constants';
+import { getVotingEscrowId } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
 import { createUserEntity } from './utils/misc';
-
-function getVotingEscrowId(
-  userAddress: Address,
-  votingEscrowAddress: Address,
-): string {
-  return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
-}
 
 export function handleDeposit(event: Deposit): void {
   let userAddress = event.params.provider;
