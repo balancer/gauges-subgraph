@@ -5,7 +5,7 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: LiquidityGaugeFactory
+    name: GaugeFactory
     # prettier-ignore
     network: kovan
     source:
@@ -23,8 +23,10 @@ dataSources:
           file: ./abis/LiquidityGaugeFactory.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV5.json
+        - name: WeightedPool
+          file: ./abis/WeightedPool.json
       entities:
-        - LiquidityGaugeFactory
+        - GaugeFactory
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address)
@@ -49,6 +51,10 @@ dataSources:
       entities:
         - GaugeVote
       eventHandlers:
+        - event: AddType(string,int128)
+          handler: handleAddType
+        - event: NewGauge(address,int128,uint256)
+          handler: handleNewGauge
         - event: VoteForGauge(uint256,address,address,uint256)
           handler: handleVoteForGauge
   - kind: ethereum/contract
