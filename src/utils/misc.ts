@@ -2,7 +2,7 @@ import { Address, Bytes } from '@graphprotocol/graph-ts';
 
 import { User } from '../types/schema';
 import { ERC20 } from '../types/templates/LiquidityGauge/ERC20';
-import { WeightedPool } from '../types/LiquidityGaugeFactory/WeightedPool';
+import { WeightedPool } from '../types/GaugeFactory/WeightedPool';
 
 export function createUserEntity(address: Address): void {
   let addressHex = address.toHex();
