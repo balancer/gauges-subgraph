@@ -94,10 +94,7 @@ export function getGaugeShare(
   return gaugeShare;
 }
 
-export function getVotingGaugeId(
-  gaugeAddress: Address,
-  gaugeType: BigInt,
-): string {
+export function getGaugeId(gaugeAddress: Address, gaugeType: BigInt): string {
   return gaugeAddress.toHex().concat('-').concat(gaugeType.toString());
 }
 

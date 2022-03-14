@@ -3,8 +3,8 @@ import {
   NewGauge,
   VoteForGauge,
 } from './types/GaugeController/GaugeController';
-import { GaugeType, VotingGauge } from './types/schema';
-import { getGaugeVote, getVotingGaugeId } from './utils/gauge';
+import { GaugeType, Gauge } from './types/schema';
+import { getGaugeVote, getGaugeId } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
 
 export function handleVoteForGauge(event: VoteForGauge): void {
@@ -24,12 +24,12 @@ export function handleAddType(event: AddType): void {
 }
 
 export function handleNewGauge(event: NewGauge): void {
-  let id = getVotingGaugeId(event.params.addr, event.params.gauge_type);
-  let votingGauge = VotingGauge.load(id);
+  let id = getGaugeId(event.params.addr, event.params.gauge_type);
+  let votingGauge = Gauge.load(id);
 
   if (votingGauge == null) {
-    votingGauge = new VotingGauge(id);
-    votingGauge.gauge = event.params.addr.toHex();
+    votingGauge = new Gauge(id);
+    votingGauge.address = event.params.addr;
     votingGauge.type = event.params.gauge_type.toString();
   }
 

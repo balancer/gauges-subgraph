@@ -29,9 +29,9 @@ type LiquidityGauge @entity {
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
 }
 
-type VotingGauge @entity {
+type Gauge @entity {
   id: ID!
-  gauge: LiquidityGauge!
+  address: Bytes!
   type: GaugeType!
 }
 
