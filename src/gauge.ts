@@ -49,29 +49,20 @@ export function handleTransfer(event: Transfer): void {
   let isBurn = toAddress.toHexString() == ZERO_ADDRESS;
 
   if (isMint) {
-    createUserEntity(toAddress);
-
-    let userShareTo = getGaugeShare(toAddress, gaugeAddress);
-    userShareTo.balance = userShareTo.balance.plus(scaleDownBPT(value));
-    userShareTo.save();
     gauge.totalSupply = gauge.totalSupply.plus(scaleDownBPT(value));
-  } else if (isBurn) {
+  } else {
     createUserEntity(fromAddress);
-
     let userShareFrom = getGaugeShare(fromAddress, gaugeAddress);
     userShareFrom.balance = userShareFrom.balance.minus(scaleDownBPT(value));
     userShareFrom.save();
+  }
+  if (isBurn) {
     gauge.totalSupply = gauge.totalSupply.minus(scaleDownBPT(value));
   } else {
     createUserEntity(toAddress);
     let userShareTo = getGaugeShare(toAddress, gaugeAddress);
     userShareTo.balance = userShareTo.balance.plus(scaleDownBPT(value));
     userShareTo.save();
-
-    createUserEntity(fromAddress);
-    let userShareFrom = getGaugeShare(fromAddress, gaugeAddress);
-    userShareFrom.balance = userShareFrom.balance.minus(scaleDownBPT(value));
-    userShareFrom.save();
   }
 
   gauge.save();
