@@ -106,8 +106,6 @@ templates:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-        - event: UpdateLiquidityLimit(indexed address,uint256,uint256,uint256,uint256)
-          handler: handleUpdateLiquidityLimit
       callHandlers:
         - function: deposit_reward_token(address,uint256)
           handler: handleDepositRewardToken

@@ -8,7 +8,7 @@ import {
 } from '../types/schema';
 import { ZERO_ADDRESS, ZERO_BD } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
-import { getTokenDecimals, getTokenSymbol } from './misc';
+import { createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 
 export function getRewardTokenId(
   tokenAddress: Address,
@@ -64,22 +64,34 @@ export function getGaugeShareId(
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
+export function createGaugeShare(
+  userAddress: Address,
+  gaugeAddress: Address,
+): GaugeShare {
+  createUserEntity(userAddress);
+  let id = getGaugeShareId(userAddress, gaugeAddress);
+
+  let gaugeShare = new GaugeShare(id);
+  gaugeShare.user = userAddress.toHexString();
+  gaugeShare.gauge = gaugeAddress.toHexString();
+  gaugeShare.balance = ZERO_BD;
+  gaugeShare.save();
+
+  return gaugeShare;
+}
+
 export function getGaugeShare(
   userAddress: Address,
   gaugeAddress: Address,
 ): GaugeShare {
   let id = getGaugeShareId(userAddress, gaugeAddress);
-  let userShare = GaugeShare.load(id);
+  let gaugeShare = GaugeShare.load(id);
 
-  if (userShare == null) {
-    userShare = new GaugeShare(id);
-    userShare.user = userAddress.toHexString();
-    userShare.gauge = gaugeAddress.toHexString();
-    userShare.balance = ZERO_BD;
-    userShare.save();
+  if (gaugeShare == null) {
+    return createGaugeShare(userAddress, gaugeAddress);
   }
 
-  return userShare;
+  return gaugeShare;
 }
 
 export function getVotingGaugeId(
