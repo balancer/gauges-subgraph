@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Liquidity Gauges of the Balancer Protocol.
+description: Liquidity Gauges of the Balancer Protocol
 repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
