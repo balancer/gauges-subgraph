@@ -45,7 +45,7 @@ export function handleTransfer(event: Transfer): void {
     let userShareFrom = getGaugeShare(fromAddress, gaugeAddress);
     userShareFrom.balance = userShareFrom.balance.minus(scaleDownBPT(value));
     userShareFrom.save();
-    gauge.totalSupply = gauge.totalSupply.minus(scaleDownBPT(value));
+    gauge.totalSupply = gauge.totalSupply.plus(scaleDownBPT(value));
   } else {
     let userShareTo = getGaugeShare(toAddress, gaugeAddress);
     userShareTo.balance = userShareTo.balance.plus(scaleDownBPT(value));
