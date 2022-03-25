@@ -12,3 +12,17 @@ kovan:
     address: '0x0BA4d28a89b0aB0c48253f4f36B204DE24354651'
     transactionHash: '0xee6f5a5a135ef326e840aafdb8dc42faa33bec4d733f87dd105e7088bb1e7736'
     startBlock: 30437465
+mainnet:
+  network: mainnet
+  gaugeFactory:
+    address: '0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC'
+    transactionHash: '0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d'
+    startBlock: 14457664
+  gaugeController:
+    address: '0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD'
+    transactionHash: '0x69d0355862729073f8d25ef9d6d3ecaa1f001f7e339a465430326c931125b3c6'
+    startBlock: 14457014
+  votingEscrow:
+    address: '0xC128a9954e6c874eA3d62ce62B468bA073093F25'
+    transactionHash: '0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3'
+    startBlock: 14457013
