@@ -5,10 +5,12 @@ import {
   GaugeShare,
   RewardToken,
   GaugeVote,
+  GaugeType,
 } from '../types/schema';
-import { ZERO_ADDRESS, ZERO_BD } from './constants';
+import { CONTROLLER_ADDRESS, ZERO_ADDRESS, ZERO_BD } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
 import { createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
+import { GaugeController } from '../types/GaugeController/GaugeController';
 
 export function getRewardTokenId(
   tokenAddress: Address,
@@ -125,6 +127,27 @@ export function getGaugeVote(
     gaugeVote.gauge = gaugeAddress.toHexString();
     gaugeVote.save();
   }
-
   return gaugeVote;
+}
+
+function getTypeName(typeNumber: BigInt): string {
+  let controller = GaugeController.bind(CONTROLLER_ADDRESS);
+  let nameCall = controller.try_gauge_type_names(typeNumber);
+  let name = nameCall.reverted ? '' : nameCall.value;
+
+  return name;
+}
+
+export function getGaugeType(typeNumber: BigInt): GaugeType {
+  let typeId = typeNumber.toString();
+  let type = GaugeType.load(typeId);
+
+  if (type == null) {
+    type = new GaugeType(typeId);
+    type.name = getTypeName(typeNumber);
+  }
+
+  type.save();
+
+  return type;
 }
