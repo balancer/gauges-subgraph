@@ -11,7 +11,7 @@
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
     "deploy:mainnet": "yarn deploy balancer-labs/gauges",
     "deploy:kovan": "yarn deploy balancer-labs/gauges-kovan",
-    "codegen": "yarn generate-manifests && graph codegen subgraph.kovan.yaml --output-dir src/types/",
+    "codegen": "yarn generate-manifests && graph codegen subgraph.yaml --output-dir src/types/ && graph codegen subgraph.arbitrum.yaml --output-dir src/types/",
     "generate-manifests": "ts-node ./scripts/generate-manifests"
   },
   "repository": {
