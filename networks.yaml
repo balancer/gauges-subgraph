@@ -33,7 +33,7 @@ polygon:
     transactionHash: '0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5'
     startBlock: 27098624
 arbitrum:
-  network: arbitrum
+  network: arbitrum-one
   childChainGaugeFactory:
     address: '0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2'
     transactionHash: '0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874'
