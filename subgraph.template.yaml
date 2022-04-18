@@ -4,6 +4,7 @@ repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
 dataSources:
+  {{#if gaugeFactory}}
   - kind: ethereum/contract
     name: GaugeFactory
     # prettier-ignore
@@ -31,6 +32,39 @@ dataSources:
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address)
           handler: handleGaugeCreated
+  {{/if}}
+  {{#if childChainGaugeFactory}}
+  - kind: ethereum/contract
+    name: ChildChainLiquidityGaugeFactory
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{childChainGaugeFactory.address}}'
+      abi: ChildChainLiquidityGaugeFactory
+      # prettier-ignore
+      startBlock: {{ childChainGaugeFactory.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gaugeFactory.ts
+      abis:
+        - name: ChildChainLiquidityGaugeFactory
+          file: ./abis/ChildChainLiquidityGaugeFactory.json
+        - name: RewardsOnlyGauge
+          file: ./abis/RewardsOnlyGauge.json
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV5.json
+        - name: WeightedPool
+          file: ./abis/WeightedPool.json
+      entities:
+        - GaugeFactory
+        - LiquidityGauge
+      eventHandlers:
+        - event: RewardsOnlyGaugeCreated(indexed address,indexed address,address)
+          handler: handleGaugeCreated
+  {{/if}}
+  {{#if gaugeController}}
   - kind: ethereum/contract
     name: GaugeController
     # prettier-ignore
@@ -57,6 +91,8 @@ dataSources:
           handler: handleNewGauge
         - event: VoteForGauge(uint256,address,address,uint256)
           handler: handleVoteForGauge
+  {{/if}}
+  {{#if votingEscrow}}
   - kind: ethereum/contract
     name: VotingEscrow
     # prettier-ignore
@@ -83,6 +119,7 @@ dataSources:
           handler: handleWithdraw
         - event: Supply(uint256,uint256)
           handler: handleSupply
+  {{/if}}
 templates:
   - kind: ethereum/contract
     name: LiquidityGauge
@@ -109,3 +146,27 @@ templates:
       callHandlers:
         - function: deposit_reward_token(address,uint256)
           handler: handleDepositRewardToken
+  - kind: ethereum/contract
+    name: RewardsOnlyGauge
+    # prettier-ignore
+    network: {{network}}
+    source:
+      abi: RewardsOnlyGauge
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gauge.ts
+      entities:
+        - LiquidityGauge
+        - UserGaugeShare
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: RewardsOnlyGauge
+          file: ./abis/RewardsOnlyGauge.json
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV5.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
