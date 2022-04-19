@@ -29,6 +29,17 @@ type LiquidityGauge @entity {
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
 }
 
+enum Chain {
+  Arbitrum
+  Polygon
+}
+
+type RootGauge @entity {
+  id: ID!
+  chain: Chain!
+  recipient: Bytes!
+}
+
 type Gauge @entity {
   id: ID!
   address: Bytes!
