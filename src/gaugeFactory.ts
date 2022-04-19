@@ -1,7 +1,7 @@
 import { Address } from '@graphprotocol/graph-ts';
 
 import { GaugeCreated } from './types/GaugeFactory/GaugeFactory';
-import { GaugeFactory } from './types/schema';
+import { GaugeFactory, RootGauge } from './types/schema';
 import { getGauge } from './utils/gauge';
 
 import {
@@ -11,6 +11,8 @@ import {
 
 import { getPoolId } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
+import { ArbitrumRootGaugeCreated } from './types/ArbitrumRootGaugeFactory/ArbitrumRootGaugeFactory';
+import { ARBITRUM_ROOT_GAUGE_FACTORY } from './utils/constants';
 
 function getGaugeFactory(address: Address): GaugeFactory {
   let factory = GaugeFactory.load(address.toHexString());
@@ -36,4 +38,19 @@ export function handleGaugeCreated(event: RewardsOnlyGaugeCreated): void {
   gauge.save();
 
   RewardsOnlyGaugeTemplate.create(event.params.gauge);
+}
+
+export function handleRootGaugeCreated(event: ArbitrumRootGaugeCreated): void {
+  const gaugeAddress = event.params.gauge;
+
+  let gauge = new RootGauge(gaugeAddress.toHexString());
+  gauge.recipient = event.params.recipient;
+
+  if (event.address == ARBITRUM_ROOT_GAUGE_FACTORY) {
+    gauge.chain = 'Arbitrum';
+  } else {
+    gauge.chain = 'Polygon';
+  }
+
+  gauge.save();
 }
