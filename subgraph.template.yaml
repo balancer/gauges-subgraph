@@ -31,7 +31,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address)
-          handler: handleGaugeCreated
+          handler: handleLiquidityGaugeCreated
   {{/if}}
   {{#if arbitrumRootGaugeFactory}}
   - kind: ethereum/contract
@@ -110,7 +110,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: RewardsOnlyGaugeCreated(indexed address,indexed address,address)
-          handler: handleGaugeCreated
+          handler: handleRewardsOnlyGaugeCreated
   {{/if}}
   {{#if gaugeController}}
   - kind: ethereum/contract

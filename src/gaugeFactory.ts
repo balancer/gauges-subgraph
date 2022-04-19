@@ -26,12 +26,29 @@ function getGaugeFactory(address: Address): GaugeFactory {
   return factory;
 }
 
-export function handleGaugeCreated(event: RewardsOnlyGaugeCreated): void {
+export function handleLiquidityGaugeCreated(event: GaugeCreated): void {
   let factory = getGaugeFactory(event.address);
   factory.numGauges += 1;
   factory.save();
 
   let gauge = getGauge(event.params.gauge);
+  gauge.poolAddress = event.params.pool;
+  gauge.poolId = getPoolId(event.params.pool);
+  gauge.factory = event.address.toHexString();
+  gauge.save();
+
+  LiquidityGaugeTemplate.create(event.params.gauge);
+}
+
+export function handleRewardsOnlyGaugeCreated(
+  event: RewardsOnlyGaugeCreated,
+): void {
+  let factory = getGaugeFactory(event.address);
+  factory.numGauges += 1;
+  factory.save();
+
+  let gauge = getGauge(event.params.gauge);
+  gauge.streamer = event.params.streamer;
   gauge.poolAddress = event.params.pool;
   gauge.poolId = getPoolId(event.params.pool);
   gauge.factory = event.address.toHexString();
