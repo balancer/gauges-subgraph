@@ -23,6 +23,7 @@ type LiquidityGauge @entity {
   symbol: String!
   poolAddress: Bytes!
   poolId: Bytes
+  streamer: Bytes # ChildChainLiquidityGauge Only
   factory: GaugeFactory!
   totalSupply: BigDecimal!
   shares: [GaugeShare!] @derivedFrom(field: "gauge")
