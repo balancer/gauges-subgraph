@@ -26,6 +26,14 @@ mainnet:
     address: '0xC128a9954e6c874eA3d62ce62B468bA073093F25'
     transactionHash: '0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3'
     startBlock: 14457013
+  arbitrumRootGaugeFactory:
+    address: '0xad901309d9e9DbC5Df19c84f729f429F0189a633'
+    transactionHash: '0x8562ca63b19952e67ea14b1b5d3e7a9bf3fce96df80474adb7d88ead72cb6db8'
+    startBlock: 14580456
+  polygonRootGaugeFactory:
+    address: '0x4C4287b07d293E361281bCeEe8715c8CDeB64E34'
+    transactionHash: '0xcc3044f91aed68a5811d2b180b5a21528592bbf5eacf2108647957ab7dc25dbe'
+    startBlock: 14577894
 polygon:
   network: matic
   childChainGaugeFactory:
