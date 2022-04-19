@@ -8,6 +8,7 @@ export const ONE_BD = ZERO.toBigDecimal();
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export class AddressByNetwork {
   public mainnet: string;
+
   public kovan: string;
 }
 
@@ -31,4 +32,8 @@ function forNetwork(
 export const CONTROLLER_ADDRESS = forNetwork(
   controllerAddressByNetwork,
   network,
+);
+
+export const ARBITRUM_ROOT_GAUGE_FACTORY = Address.fromString(
+  '0xad901309d9e9DbC5Df19c84f729f429F0189a633',
 );
