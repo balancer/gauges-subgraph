@@ -81,6 +81,30 @@ dataSources:
         - event: PolygonRootGaugeCreated(indexed address,indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
+  {{#if optimismRootGaugeFactory}}
+  - kind: ethereum/contract
+    name: OptimismRootGaugeFactory
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{optimismRootGaugeFactory.address}}'
+      abi: OptimismRootGaugeFactory
+      # prettier-ignore
+      startBlock: {{ optimismRootGaugeFactory.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gaugeFactory.ts
+      abis:
+        - name: OptimismRootGaugeFactory
+          file: ./abis/OptimismRootGaugeFactory.json
+      entities:
+        - RootGauge
+      eventHandlers:
+        - event: OptimismRootGaugeCreated(indexed address,indexed address)
+          handler: handleRootGaugeCreated
+  {{/if}}
   {{#if childChainGaugeFactory}}
   - kind: ethereum/contract
     name: ChildChainLiquidityGaugeFactory
