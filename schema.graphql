@@ -33,6 +33,7 @@ type LiquidityGauge @entity {
 enum Chain {
   Arbitrum
   Polygon
+  Optimism
 }
 
 type RootGauge @entity {

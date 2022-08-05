@@ -48,6 +48,10 @@ mainnet:
     address: '0x4C4287b07d293E361281bCeEe8715c8CDeB64E34'
     transactionHash: '0xcc3044f91aed68a5811d2b180b5a21528592bbf5eacf2108647957ab7dc25dbe'
     startBlock: 14577894
+  optimismRootGaugeFactory:
+    address: '0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8'
+    transactionHash: '0xf0328cf6727cb365162b10c18c80e01529cee4c8d22b51827e6834f11c7f2157'
+    startBlock: 15141554
 polygon:
   network: matic
   childChainGaugeFactory:

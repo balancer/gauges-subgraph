@@ -12,7 +12,11 @@ import {
 import { getPoolId } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
 import { ArbitrumRootGaugeCreated } from './types/ArbitrumRootGaugeFactory/ArbitrumRootGaugeFactory';
-import { ARBITRUM_ROOT_GAUGE_FACTORY } from './utils/constants';
+import {
+  ARBITRUM_ROOT_GAUGE_FACTORY,
+  OPTIMISM_ROOT_GAUGE_FACTORY,
+  POLYGON_ROOT_GAUGE_FACTORY,
+} from './utils/constants';
 
 function getGaugeFactory(address: Address): GaugeFactory {
   let factory = GaugeFactory.load(address.toHexString());
@@ -65,7 +69,9 @@ export function handleRootGaugeCreated(event: ArbitrumRootGaugeCreated): void {
 
   if (event.address == ARBITRUM_ROOT_GAUGE_FACTORY) {
     gauge.chain = 'Arbitrum';
-  } else {
+  } else if (event.address == OPTIMISM_ROOT_GAUGE_FACTORY) {
+    gauge.chain = 'Optimism';
+  } else if (event.address == POLYGON_ROOT_GAUGE_FACTORY) {
     gauge.chain = 'Polygon';
   }
 

@@ -41,3 +41,9 @@ export const CONTROLLER_ADDRESS = forNetwork(
 export const ARBITRUM_ROOT_GAUGE_FACTORY = Address.fromString(
   '0xad901309d9e9DbC5Df19c84f729f429F0189a633',
 );
+export const OPTIMISM_ROOT_GAUGE_FACTORY = Address.fromString(
+  '0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8',
+);
+export const POLYGON_ROOT_GAUGE_FACTORY = Address.fromString(
+  '0x4C4287b07d293E361281bCeEe8715c8CDeB64E34',
+);
