@@ -64,3 +64,9 @@ arbitrum:
     address: '0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2'
     transactionHash: '0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874'
     startBlock: 9756975
+optimism:
+  network: optimism
+  childChainGaugeFactory:
+    address: '0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647'
+    transactionHash: '0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7'
+    startBlock: 9052485
