@@ -5,6 +5,7 @@ import { GaugeFactory, RootGauge } from './types/schema';
 import { getGauge } from './utils/gauge';
 
 import {
+  RootGauge as RootGaugeTemplate,
   LiquidityGauge as LiquidityGaugeTemplate,
   RewardsOnlyGauge as RewardsOnlyGaugeTemplate,
 } from './types/templates';
@@ -66,6 +67,7 @@ export function handleRootGaugeCreated(event: ArbitrumRootGaugeCreated): void {
 
   let gauge = new RootGauge(gaugeAddress.toHexString());
   gauge.recipient = event.params.recipient;
+  gauge.isKilled = false;
 
   if (event.address == ARBITRUM_ROOT_GAUGE_FACTORY) {
     gauge.chain = 'Arbitrum';
@@ -76,4 +78,6 @@ export function handleRootGaugeCreated(event: ArbitrumRootGaugeCreated): void {
   }
 
   gauge.save();
+
+  RootGaugeTemplate.create(gaugeAddress);
 }
