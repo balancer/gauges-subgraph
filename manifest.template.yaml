@@ -218,6 +218,10 @@ templates:
       callHandlers:
         - function: deposit_reward_token(address,uint256)
           handler: handleDepositRewardToken
+        - function: killGauge()
+          handler: handleKillGauge
+        - function: unkillGauge()
+          handler: handleUnkillGauge
   - kind: ethereum/contract
     name: RewardsOnlyGauge
     # prettier-ignore
@@ -242,3 +246,24 @@ templates:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+  - kind: ethereum/contract
+    name: RootGauge
+    # prettier-ignore
+    network: {{network}}
+    source:
+      abi: ArbitrumRootGauge
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gauge.ts
+      entities:
+        - RootGauge
+      abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
+      callHandlers:
+        - function: killGauge()
+          handler: handleKillGauge
+        - function: unkillGauge()
+          handler: handleUnkillGauge
