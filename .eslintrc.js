@@ -22,6 +22,7 @@ module.exports = {
     "prefer-template": "off",
     "eqeqeq": "off",
     "prefer-const": "off",
-    "@typescript-eslint/no-shadow": "off"
+    "@typescript-eslint/no-shadow": "off",
+    "lines-between-class-members": "off"
   }
 }
