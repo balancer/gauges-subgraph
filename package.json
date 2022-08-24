@@ -10,7 +10,6 @@
     "local:deploy": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 balancer-labs/gauges",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
     "deploy:mainnet": "yarn deploy balancer-labs/gauges",
-    "deploy:kovan": "yarn deploy balancer-labs/gauges-kovan",
     "deploy:goerli": "yarn deploy balancer-labs/gauges-goerli",
     "codegen": "yarn generate-manifests && graph codegen subgraph.yaml --output-dir src/types/ && graph codegen subgraph.arbitrum.yaml --output-dir src/types/",
     "generate-manifests": "ts-node ./scripts/generate-manifests"
