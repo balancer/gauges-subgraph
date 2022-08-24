@@ -264,6 +264,6 @@ templates:
           file: ./abis/ArbitrumRootGauge.json
       callHandlers:
         - function: killGauge()
-          handler: handleKillGauge
+          handler: handleRootKillGauge
         - function: unkillGauge()
-          handler: handleUnkillGauge
+          handler: handleRootUnkillGauge

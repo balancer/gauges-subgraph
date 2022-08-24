@@ -8,10 +8,7 @@ import {
   // eslint-disable-next-line camelcase
   Deposit_reward_tokenCall,
 } from './types/templates/LiquidityGauge/LiquidityGauge';
-import {
-  KillGaugeCall,
-  UnkillGaugeCall,
-} from './types/templates/RootGauge/ArbitrumRootGauge';
+import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/ArbitrumRootGauge';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -63,16 +60,30 @@ export function handleTransfer(event: Transfer): void {
   gauge.save();
 }
 
-export function handleKillGauge(call: KillGaugeCall): void {
+export function handleRootKillGauge(call: KillGaugeCall): void {
   // eslint-disable-next-line no-underscore-dangle
   let gauge = RootGauge.load(call.to.toHexString()) as RootGauge;
   gauge.isKilled = true;
   gauge.save();
 }
 
-export function handleUnkillGauge(call: UnkillGaugeCall): void {
+export function handleRootUnkillGauge(call: UnkillGaugeCall): void {
   // eslint-disable-next-line no-underscore-dangle
   let gauge = RootGauge.load(call.to.toHexString()) as RootGauge;
+  gauge.isKilled = false;
+  gauge.save();
+}
+
+export function handleKillGauge(call: KillGaugeCall): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let gauge = LiquidityGauge.load(call.to.toHexString()) as LiquidityGauge;
+  gauge.isKilled = true;
+  gauge.save();
+}
+
+export function handleUnkillGauge(call: UnkillGaugeCall): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let gauge = LiquidityGauge.load(call.to.toHexString()) as LiquidityGauge;
   gauge.isKilled = false;
   gauge.save();
 }
