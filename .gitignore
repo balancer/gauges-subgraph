@@ -23,8 +23,8 @@ node_modules/
 build/
 
 # Subgraph stuff
-subgraph.yaml
 src/types/
+subgraph*.yaml
 
 # Jetbrains
 .idea/

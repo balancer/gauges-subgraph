@@ -23,6 +23,7 @@ type LiquidityGauge @entity {
   symbol: String!
   poolAddress: Bytes!
   poolId: Bytes
+  isKilled: Boolean!
   streamer: Bytes # ChildChainLiquidityGauge Only
   factory: GaugeFactory!
   totalSupply: BigDecimal!
@@ -40,6 +41,7 @@ type RootGauge @entity {
   id: ID!
   chain: Chain!
   recipient: Bytes!
+  isKilled: Boolean!
 }
 
 type Gauge @entity {

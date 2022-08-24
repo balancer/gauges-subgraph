@@ -1,13 +1,17 @@
 import { ZERO_ADDRESS } from './utils/constants';
 import { getGaugeShare, getRewardToken } from './utils/gauge';
 import { scaleDown, scaleDownBPT } from './utils/maths';
-import { LiquidityGauge } from './types/schema';
+import { LiquidityGauge, RootGauge } from './types/schema';
 
 import {
   Transfer,
   // eslint-disable-next-line camelcase
   Deposit_reward_tokenCall,
 } from './types/templates/LiquidityGauge/LiquidityGauge';
+import {
+  KillGaugeCall,
+  UnkillGaugeCall,
+} from './types/templates/RootGauge/ArbitrumRootGauge';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -56,5 +60,19 @@ export function handleTransfer(event: Transfer): void {
     userShareFrom.save();
   }
 
+  gauge.save();
+}
+
+export function handleKillGauge(call: KillGaugeCall): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let gauge = RootGauge.load(call.to.toHexString()) as RootGauge;
+  gauge.isKilled = true;
+  gauge.save();
+}
+
+export function handleUnkillGauge(call: UnkillGaugeCall): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let gauge = RootGauge.load(call.to.toHexString()) as RootGauge;
+  gauge.isKilled = false;
   gauge.save();
 }
