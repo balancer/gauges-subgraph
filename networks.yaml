@@ -1,72 +1,58 @@
-kovan:
-  network: kovan
-  gaugeFactory:
-    address: '0xd561043759495414813103fD73928edeDbA3a29c'
-    transactionHash: '0x0518d84b831e2109fd327c6fe8b44ac607e0e8380c9f25929f28bd6bc4383b92'
-    startBlock: 30438237
-  gaugeController:
-    address: '0x28bE1a58A534B281c3A22df28d3720323bfF331D'
-    transactionHash: '0x179af09a49b972d7ed519cd615de3e401275c407ab59f6c71ffac1e08c38f000'
-    startBlock: 30437467
-  votingEscrow:
-    address: '0x0BA4d28a89b0aB0c48253f4f36B204DE24354651'
-    transactionHash: '0xee6f5a5a135ef326e840aafdb8dc42faa33bec4d733f87dd105e7088bb1e7736'
-    startBlock: 30437465
 goerli:
   network: goerli
   gaugeFactory:
-    address: '0x224E808FBD9e491Be8988B8A0451FBF777C81B8A'
-    transactionHash: '0x2d5d9089caf830b09e6ab586b56b140e6e0ab28d2d2070425bfb97ada9c95d08'
+    address: "0x224E808FBD9e491Be8988B8A0451FBF777C81B8A"
+    transactionHash: "0x2d5d9089caf830b09e6ab586b56b140e6e0ab28d2d2070425bfb97ada9c95d08"
     startBlock: 7001506
   gaugeController:
-    address: '0xBB1CE49b16d55A1f2c6e88102f32144C7334B116'
-    transactionHash: '0x1bc729c9985648b7785d46fb806ceff3e32d1ef9963e664af7a5ba15d0b73b23'
+    address: "0xBB1CE49b16d55A1f2c6e88102f32144C7334B116"
+    transactionHash: "0x1bc729c9985648b7785d46fb806ceff3e32d1ef9963e664af7a5ba15d0b73b23"
     startBlock: 7001464
   votingEscrow:
-    address: '0x33A99Dcc4C85C014cf12626959111D5898bbCAbF'
-    transactionHash: '0x172ba908936fabe43044de42694598c9e0923500eabfebede6c97112005b255e'
+    address: "0x33A99Dcc4C85C014cf12626959111D5898bbCAbF"
+    transactionHash: "0x172ba908936fabe43044de42694598c9e0923500eabfebede6c97112005b255e"
     startBlock: 7001463
 mainnet:
   network: mainnet
   gaugeFactory:
-    address: '0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC'
-    transactionHash: '0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d'
+    address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
+    transactionHash: "0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d"
     startBlock: 14457664
   gaugeController:
-    address: '0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD'
-    transactionHash: '0x69d0355862729073f8d25ef9d6d3ecaa1f001f7e339a465430326c931125b3c6'
+    address: "0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD"
+    transactionHash: "0x69d0355862729073f8d25ef9d6d3ecaa1f001f7e339a465430326c931125b3c6"
     startBlock: 14457014
   votingEscrow:
-    address: '0xC128a9954e6c874eA3d62ce62B468bA073093F25'
-    transactionHash: '0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3'
+    address: "0xC128a9954e6c874eA3d62ce62B468bA073093F25"
+    transactionHash: "0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3"
     startBlock: 14457013
   arbitrumRootGaugeFactory:
-    address: '0xad901309d9e9DbC5Df19c84f729f429F0189a633'
-    transactionHash: '0x8562ca63b19952e67ea14b1b5d3e7a9bf3fce96df80474adb7d88ead72cb6db8'
+    address: "0xad901309d9e9DbC5Df19c84f729f429F0189a633"
+    transactionHash: "0x8562ca63b19952e67ea14b1b5d3e7a9bf3fce96df80474adb7d88ead72cb6db8"
     startBlock: 14580456
   polygonRootGaugeFactory:
-    address: '0x4C4287b07d293E361281bCeEe8715c8CDeB64E34'
-    transactionHash: '0xcc3044f91aed68a5811d2b180b5a21528592bbf5eacf2108647957ab7dc25dbe'
+    address: "0x4C4287b07d293E361281bCeEe8715c8CDeB64E34"
+    transactionHash: "0xcc3044f91aed68a5811d2b180b5a21528592bbf5eacf2108647957ab7dc25dbe"
     startBlock: 14577894
   optimismRootGaugeFactory:
-    address: '0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8'
-    transactionHash: '0xf0328cf6727cb365162b10c18c80e01529cee4c8d22b51827e6834f11c7f2157'
+    address: "0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8"
+    transactionHash: "0xf0328cf6727cb365162b10c18c80e01529cee4c8d22b51827e6834f11c7f2157"
     startBlock: 15141554
 polygon:
   network: matic
   childChainGaugeFactory:
-    address: '0x3b8cA519122CdD8efb272b0D3085453404B25bD0'
-    transactionHash: '0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5'
+    address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
+    transactionHash: "0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5"
     startBlock: 27098624
 arbitrum:
   network: arbitrum-one
   childChainGaugeFactory:
-    address: '0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2'
-    transactionHash: '0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874'
+    address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
+    transactionHash: "0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874"
     startBlock: 9756975
 optimism:
   network: optimism
   childChainGaugeFactory:
-    address: '0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647'
-    transactionHash: '0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7'
+    address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
+    transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
     startBlock: 9052485
