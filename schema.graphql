@@ -21,6 +21,7 @@ type GaugeFactory @entity {
 type LiquidityGauge @entity {
   id: ID!
   symbol: String!
+  pool: Pool!
   poolAddress: Bytes!
   poolId: Bytes
   isKilled: Boolean!
@@ -50,6 +51,13 @@ type Gauge @entity {
   id: ID!
   address: Bytes!
   type: GaugeType!
+}
+
+type Pool @entity {
+  id: ID!
+  poolId: Bytes!
+  address: Bytes!
+  gauges: [LiquidityGauge!] @derivedFrom(field: "pool")
 }
 
 type RewardToken @entity {
