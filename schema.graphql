@@ -10,6 +10,7 @@ type VotingEscrowLock @entity {
   unlockTime: BigInt
   lockedBalance: BigDecimal!
   votingEscrowID: VotingEscrow!
+  updatedAt: Int!
 }
 
 type GaugeFactory @entity {

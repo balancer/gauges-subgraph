@@ -22,6 +22,7 @@ export function handleDeposit(event: Deposit): void {
   votingShare.unlockTime = event.params.locktime;
   let depositAmount = scaleDownBPT(event.params.value);
   votingShare.lockedBalance = votingShare.lockedBalance.plus(depositAmount);
+  votingShare.updatedAt = event.block.timestamp.toI32();
   votingShare.save();
 }
 
@@ -39,6 +40,7 @@ export function handleWithdraw(event: Withdraw): void {
   }
 
   votingShare.lockedBalance = ZERO_BD;
+  votingShare.updatedAt = event.block.timestamp.toI32();
   votingShare.save();
 }
 
