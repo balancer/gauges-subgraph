@@ -1,8 +1,4 @@
-import {
-  AddType,
-  NewGauge,
-  VoteForGauge,
-} from './types/GaugeController/GaugeController';
+import { AddType, NewGauge, VoteForGauge } from './types/GaugeController/GaugeController';
 import { Gauge } from './types/schema';
 import { getGaugeVote, getGaugeId, getGaugeType } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
