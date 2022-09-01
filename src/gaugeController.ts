@@ -1,5 +1,5 @@
 import { AddType, NewGauge, VoteForGauge } from './types/GaugeController/GaugeController';
-import { Gauge } from './types/schema';
+import { Gauge, LiquidityGauge, Pool } from './types/schema';
 import { getGaugeVote, getGaugeId, getGaugeType } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
 
@@ -20,15 +20,34 @@ export function handleAddType(event: AddType): void {
 
 export function handleNewGauge(event: NewGauge): void {
   let gaugeId = getGaugeId(event.params.addr, event.params.gauge_type);
+  let type = getGaugeType(event.params.gauge_type);
   let gauge = Gauge.load(gaugeId);
 
-  let type = getGaugeType(event.params.gauge_type);
+  let liquidityGauge = LiquidityGauge.load(event.params.addr.toHexString());
 
   if (gauge == null) {
     gauge = new Gauge(gaugeId);
     gauge.address = event.params.addr;
     gauge.type = type.id;
+    gauge.liquidityGauge = liquidityGauge ? liquidityGauge.id : null;
   }
 
   gauge.save();
+
+  // Update Prefential Gauge
+
+  if (liquidityGauge == null) return;
+
+  liquidityGauge.isAdded = true;
+  liquidityGauge.addedTimestamp = event.block.timestamp.toI32();
+  liquidityGauge.save();
+
+  let poolId = liquidityGauge.pool;
+  let pool = Pool.load(poolId);
+
+  if (pool == null) return;
+
+  pool.preferentialGauge = liquidityGauge.id;
+
+  pool.save();
 }

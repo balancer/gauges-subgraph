@@ -1,6 +1,6 @@
 import { Address, Bytes } from '@graphprotocol/graph-ts';
 
-import { User } from '../types/schema';
+import { Pool, User } from '../types/schema';
 import { ERC20 } from '../types/templates/LiquidityGauge/ERC20';
 import { WeightedPool } from '../types/GaugeFactory/WeightedPool';
 
@@ -31,4 +31,18 @@ export function getPoolId(poolAddress: Address): Bytes | null {
   let result = pool.try_getPoolId();
 
   return result.reverted ? null : result.value;
+}
+
+export function getPoolEntity(address: Address): Pool {
+  const poolAddress = address.toHexString();
+  let pool = Pool.load(poolAddress);
+
+  if (pool == null) {
+    pool = new Pool(poolAddress);
+    pool.address = address;
+    pool.poolId = getPoolId(address);
+    pool.save();
+  }
+
+  return pool;
 }

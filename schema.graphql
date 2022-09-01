@@ -25,7 +25,9 @@ type LiquidityGauge @entity {
   poolAddress: Bytes!
   poolId: Bytes
   isKilled: Boolean!
-  relativeWeightCap: BigDecimal
+  isAdded: Boolean!
+  addedTimestamp: Int
+  relativeWeightCap: BigDecimal # V2 Factories Only
   streamer: Bytes # ChildChainLiquidityGauge Only
   factory: GaugeFactory!
   totalSupply: BigDecimal!
@@ -51,12 +53,14 @@ type Gauge @entity {
   id: ID!
   address: Bytes!
   type: GaugeType!
+  liquidityGauge: LiquidityGauge
 }
 
 type Pool @entity {
   id: ID!
-  poolId: Bytes!
+  poolId: Bytes
   address: Bytes!
+  preferentialGauge: LiquidityGauge
   gauges: [LiquidityGauge!] @derivedFrom(field: "pool")
 }
 

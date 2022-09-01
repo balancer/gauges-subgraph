@@ -1,28 +1,16 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
-import {
-  LiquidityGauge,
-  GaugeShare,
-  RewardToken,
-  GaugeVote,
-  GaugeType,
-} from '../types/schema';
+import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
 import { CONTROLLER_ADDRESS, ZERO_ADDRESS, ZERO_BD } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
 import { createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
 
-export function getRewardTokenId(
-  tokenAddress: Address,
-  gaugeAddress: Address,
-): string {
+export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): string {
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function getRewardToken(
-  tokenAddress: Address,
-  gaugeAddress: Address,
-): RewardToken {
+export function getRewardToken(tokenAddress: Address, gaugeAddress: Address): RewardToken {
   let id = getRewardTokenId(tokenAddress, gaugeAddress);
   let rewardToken = RewardToken.load(id);
 
@@ -38,7 +26,7 @@ export function getRewardToken(
   return rewardToken;
 }
 
-export function getGauge(address: Address): LiquidityGauge {
+export function getLiquidityGauge(address: Address): LiquidityGauge {
   let gauge = LiquidityGauge.load(address.toHexString());
 
   if (gauge == null) {
@@ -59,17 +47,11 @@ export function getGauge(address: Address): LiquidityGauge {
   return gauge;
 }
 
-export function getGaugeShareId(
-  userAddress: Address,
-  gaugeAddress: Address,
-): string {
+export function getGaugeShareId(userAddress: Address, gaugeAddress: Address): string {
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function createGaugeShare(
-  userAddress: Address,
-  gaugeAddress: Address,
-): GaugeShare {
+export function createGaugeShare(userAddress: Address, gaugeAddress: Address): GaugeShare {
   createUserEntity(userAddress);
   let id = getGaugeShareId(userAddress, gaugeAddress);
 
@@ -82,10 +64,7 @@ export function createGaugeShare(
   return gaugeShare;
 }
 
-export function getGaugeShare(
-  userAddress: Address,
-  gaugeAddress: Address,
-): GaugeShare {
+export function getGaugeShare(userAddress: Address, gaugeAddress: Address): GaugeShare {
   let id = getGaugeShareId(userAddress, gaugeAddress);
   let gaugeShare = GaugeShare.load(id);
 
@@ -100,24 +79,15 @@ export function getGaugeId(gaugeAddress: Address, gaugeType: BigInt): string {
   return gaugeAddress.toHex().concat('-').concat(gaugeType.toString());
 }
 
-export function getVotingEscrowId(
-  userAddress: Address,
-  votingEscrowAddress: Address,
-): string {
+export function getVotingEscrowId(userAddress: Address, votingEscrowAddress: Address): string {
   return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
 }
 
-export function getGaugeVoteId(
-  userAddress: Address,
-  gaugeAddress: Address,
-): string {
+export function getGaugeVoteId(userAddress: Address, gaugeAddress: Address): string {
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function getGaugeVote(
-  userAddress: Address,
-  gaugeAddress: Address,
-): GaugeVote {
+export function getGaugeVote(userAddress: Address, gaugeAddress: Address): GaugeVote {
   let id = getGaugeVoteId(userAddress, gaugeAddress);
   let gaugeVote = GaugeVote.load(id);
 

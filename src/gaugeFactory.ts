@@ -1,7 +1,7 @@
 import { Address } from '@graphprotocol/graph-ts';
 
 import { GaugeFactory, RootGauge } from './types/schema';
-import { getGauge } from './utils/gauge';
+import { getLiquidityGauge } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
 
 import {
@@ -9,7 +9,7 @@ import {
   LiquidityGauge as LiquidityGaugeTemplate,
   RewardsOnlyGauge as RewardsOnlyGaugeTemplate,
 } from './types/templates';
-import { getPoolId } from './utils/misc';
+import { getPoolEntity, getPoolId } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
 import { isArbitrumFactory, isOptimismFactory, isPolygonFactory, isV2Factory } from './utils/constants';
 import { CreateCall as MainnetGaugeCreateCall } from './types/GaugeV2Factory/GaugeV2Factory';
@@ -33,8 +33,11 @@ export function handleLiquidityGaugeCreated(call: MainnetGaugeCreateCall): void 
   factory.numGauges += 1;
   factory.save();
 
+  const pool = getPoolEntity(call.inputs.pool);
+
   const gaugeAddress = call.outputs.value0;
-  let gauge = getGauge(gaugeAddress);
+  let gauge = getLiquidityGauge(gaugeAddress);
+  gauge.pool = pool.id;
   gauge.poolAddress = call.inputs.pool;
   gauge.poolId = getPoolId(call.inputs.pool);
   gauge.factory = factoryAddress.toHexString();
@@ -54,12 +57,18 @@ export function handleRewardsOnlyGaugeCreated(event: RewardsOnlyGaugeCreated): v
   factory.numGauges += 1;
   factory.save();
 
-  let gauge = getGauge(event.params.gauge);
+  let gauge = getLiquidityGauge(event.params.gauge);
   gauge.streamer = event.params.streamer;
   gauge.poolAddress = event.params.pool;
   gauge.poolId = getPoolId(event.params.pool);
   gauge.factory = event.address.toHexString();
   gauge.save();
+
+  let pool = getPoolEntity(event.params.pool);
+  pool.address = event.params.pool;
+  pool.poolId = getPoolId(event.params.pool);
+  pool.preferentialGauge = gauge.id;
+  pool.save();
 
   RewardsOnlyGaugeTemplate.create(event.params.gauge);
 }
