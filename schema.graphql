@@ -1,37 +1,83 @@
 type VotingEscrow @entity {
+  " VotingEscrow contract address "
   id: ID!
+
+  " Amount of B-80BAL-20WETH BPT locked "
   stakedSupply: BigDecimal!
+
+  " List of veBAL locks created "
   locks: [VotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
 }
 
 type VotingEscrowLock @entity {
+  " Equal to: <userAdress>-<votingEscrow> "
   id: ID!
+
+  " Reference to User entity "
   user: User!
+
+  " Timestamp at which B-80BAL-20WETH BPT can be unlocked by user [seconds] "
   unlockTime: BigInt
+
+  " Amount of B-80BAL-20WETH BPT the user has staked "
   lockedBalance: BigDecimal!
+
+  " Reference to VotingEscrow entity "
   votingEscrowID: VotingEscrow!
 }
 
 type GaugeFactory @entity {
+  " Factory contract address "
   id: ID!
+
+  " Number of gauges created through the factory "
   numGauges: Int!
+
+  " List of gauges created through the factory "
   gauges: [LiquidityGauge!] @derivedFrom(field: "factory")
 }
 
 type LiquidityGauge @entity {
+  " LiquidityGauge contract address "
   id: ID!
+
+  " ERC20 token symbol "
   symbol: String!
+
+  " Reference to Pool entity "
   pool: Pool!
+
+  " Address of the pool "
   poolAddress: Bytes!
+
+  " Pool ID on Balancer's Vault - nullable since it can be any contract "
   poolId: Bytes
+
+  " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
+
+  " Whether Balancer DAO added the gauge to GaugeController "
   isAdded: Boolean!
+
+  " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
   addedTimestamp: Int
-  relativeWeightCap: BigDecimal # V2 Factories Only
-  streamer: Bytes # ChildChainLiquidityGauge Only
+
+  " Relative weight cap for the gauge - V2 factories only "
+  relativeWeightCap: BigDecimal
+  
+  " Address of the contract that streams reward tokens to a recipient - ChildChainLiquidityGauge only "
+  streamer: Bytes
+
+  " Factory contract address "
   factory: GaugeFactory!
+
+  " Total of BPTs users have staked in the LiquidityGauge "
   totalSupply: BigDecimal!
+
+  " List of user shares "
   shares: [GaugeShare!] @derivedFrom(field: "gauge")
+
+  " List of reward tokens depositted in the gauge "
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
 }
 
@@ -42,59 +88,119 @@ enum Chain {
 }
 
 type RootGauge @entity {
+  " RootGauge contract address"
   id: ID!
+
+  " Chain where funds should be sent "
   chain: Chain!
+
+  " Address of the contract (from the chain above) that receives the BAL emissions "
   recipient: Bytes!
+
+  " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
+
+  " Relative weight cap for the gauge "
   relativeWeightCap: BigDecimal
 }
 
 type Gauge @entity {
+  " Equal to: <gaugeAddress>-<typeID> "
   id: ID!
+
+  " Address of the gauge "
   address: Bytes!
+
+  " Type of the gauge "
   type: GaugeType!
+
+  " Reference to LiquidityGauge "
   liquidityGauge: LiquidityGauge
 }
 
 type Pool @entity {
+  " Pool contract address "
   id: ID!
+
+  " Pool ID on Balancer's Vault - nullable since it can be any contract "
   poolId: Bytes
+
+  " Pool contract address "
   address: Bytes!
+
+  " Most recent, unkilled gauge in the GaugeController "
   preferentialGauge: LiquidityGauge
+
+  " List of gauges created for the pool "
   gauges: [LiquidityGauge!] @derivedFrom(field: "pool")
 }
 
 type RewardToken @entity {
+  " Equal to: <tokenAddress>-<gaugeAddress> "
   id: ID!
+
+  " ERC20 token symbol - empty string if call reverts "
   symbol: String!
+
+  " ERC20 token decimals - zero if call reverts "
   decimals: Int!
+
+  " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
+
+  " Amount of reward tokens that has been deposited into the gauge "
   totalDeposited: BigDecimal!
 }
 
 type GaugeShare @entity {
+  " Equal to: <userAddress>-<gaugeAddress> "
   id: ID!
+
+  " Reference to User entity "
   user: User!
+
+  " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
+
+  " Balance of BPTs user has staked in the LiquidityGauge "
   balance: BigDecimal!
 }
 
 type GaugeType @entity {
+  " Type ID "
   id: ID!
+
+  " Name of the type - empty string if call reverts "
   name: String!
 }
 
 type GaugeVote @entity {
+  " Equal to: <userAddress>-<gaugeAddress> "
   id: ID!
+
+  " Reference to User entity "
   user: User!
+
+  " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
+
+  " Weight of veBAL power user has used to vote "
   weight: BigDecimal
+
+  " Timestamp at which user voted [seconds] "
   timestamp: BigInt
 }
 
 type User @entity {
+  " User address "
   id: ID!
+
+  " List of votes on gauges "
   gaugeVotes: [GaugeVote!] @derivedFrom(field: "user")
+
+  " List of gauge the user has shares "
   gaugeShares: [GaugeShare!] @derivedFrom(field: "user")
+
+  " List of locks the user created "
   votingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
 }
