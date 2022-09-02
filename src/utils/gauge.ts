@@ -1,7 +1,7 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
 import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
-import { CONTROLLER_ADDRESS, ZERO_ADDRESS, ZERO_BD } from './constants';
+import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
 import { createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
@@ -79,6 +79,15 @@ export function getGaugeId(gaugeAddress: Address, gaugeType: BigInt): string {
   return gaugeAddress.toHex().concat('-').concat(gaugeType.toString());
 }
 
+export function getGaugeIdFromController(gaugeAddress: Address): string {
+  let controller = GaugeController.bind(CONTROLLER_ADDRESS);
+  let gaugeTypesCall = controller.try_gauge_types(gaugeAddress);
+  let gaugeType = gaugeTypesCall.reverted ? ZERO : gaugeTypesCall.value;
+  let gaugeId = getGaugeId(gaugeAddress, gaugeType);
+
+  return gaugeId;
+}
+
 export function getVotingEscrowId(userAddress: Address, votingEscrowAddress: Address): string {
   return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
 }
@@ -94,9 +103,10 @@ export function getGaugeVote(userAddress: Address, gaugeAddress: Address): Gauge
   if (gaugeVote == null) {
     gaugeVote = new GaugeVote(id);
     gaugeVote.user = userAddress.toHexString();
-    gaugeVote.gauge = gaugeAddress.toHexString();
+    gaugeVote.gauge = getGaugeIdFromController(gaugeAddress);
     gaugeVote.save();
   }
+
   return gaugeVote;
 }
 

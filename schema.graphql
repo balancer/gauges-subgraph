@@ -181,8 +181,8 @@ type GaugeVote @entity {
   " Reference to User entity "
   user: User!
 
-  " Reference to LiquidityGauge entity "
-  gauge: LiquidityGauge!
+  " Reference to Gauge entity "
+  gauge: Gauge!
 
   " Weight of veBAL power user has used to vote "
   weight: BigDecimal
