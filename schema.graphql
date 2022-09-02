@@ -116,6 +116,9 @@ type Gauge @entity {
 
   " Reference to LiquidityGauge "
   liquidityGauge: LiquidityGauge
+
+    " Reference to RootGauge "
+  rootGauge: RootGauge
 }
 
 type Pool @entity {

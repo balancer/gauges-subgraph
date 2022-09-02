@@ -1,5 +1,5 @@
 import { AddType, NewGauge, VoteForGauge } from './types/GaugeController/GaugeController';
-import { Gauge, LiquidityGauge, Pool } from './types/schema';
+import { Gauge, LiquidityGauge, Pool, RootGauge } from './types/schema';
 import { getGaugeVote, getGaugeId, getGaugeType } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
 
@@ -24,12 +24,14 @@ export function handleNewGauge(event: NewGauge): void {
   let gauge = Gauge.load(gaugeId);
 
   let liquidityGauge = LiquidityGauge.load(event.params.addr.toHexString());
+  let rootGauge = RootGauge.load(event.params.addr.toHexString());
 
   if (gauge == null) {
     gauge = new Gauge(gaugeId);
     gauge.address = event.params.addr;
     gauge.type = type.id;
     gauge.liquidityGauge = liquidityGauge ? liquidityGauge.id : null;
+    gauge.rootGauge = rootGauge ? rootGauge.id : null;
   }
 
   gauge.save();
