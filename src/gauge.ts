@@ -77,7 +77,8 @@ export function handleRootUnkillGauge(call: UnkillGaugeCall): void {
 export function handleKillGauge(call: KillGaugeCall): void {
   // eslint-disable-next-line no-underscore-dangle
   let killedGaugeId = call.to.toHexString();
-  let killedGauge = LiquidityGauge.load(killedGaugeId) as LiquidityGauge;
+  let killedGauge = LiquidityGauge.load(killedGaugeId);
+  if (killedGauge == null) return;
   killedGauge.isKilled = true;
   killedGauge.save();
 
@@ -87,30 +88,33 @@ export function handleKillGauge(call: KillGaugeCall): void {
   let pool = Pool.load(poolId);
   if (pool == null) return;
 
-  let preferentialGaugeId = pool.preferentialGauge;
-  if (preferentialGaugeId === null) return;
-  let preferentialGauge = LiquidityGauge.load(preferentialGaugeId) as LiquidityGauge;
+  let currentPreferentialGaugeId = pool.preferentialGauge;
 
-  if (preferentialGaugeId == killedGaugeId) {
-    let gaugesId = pool.gauges as string[];
+  if (currentPreferentialGaugeId && currentPreferentialGaugeId == killedGaugeId) {
+    pool.preferentialGauge = '';
 
+    let gaugesId = pool.gauges;
+    if (gaugesId == null) return;
+
+    let preferencialGaugeTimestamp = 0;
     for (let i: i32 = 0; i < gaugesId.length; i++) {
       let gauge = LiquidityGauge.load(gaugesId[i]) as LiquidityGauge;
 
-      if (!gauge.isKilled && gauge.isAdded && gauge.addedTimestamp > preferentialGauge.addedTimestamp) {
-        preferentialGauge = gauge;
+      if (!gauge.isKilled && gauge.isAdded && gauge.addedTimestamp > preferencialGaugeTimestamp) {
+        pool.preferentialGauge = gauge.id;
+        preferencialGaugeTimestamp = gauge.addedTimestamp;
       }
     }
-
-    pool.preferentialGauge = preferentialGauge.id;
-    pool.save();
   }
+
+  pool.save();
 }
 
 export function handleUnkillGauge(call: UnkillGaugeCall): void {
   // eslint-disable-next-line no-underscore-dangle
   let unkilledGaugeId = call.to.toHexString();
-  let unkilledGauge = LiquidityGauge.load(unkilledGaugeId) as LiquidityGauge;
+  let unkilledGauge = LiquidityGauge.load(unkilledGaugeId);
+  if (unkilledGauge == null) return;
   unkilledGauge.isKilled = false;
   unkilledGauge.save();
 
