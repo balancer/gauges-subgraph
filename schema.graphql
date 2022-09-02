@@ -19,7 +19,7 @@ type VotingEscrowLock @entity {
   " Timestamp at which B-80BAL-20WETH BPT can be unlocked by user [seconds] "
   unlockTime: BigInt
 
-  " Amount of B-80BAL-20WETH BPT the user has staked "
+  " Amount of B-80BAL-20WETH BPT the user has locked "
   lockedBalance: BigDecimal!
 
   " Reference to VotingEscrow entity "
@@ -47,10 +47,10 @@ type LiquidityGauge @entity {
   " Reference to Pool entity "
   pool: Pool!
 
-  " Address of the pool "
+  " Address of the pool (lp_token of the gauge) "
   poolAddress: Bytes!
 
-  " Pool ID on Balancer's Vault - nullable since it can be any contract "
+  " Pool ID if lp_token is a Balancer pool; null otherwise "
   poolId: Bytes
 
   " Whether Balancer DAO killed the gauge "
@@ -62,10 +62,10 @@ type LiquidityGauge @entity {
   " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
   addedTimestamp: Int
 
-  " Relative weight cap for the gauge - V2 factories only "
+  " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
   
-  " Address of the contract that streams reward tokens to a recipient - ChildChainLiquidityGauge only "
+  " Address of the contract that streams reward tokens to the gauge - ChildChainLiquidityGauge only "
   streamer: Bytes
 
   " Factory contract address "
@@ -91,16 +91,16 @@ type RootGauge @entity {
   " RootGauge contract address"
   id: ID!
 
-  " Chain where funds should be sent "
+  " Chain where emissions by this gauge will be bridged to "
   chain: Chain!
 
-  " Address of the contract (from the chain above) that receives the BAL emissions "
+  " Address where emissions by this gauge will be bridged to "
   recipient: Bytes!
 
   " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
 
-  " Relative weight cap for the gauge "
+  " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
 }
 
@@ -119,13 +119,13 @@ type Gauge @entity {
 }
 
 type Pool @entity {
-  " Pool contract address "
+  " Address of the pool (lp_token of the gauge) "
   id: ID!
 
-  " Pool ID on Balancer's Vault - nullable since it can be any contract "
+  " Pool ID if lp_token is a Balancer pool; null otherwise "
   poolId: Bytes
 
-  " Pool contract address "
+  " Address of the pool (lp_token of the gauge) "
   address: Bytes!
 
   " Most recent, unkilled gauge in the GaugeController "
@@ -139,10 +139,10 @@ type RewardToken @entity {
   " Equal to: <tokenAddress>-<gaugeAddress> "
   id: ID!
 
-  " ERC20 token symbol - empty string if call reverts "
+  " ERC20 token symbol - empty string if call to symbol() reverts "
   symbol: String!
 
-  " ERC20 token decimals - zero if call reverts "
+  " ERC20 token decimals - zero if call to decimals() reverts "
   decimals: Int!
 
   " Reference to LiquidityGauge entity "
@@ -162,7 +162,7 @@ type GaugeShare @entity {
   " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
 
-  " Balance of BPTs user has staked in the LiquidityGauge "
+  " User's balance of gauge deposit tokens "
   balance: BigDecimal!
 }
 
