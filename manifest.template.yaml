@@ -29,8 +29,8 @@ dataSources:
       entities:
         - GaugeFactory
         - LiquidityGauge
-      callHandlers:
-        - function: create(address)
+      eventHandlers:
+        - event: GaugeCreated(indexed address,indexed address)
           handler: handleLiquidityGaugeCreated
   {{/if}}
   {{#if gaugeV2Factory}}
@@ -58,8 +58,8 @@ dataSources:
       entities:
         - GaugeFactory
         - LiquidityGauge
-      callHandlers:
-        - function: create(address,uint256)
+      eventHandlers:
+        - event: GaugeCreated(indexed address)
           handler: handleLiquidityGaugeCreated
   {{/if}}
   {{#if arbitrumRootGaugeFactory}}
@@ -82,8 +82,8 @@ dataSources:
           file: ./abis/ArbitrumRootGaugeFactory.json
       entities:
         - RootGauge
-      callHandlers:
-        - function: create(address)
+      eventHandlers:
+        - event: ArbitrumRootGaugeCreated(indexed address,indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
   {{#if arbitrumRootGaugeV2Factory}}
@@ -106,8 +106,8 @@ dataSources:
           file: ./abis/ArbitrumRootGaugeV2Factory.json
       entities:
         - RootGauge
-      callHandlers:
-        - function: create(address,uint256)
+      eventHandlers:
+        - event: GaugeCreated(indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
   {{#if polygonRootGaugeFactory}}
@@ -130,8 +130,8 @@ dataSources:
           file: ./abis/PolygonRootGaugeFactory.json
       entities:
         - RootGauge
-      callHandlers:
-        - function: create(address)
+      eventHandlers:
+        - event: PolygonRootGaugeCreated(indexed address,indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
   {{#if polygonRootGaugeV2Factory}}
@@ -154,8 +154,8 @@ dataSources:
           file: ./abis/PolygonRootGaugeV2Factory.json
       entities:
         - RootGauge
-      callHandlers:
-        - function: create(address,uint256)
+      eventHandlers:
+        - event: GaugeCreated(indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
   {{#if optimismRootGaugeFactory}}
@@ -178,8 +178,8 @@ dataSources:
           file: ./abis/OptimismRootGaugeFactory.json
       entities:
         - RootGauge
-      callHandlers:
-        - function: create(address)
+      eventHandlers:
+        - event: OptimismRootGaugeCreated(indexed address,indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
   {{#if optimismRootGaugeV2Factory}}
@@ -202,8 +202,8 @@ dataSources:
           file: ./abis/OptimismRootGaugeV2Factory.json
       entities:
         - RootGauge
-      callHandlers:
-        - function: create(address,uint256)
+      eventHandlers:
+        - event: GaugeCreated(indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
   {{#if childChainGaugeFactory}}
