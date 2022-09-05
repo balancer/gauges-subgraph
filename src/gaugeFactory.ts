@@ -93,8 +93,8 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
   const factoryAddress = event.address;
   const gaugeAddress = event.params.gauge;
 
-  const factoryContract = RootGaugeContract.bind(factoryAddress);
-  const recipientCall = factoryContract.try_getRecipient();
+  const rootGaugeContract = RootGaugeContract.bind(gaugeAddress);
+  const recipientCall = rootGaugeContract.try_getRecipient();
   if (recipientCall.reverted) {
     log.warning('Call to getRecipient() failed: {} {}', [gaugeAddress.toHexString(), event.transaction.hash.toHexString()]);
     return;
@@ -113,7 +113,7 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
   }
 
   if (isV2Factory(factoryAddress)) {
-    const gaugeContract = LiquidityGaugeV2.bind(event.params.gauge);
+    const gaugeContract = LiquidityGaugeV2.bind(gaugeAddress);
     const weightCapCall = gaugeContract.try_getRelativeWeightCap();
     if (!weightCapCall.reverted) {
       const relativeWeightCap = scaleDownBPT(weightCapCall.value);
