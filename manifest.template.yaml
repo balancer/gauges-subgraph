@@ -78,6 +78,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
         - name: ArbitrumRootGaugeFactory
           file: ./abis/ArbitrumRootGaugeFactory.json
       entities:
@@ -102,6 +104,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
         - name: ArbitrumRootGaugeV2Factory
           file: ./abis/ArbitrumRootGaugeV2Factory.json
       entities:
@@ -126,6 +130,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
         - name: PolygonRootGaugeFactory
           file: ./abis/PolygonRootGaugeFactory.json
       entities:
@@ -150,6 +156,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
         - name: PolygonRootGaugeV2Factory
           file: ./abis/PolygonRootGaugeV2Factory.json
       entities:
@@ -174,6 +182,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
         - name: OptimismRootGaugeFactory
           file: ./abis/OptimismRootGaugeFactory.json
       entities:
@@ -198,6 +208,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
         - name: OptimismRootGaugeV2Factory
           file: ./abis/OptimismRootGaugeV2Factory.json
       entities:
