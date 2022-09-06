@@ -2,7 +2,6 @@ import { Address, log } from '@graphprotocol/graph-ts';
 
 import { GaugeFactory, RootGauge } from './types/schema';
 import { getLiquidityGauge } from './utils/gauge';
-import { scaleDownBPT } from './utils/maths';
 
 import {
   RootGauge as RootGaugeTemplate,
@@ -15,7 +14,6 @@ import {
   isArbitrumFactory,
   isOptimismFactory,
   isPolygonFactory,
-  isV2Factory,
 } from './utils/constants';
 import { GaugeCreated as MainnetGaugeCreated } from './types/GaugeV2Factory/GaugeV2Factory';
 import { GaugeCreated as RootGaugeCreated } from './types/ArbitrumRootGaugeV2Factory/ArbitrumRootGaugeV2Factory';
