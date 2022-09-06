@@ -30,6 +30,7 @@ export function handleNewGauge(event: NewGauge): void {
     gauge = new Gauge(gaugeId);
     gauge.address = event.params.addr;
     gauge.type = type.id;
+    gauge.addedTimestamp = event.block.timestamp.toI32();
     gauge.liquidityGauge = liquidityGauge ? liquidityGauge.id : null;
     gauge.rootGauge = rootGauge ? rootGauge.id : null;
   }
@@ -37,16 +38,14 @@ export function handleNewGauge(event: NewGauge): void {
   gauge.save();
 
   if (rootGauge != null) {
-    rootGauge.isAdded = true;
-    rootGauge.addedTimestamp = event.block.timestamp.toI32();
+    rootGauge.gauge = gaugeId;
     rootGauge.save();
   }
 
   // If LiquidityGauge, update Pool's prefentialGauge
 
   if (liquidityGauge != null) {
-    liquidityGauge.isAdded = true;
-    liquidityGauge.addedTimestamp = event.block.timestamp.toI32();
+    liquidityGauge.gauge = gaugeId;
     liquidityGauge.save();
   
     let poolId = liquidityGauge.pool;

@@ -44,6 +44,9 @@ type LiquidityGauge @entity {
   " ERC20 token symbol "
   symbol: String!
 
+  " Reference to Gauge entity - created when LiquidityGauge is added to GaugeController"
+  gauge: Gauge
+
   " Reference to Pool entity "
   pool: Pool!
 
@@ -55,12 +58,6 @@ type LiquidityGauge @entity {
 
   " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
-
-  " Whether Balancer DAO added the gauge to GaugeController "
-  isAdded: Boolean!
-
-" Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] - only applies to mainnet gauges "
-  addedTimestamp: Int
 
   " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
@@ -97,20 +94,18 @@ type RootGauge @entity {
   " Address where emissions by this gauge will be bridged to "
   recipient: Bytes!
 
+  " Reference to Gauge entity - created when LiquidityGauge is added to GaugeController"
+  gauge: Gauge
+
   " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
-
-  " Whether Balancer DAO added the gauge to GaugeController "
-  isAdded: Boolean!
-
-  " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
-  addedTimestamp: Int
 
   " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
 
   " Factory contract address "
   factory: GaugeFactory!
+
 }
 
 type Gauge @entity {
@@ -122,6 +117,9 @@ type Gauge @entity {
 
   " Type of the gauge "
   type: GaugeType!
+
+  " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
+  addedTimestamp: Int!
 
   " Reference to LiquidityGauge "
   liquidityGauge: LiquidityGauge
