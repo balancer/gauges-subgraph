@@ -36,20 +36,26 @@ export function handleNewGauge(event: NewGauge): void {
 
   gauge.save();
 
-  // Update Prefential Gauge
+  if (rootGauge != null) {
+    rootGauge.isAdded = true;
+    rootGauge.addedTimestamp = event.block.timestamp.toI32();
+    rootGauge.save();
+  }
 
-  if (liquidityGauge == null) return;
+  // If LiquidityGauge, update Pool's prefentialGauge
 
-  liquidityGauge.isAdded = true;
-  liquidityGauge.addedTimestamp = event.block.timestamp.toI32();
-  liquidityGauge.save();
-
-  let poolId = liquidityGauge.pool;
-  let pool = Pool.load(poolId);
-
-  if (pool == null) return;
-
-  pool.preferentialGauge = liquidityGauge.id;
-
-  pool.save();
+  if (liquidityGauge != null) {
+    liquidityGauge.isAdded = true;
+    liquidityGauge.addedTimestamp = event.block.timestamp.toI32();
+    liquidityGauge.save();
+  
+    let poolId = liquidityGauge.pool;
+    let pool = Pool.load(poolId);
+  
+    if (pool == null) return;
+  
+    pool.preferentialGauge = liquidityGauge.id;
+  
+    pool.save();
+  }
 }

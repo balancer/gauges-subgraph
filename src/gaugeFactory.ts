@@ -103,6 +103,8 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
   let gauge = new RootGauge(gaugeAddress.toHexString());
   gauge.recipient = recipientCall.value;
   gauge.isKilled = false;
+  gauge.factory = factoryAddress.toHexString();
+  
 
   if (isArbitrumFactory(factoryAddress)) {
     gauge.chain = 'Arbitrum';

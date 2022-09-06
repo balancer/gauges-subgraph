@@ -59,7 +59,7 @@ type LiquidityGauge @entity {
   " Whether Balancer DAO added the gauge to GaugeController "
   isAdded: Boolean!
 
-  " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
+" Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] - only applies to mainnet gauges "
   addedTimestamp: Int
 
   " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
@@ -100,8 +100,17 @@ type RootGauge @entity {
   " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
 
+  " Whether Balancer DAO added the gauge to GaugeController "
+  isAdded: Boolean!
+
+  " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
+  addedTimestamp: Int
+
   " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
+
+  " Factory contract address "
+  factory: GaugeFactory!
 }
 
 type Gauge @entity {
