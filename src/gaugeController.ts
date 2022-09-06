@@ -1,4 +1,8 @@
-import { AddType, NewGauge, VoteForGauge } from './types/GaugeController/GaugeController';
+import {
+  AddType,
+  NewGauge,
+  VoteForGauge,
+} from './types/GaugeController/GaugeController';
 import { Gauge, LiquidityGauge, Pool, RootGauge } from './types/schema';
 import { getGaugeVote, getGaugeId, getGaugeType } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
@@ -47,14 +51,14 @@ export function handleNewGauge(event: NewGauge): void {
   if (liquidityGauge != null) {
     liquidityGauge.gauge = gaugeId;
     liquidityGauge.save();
-  
+
     let poolId = liquidityGauge.pool;
     let pool = Pool.load(poolId);
-  
+
     if (pool == null) return;
-  
+
     pool.preferentialGauge = liquidityGauge.id;
-  
+
     pool.save();
   }
 }

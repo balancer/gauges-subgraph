@@ -8,7 +8,10 @@ import {
   // eslint-disable-next-line camelcase
   Deposit_reward_tokenCall,
 } from './types/templates/LiquidityGauge/LiquidityGauge';
-import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/ArbitrumRootGauge';
+import {
+  KillGaugeCall,
+  UnkillGaugeCall,
+} from './types/templates/RootGauge/ArbitrumRootGauge';
 import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
 
 // eslint-disable-next-line camelcase
@@ -91,7 +94,10 @@ export function handleKillGauge(call: KillGaugeCall): void {
 
   let currentPreferentialGaugeId = pool.preferentialGauge;
 
-  if (currentPreferentialGaugeId && currentPreferentialGaugeId == killedGaugeId) {
+  if (
+    currentPreferentialGaugeId &&
+    currentPreferentialGaugeId == killedGaugeId
+  ) {
     pool.preferentialGauge = '';
 
     let gaugesId = pool.gauges;
@@ -100,13 +106,16 @@ export function handleKillGauge(call: KillGaugeCall): void {
     let preferencialGaugeTimestamp = 0;
     for (let i: i32 = 0; i < gaugesId.length; i++) {
       let liquidityGauge = LiquidityGauge.load(gaugesId[i]) as LiquidityGauge;
-      
+
       let gaugeId = liquidityGauge.gauge;
       if (gaugeId === null) continue; // Gauge not added to GaugeController
 
       let gauge = Gauge.load(gaugeId) as Gauge;
 
-      if (!liquidityGauge.isKilled && gauge.addedTimestamp > preferencialGaugeTimestamp) {
+      if (
+        !liquidityGauge.isKilled &&
+        gauge.addedTimestamp > preferencialGaugeTimestamp
+      ) {
         pool.preferentialGauge = liquidityGauge.id;
         preferencialGaugeTimestamp = gauge.addedTimestamp;
       }
@@ -135,7 +144,9 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
 
   let preferentialGaugeId = pool.preferentialGauge;
   if (preferentialGaugeId === null) return;
-  let preferentialGauge = LiquidityGauge.load(preferentialGaugeId) as LiquidityGauge;
+  let preferentialGauge = LiquidityGauge.load(
+    preferentialGaugeId,
+  ) as LiquidityGauge;
 
   let currentPreferentialGaugeId = preferentialGauge.gauge;
   if (currentPreferentialGaugeId === null) {
@@ -145,7 +156,9 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   }
 
   let unkilledGauge = Gauge.load(unkilledGaugeId) as Gauge;
-  let currentPreferentialGauge = Gauge.load(currentPreferentialGaugeId) as Gauge;
+  let currentPreferentialGauge = Gauge.load(
+    currentPreferentialGaugeId,
+  ) as Gauge;
 
   if (unkilledGauge.addedTimestamp > currentPreferentialGauge.addedTimestamp) {
     pool.preferentialGauge = unkilledLiquidityGaugeId;
@@ -153,13 +166,19 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   }
 }
 
-export function handleRelativeWeightCapChanged(event: RelativeWeightCapChanged): void {
-  let gauge = LiquidityGauge.load(event.address.toHexString()) as LiquidityGauge;
+export function handleRelativeWeightCapChanged(
+  event: RelativeWeightCapChanged,
+): void {
+  let gauge = LiquidityGauge.load(
+    event.address.toHexString(),
+  ) as LiquidityGauge;
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
 }
 
-export function handleRootGaugeRelativeWeightCapChanged(event: RelativeWeightCapChanged): void {
+export function handleRootGaugeRelativeWeightCapChanged(
+  event: RelativeWeightCapChanged,
+): void {
   let gauge = RootGauge.load(event.address.toHexString()) as RootGauge;
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
