@@ -50,7 +50,8 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   }
 
   const poolAddress = lpTokenCall.value;
-  const pool = getPoolEntity(lpTokenCall.value);
+  const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
+  pool.save();
 
   let gauge = getLiquidityGauge(gaugeAddress);
   gauge.pool = pool.id;
@@ -78,7 +79,7 @@ export function handleRewardsOnlyGaugeCreated(
   gauge.factory = event.address.toHexString();
   gauge.save();
 
-  let pool = getPoolEntity(event.params.pool);
+  let pool = getPoolEntity(event.params.pool, event.params.gauge);
   pool.address = event.params.pool;
   pool.poolId = getPoolId(event.params.pool);
   pool.preferentialGauge = gauge.id;

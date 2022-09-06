@@ -141,6 +141,9 @@ type Pool @entity {
   " Most recent, unkilled gauge in the GaugeController "
   preferentialGauge: LiquidityGauge
 
+  " List of the pool's gauges addresses "
+  gaugesList: [Bytes!]!
+
   " List of gauges created for the pool "
   gauges: [LiquidityGauge!] @derivedFrom(field: "pool")
 }

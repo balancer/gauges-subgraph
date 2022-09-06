@@ -100,12 +100,13 @@ export function handleKillGauge(call: KillGaugeCall): void {
   ) {
     pool.preferentialGauge = '';
 
-    let gaugesId = pool.gauges;
-    if (gaugesId == null) return;
-
     let preferencialGaugeTimestamp = 0;
-    for (let i: i32 = 0; i < gaugesId.length; i++) {
-      let liquidityGauge = LiquidityGauge.load(gaugesId[i]) as LiquidityGauge;
+    for (let i: i32 = 0; i < pool.gaugesList.length; i++) {
+      if (currentPreferentialGaugeId == pool.gaugesList[i].toHex()) continue;
+
+      let liquidityGauge = LiquidityGauge.load(
+        pool.gaugesList[i].toHex(),
+      ) as LiquidityGauge;
 
       let gaugeId = liquidityGauge.gauge;
       if (gaugeId === null) continue; // Gauge not added to GaugeController
@@ -133,7 +134,7 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   unkilledLiquidityGauge.isKilled = false;
   unkilledLiquidityGauge.save();
 
-  let unkilledGaugeId = unkilledLiquidityGauge.gauge!;
+  let unkilledGaugeId = unkilledLiquidityGauge.gauge;
   if (unkilledGaugeId === null) return; // Gauge not added to GaugeController
 
   // Update Pool's preferentialGauge

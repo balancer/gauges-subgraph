@@ -33,16 +33,24 @@ export function getPoolId(poolAddress: Address): Bytes | null {
   return result.reverted ? null : result.value;
 }
 
-export function getPoolEntity(address: Address): Pool {
-  const poolAddress = address.toHexString();
-  let pool = Pool.load(poolAddress);
+export function getPoolEntity(
+  poolAddress: Address,
+  gaugeAddress: Address,
+): Pool {
+  let pool = Pool.load(poolAddress.toHex());
 
   if (pool == null) {
-    pool = new Pool(poolAddress);
-    pool.address = address;
-    pool.poolId = getPoolId(address);
+    pool = new Pool(poolAddress.toHex());
+    pool.address = poolAddress;
+    pool.poolId = getPoolId(poolAddress);
+    pool.gaugesList = [gaugeAddress];
     pool.save();
+    return pool;
   }
+
+  const gaugesList = pool.gaugesList;
+  gaugesList.push(gaugeAddress);
+  pool.gaugesList = gaugesList;
 
   return pool;
 }
