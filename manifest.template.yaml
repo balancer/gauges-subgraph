@@ -78,6 +78,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
           file: ./abis/ArbitrumRootGauge.json
         - name: ArbitrumRootGaugeFactory
@@ -104,6 +106,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
           file: ./abis/ArbitrumRootGauge.json
         - name: ArbitrumRootGaugeV2Factory
@@ -130,6 +134,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
           file: ./abis/ArbitrumRootGauge.json
         - name: PolygonRootGaugeFactory
@@ -156,6 +162,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
           file: ./abis/ArbitrumRootGauge.json
         - name: PolygonRootGaugeV2Factory
@@ -182,6 +190,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
           file: ./abis/ArbitrumRootGauge.json
         - name: OptimismRootGaugeFactory
@@ -208,6 +218,8 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
           file: ./abis/ArbitrumRootGauge.json
         - name: OptimismRootGaugeV2Factory
@@ -324,8 +336,10 @@ templates:
         - name: ERC20
           file: ./abis/ERC20.json
         - name: LiquidityGauge
-          file: ./abis/LiquidityGauge.json
+          file: ./abis/LiquidityGaugeV2.json
       eventHandlers:
+        - event: RelativeWeightCapChanged(uint256)
+          handler: handleRelativeWeightCapChanged
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
       callHandlers:
@@ -374,7 +388,10 @@ templates:
         - RootGauge
       abis:
         - name: ArbitrumRootGauge
-          file: ./abis/ArbitrumRootGauge.json
+          file: ./abis/ArbitrumRootGaugeV2.json
+      eventHandlers:
+        - event: RelativeWeightCapChanged(uint256)
+          handler: handleRootGaugeRelativeWeightCapChanged
       callHandlers:
         - function: killGauge()
           handler: handleRootKillGauge

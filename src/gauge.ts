@@ -9,6 +9,7 @@ import {
   Deposit_reward_tokenCall,
 } from './types/templates/LiquidityGauge/LiquidityGauge';
 import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/ArbitrumRootGauge';
+import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -132,4 +133,16 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
     pool.preferentialGauge = preferentialGauge.id;
     pool.save();
   }
+}
+
+export function handleRelativeWeightCapChanged(event: RelativeWeightCapChanged): void {
+  let gauge = LiquidityGauge.load(event.address.toHexString()) as LiquidityGauge;
+  gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
+  gauge.save();
+}
+
+export function handleRootGaugeRelativeWeightCapChanged(event: RelativeWeightCapChanged): void {
+  let gauge = RootGauge.load(event.address.toHexString()) as RootGauge;
+  gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
+  gauge.save();
 }

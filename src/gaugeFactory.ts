@@ -51,19 +51,9 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   gauge.poolAddress = poolAddress;
   gauge.poolId = getPoolId(poolAddress);
   gauge.factory = factoryAddress.toHexString();
-
-  if (isV2Factory(factoryAddress)) {
-    const weightCapCall = gaugeContract.try_getRelativeWeightCap();
-    if (!weightCapCall.reverted) {
-      const relativeWeightCap = scaleDownBPT(weightCapCall.value);
-      gauge.relativeWeightCap = relativeWeightCap;
-    } else {
-      log.warning('Call to getRelativeWeightCap() failed: {} {}', [gaugeAddress.toHexString(), event.transaction.hash.toHexString()]);
-      return;
-    }
-  }
-
   gauge.save();
+
+  // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged
 
   LiquidityGaugeTemplate.create(gaugeAddress);
 }
@@ -104,7 +94,6 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
   gauge.recipient = recipientCall.value;
   gauge.isKilled = false;
   gauge.factory = factoryAddress.toHexString();
-  
 
   if (isArbitrumFactory(factoryAddress)) {
     gauge.chain = 'Arbitrum';
@@ -114,19 +103,9 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
     gauge.chain = 'Polygon';
   }
 
-  if (isV2Factory(factoryAddress)) {
-    const gaugeContract = LiquidityGaugeV2.bind(gaugeAddress);
-    const weightCapCall = gaugeContract.try_getRelativeWeightCap();
-    if (!weightCapCall.reverted) {
-      const relativeWeightCap = scaleDownBPT(weightCapCall.value);
-      gauge.relativeWeightCap = relativeWeightCap;
-    } else {
-      log.warning('Call to getRelativeWeightCap() failed: {} {}', [gaugeAddress.toHexString(), event.transaction.hash.toHexString()]);
-      return;
-    }
-  }
-
   gauge.save();
+
+  // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged
 
   RootGaugeTemplate.create(gaugeAddress);
 }
