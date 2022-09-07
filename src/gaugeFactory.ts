@@ -1,23 +1,24 @@
-import { Address } from '@graphprotocol/graph-ts';
+import { Address, log } from '@graphprotocol/graph-ts';
 
-import { GaugeCreated } from './types/GaugeFactory/GaugeFactory';
 import { GaugeFactory, RootGauge } from './types/schema';
-import { getGauge } from './utils/gauge';
+import { getLiquidityGauge } from './utils/gauge';
 
 import {
   RootGauge as RootGaugeTemplate,
   LiquidityGauge as LiquidityGaugeTemplate,
   RewardsOnlyGauge as RewardsOnlyGaugeTemplate,
 } from './types/templates';
-
-import { getPoolId } from './utils/misc';
+import { getPoolEntity, getPoolId } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
-import { ArbitrumRootGaugeCreated } from './types/ArbitrumRootGaugeFactory/ArbitrumRootGaugeFactory';
 import {
-  ARBITRUM_ROOT_GAUGE_FACTORY,
-  OPTIMISM_ROOT_GAUGE_FACTORY,
-  POLYGON_ROOT_GAUGE_FACTORY,
+  isArbitrumFactory,
+  isOptimismFactory,
+  isPolygonFactory,
 } from './utils/constants';
+import { GaugeCreated as MainnetGaugeCreated } from './types/GaugeV2Factory/GaugeV2Factory';
+import { GaugeCreated as RootGaugeCreated } from './types/ArbitrumRootGaugeV2Factory/ArbitrumRootGaugeV2Factory';
+import { LiquidityGauge as LiquidityGaugeV2 } from './types/GaugeV2Factory/LiquidityGauge';
+import { ArbitrumRootGauge as RootGaugeContract } from './types/templates/RootGauge/ArbitrumRootGauge';
 
 function getGaugeFactory(address: Address): GaugeFactory {
   let factory = GaugeFactory.load(address.toHexString());
@@ -31,18 +32,37 @@ function getGaugeFactory(address: Address): GaugeFactory {
   return factory;
 }
 
-export function handleLiquidityGaugeCreated(event: GaugeCreated): void {
-  let factory = getGaugeFactory(event.address);
+export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
+  const gaugeAddress = event.params.gauge;
+  const factoryAddress = event.address;
+  let factory = getGaugeFactory(factoryAddress);
   factory.numGauges += 1;
   factory.save();
 
-  let gauge = getGauge(event.params.gauge);
-  gauge.poolAddress = event.params.pool;
-  gauge.poolId = getPoolId(event.params.pool);
-  gauge.factory = event.address.toHexString();
+  const gaugeContract = LiquidityGaugeV2.bind(gaugeAddress);
+  const lpTokenCall = gaugeContract.try_lp_token();
+  if (lpTokenCall.reverted) {
+    log.warning('Call to lp_token() failed: {} {}', [
+      gaugeAddress.toHexString(),
+      event.transaction.hash.toHexString(),
+    ]);
+    return;
+  }
+
+  const poolAddress = lpTokenCall.value;
+  const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
+  pool.save();
+
+  let gauge = getLiquidityGauge(gaugeAddress);
+  gauge.pool = pool.id;
+  gauge.poolAddress = poolAddress;
+  gauge.poolId = getPoolId(poolAddress);
+  gauge.factory = factoryAddress.toHexString();
   gauge.save();
 
-  LiquidityGaugeTemplate.create(event.params.gauge);
+  // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged
+
+  LiquidityGaugeTemplate.create(gaugeAddress);
 }
 
 export function handleRewardsOnlyGaugeCreated(
@@ -52,32 +72,52 @@ export function handleRewardsOnlyGaugeCreated(
   factory.numGauges += 1;
   factory.save();
 
-  let gauge = getGauge(event.params.gauge);
+  let gauge = getLiquidityGauge(event.params.gauge);
   gauge.streamer = event.params.streamer;
   gauge.poolAddress = event.params.pool;
   gauge.poolId = getPoolId(event.params.pool);
   gauge.factory = event.address.toHexString();
   gauge.save();
 
+  let pool = getPoolEntity(event.params.pool, event.params.gauge);
+  pool.address = event.params.pool;
+  pool.poolId = getPoolId(event.params.pool);
+  pool.preferentialGauge = gauge.id;
+  pool.save();
+
   RewardsOnlyGaugeTemplate.create(event.params.gauge);
 }
 
-export function handleRootGaugeCreated(event: ArbitrumRootGaugeCreated): void {
+export function handleRootGaugeCreated(event: RootGaugeCreated): void {
+  const factoryAddress = event.address;
   const gaugeAddress = event.params.gauge;
 
-  let gauge = new RootGauge(gaugeAddress.toHexString());
-  gauge.recipient = event.params.recipient;
-  gauge.isKilled = false;
+  const rootGaugeContract = RootGaugeContract.bind(gaugeAddress);
+  const recipientCall = rootGaugeContract.try_getRecipient();
+  if (recipientCall.reverted) {
+    log.warning('Call to getRecipient() failed: {} {}', [
+      gaugeAddress.toHexString(),
+      event.transaction.hash.toHexString(),
+    ]);
+    return;
+  }
 
-  if (event.address == ARBITRUM_ROOT_GAUGE_FACTORY) {
+  let gauge = new RootGauge(gaugeAddress.toHexString());
+  gauge.recipient = recipientCall.value;
+  gauge.isKilled = false;
+  gauge.factory = factoryAddress.toHexString();
+
+  if (isArbitrumFactory(factoryAddress)) {
     gauge.chain = 'Arbitrum';
-  } else if (event.address == OPTIMISM_ROOT_GAUGE_FACTORY) {
+  } else if (isOptimismFactory(factoryAddress)) {
     gauge.chain = 'Optimism';
-  } else if (event.address == POLYGON_ROOT_GAUGE_FACTORY) {
+  } else if (isPolygonFactory(factoryAddress)) {
     gauge.chain = 'Polygon';
   }
 
   gauge.save();
+
+  // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged
 
   RootGaugeTemplate.create(gaugeAddress);
 }

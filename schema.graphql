@@ -1,34 +1,81 @@
 type VotingEscrow @entity {
+  " VotingEscrow contract address "
   id: ID!
+
+  " Amount of B-80BAL-20WETH BPT locked "
   stakedSupply: BigDecimal!
+
+  " List of veBAL locks created "
   locks: [VotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
 }
 
 type VotingEscrowLock @entity {
+  " Equal to: <userAdress>-<votingEscrow> "
   id: ID!
+
+  " Reference to User entity "
   user: User!
+
+  " Timestamp at which B-80BAL-20WETH BPT can be unlocked by user [seconds] "
   unlockTime: BigInt
+
+  " Amount of B-80BAL-20WETH BPT the user has locked "
   lockedBalance: BigDecimal!
+
+  " Reference to VotingEscrow entity "
   votingEscrowID: VotingEscrow!
   updatedAt: Int!
 }
 
 type GaugeFactory @entity {
+  " Factory contract address "
   id: ID!
+
+  " Number of gauges created through the factory "
   numGauges: Int!
+
+  " List of gauges created through the factory "
   gauges: [LiquidityGauge!] @derivedFrom(field: "factory")
 }
 
 type LiquidityGauge @entity {
+  " LiquidityGauge contract address "
   id: ID!
+
+  " ERC20 token symbol "
   symbol: String!
+
+  " Reference to Gauge entity - created when LiquidityGauge is added to GaugeController"
+  gauge: Gauge
+
+  " Reference to Pool entity "
+  pool: Pool!
+
+  " Address of the pool (lp_token of the gauge) "
   poolAddress: Bytes!
+
+  " Pool ID if lp_token is a Balancer pool; null otherwise "
   poolId: Bytes
+
+  " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
-  streamer: Bytes # ChildChainLiquidityGauge Only
+
+  " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
+  relativeWeightCap: BigDecimal
+  
+  " Address of the contract that streams reward tokens to the gauge - ChildChainLiquidityGauge only "
+  streamer: Bytes
+
+  " Factory contract address "
   factory: GaugeFactory!
+
+  " Total of BPTs users have staked in the LiquidityGauge "
   totalSupply: BigDecimal!
+
+  " List of user shares "
   shares: [GaugeShare!] @derivedFrom(field: "gauge")
+
+  " List of reward tokens depositted in the gauge "
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
 }
 
@@ -39,49 +86,135 @@ enum Chain {
 }
 
 type RootGauge @entity {
+  " RootGauge contract address"
   id: ID!
+
+  " Chain where emissions by this gauge will be bridged to "
   chain: Chain!
+
+  " Address where emissions by this gauge will be bridged to "
   recipient: Bytes!
+
+  " Reference to Gauge entity - created when LiquidityGauge is added to GaugeController"
+  gauge: Gauge
+
+  " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
+
+  " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
+  relativeWeightCap: BigDecimal
+
+  " Factory contract address "
+  factory: GaugeFactory!
+
 }
 
 type Gauge @entity {
+  " Equal to: <gaugeAddress>-<typeID> "
   id: ID!
+
+  " Address of the gauge "
   address: Bytes!
+
+  " Type of the gauge "
   type: GaugeType!
+
+  " Timestamp at which Balancer DAO added the gauge to GaugeController [seconds] "
+  addedTimestamp: Int!
+
+  " Reference to LiquidityGauge "
+  liquidityGauge: LiquidityGauge
+
+  " Reference to RootGauge "
+  rootGauge: RootGauge
+}
+
+type Pool @entity {
+  " Address of the pool (lp_token of the gauge) "
+  id: ID!
+
+  " Pool ID if lp_token is a Balancer pool; null otherwise "
+  poolId: Bytes
+
+  " Address of the pool (lp_token of the gauge) "
+  address: Bytes!
+
+  " Most recent, unkilled gauge in the GaugeController "
+  preferentialGauge: LiquidityGauge
+
+  " List of the pool's gauges addresses "
+  gaugesList: [Bytes!]!
+
+  " List of gauges created for the pool "
+  gauges: [LiquidityGauge!] @derivedFrom(field: "pool")
 }
 
 type RewardToken @entity {
+  " Equal to: <tokenAddress>-<gaugeAddress> "
   id: ID!
+
+  " ERC20 token symbol - empty string if call to symbol() reverts "
   symbol: String!
+
+  " ERC20 token decimals - zero if call to decimals() reverts "
   decimals: Int!
+
+  " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
+
+  " Amount of reward tokens that has been deposited into the gauge "
   totalDeposited: BigDecimal!
 }
 
 type GaugeShare @entity {
+  " Equal to: <userAddress>-<gaugeAddress> "
   id: ID!
+
+  " Reference to User entity "
   user: User!
+
+  " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
+
+  " User's balance of gauge deposit tokens "
   balance: BigDecimal!
 }
 
 type GaugeType @entity {
+  " Type ID "
   id: ID!
+
+  " Name of the type - empty string if call reverts "
   name: String!
 }
 
 type GaugeVote @entity {
+  " Equal to: <userAddress>-<gaugeAddress> "
   id: ID!
+
+  " Reference to User entity "
   user: User!
-  gauge: LiquidityGauge!
+
+  " Reference to Gauge entity "
+  gauge: Gauge!
+
+  " Weight of veBAL power user has used to vote "
   weight: BigDecimal
+
+  " Timestamp at which user voted [seconds] "
   timestamp: BigInt
 }
 
 type User @entity {
+  " User address "
   id: ID!
+
+  " List of votes on gauges "
   gaugeVotes: [GaugeVote!] @derivedFrom(field: "user")
+
+  " List of gauge the user has shares "
   gaugeShares: [GaugeShare!] @derivedFrom(field: "user")
+
+  " List of locks the user created "
   votingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
 }

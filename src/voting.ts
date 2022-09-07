@@ -51,6 +51,7 @@ export function handleSupply(event: Supply): void {
   if (votingEscrow == null) {
     votingEscrow = new VotingEscrow(id);
   }
+
   votingEscrow.stakedSupply = scaleDownBPT(event.params.supply);
   votingEscrow.save();
 }
