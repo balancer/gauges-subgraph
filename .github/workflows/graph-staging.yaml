@@ -5,13 +5,9 @@ on:
     branches: [staging]
 
 jobs:
-  deploy:
+  deploy-mainnet:
     runs-on: ubuntu-latest
-    env:
-      GRAPH_SUBGRAPH_ACCOUNT: ${{ github.repository_owner }}
-      GRAPH_SUBGRAPH_NAME: subgraph-template-staging
-      GRAPH_CONFIG_FILE: subgraph.yaml
-      NETWORK_NAME: mainnet
+    environment: graph
     steps:
       - uses: actions/checkout@v2
       - name: Install node
@@ -22,9 +18,85 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Codegen
         run: yarn codegen
-      - uses: gtaschuk/graph-deploy@v0.1.5
+      - uses: gtaschuk/graph-deploy@v0.1.12
         with:
           graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
-          graph_subgraph_name: $GRAPH_SUBGRAPH_NAME
-          graph_account: $GRAPH_SUBGRAPH_ACCOUNT
-          graph_config_file: $GRAPH_CONFIG_FILE
+          graph_subgraph_name: "balancer-gauges-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.yaml"
+  deploy-goerli:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: gtaschuk/graph-deploy@v0.1.12
+        with:
+          graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
+          graph_subgraph_name: "balancer-gauges-goerli-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.goerli.yaml"
+  deploy-arbitrum:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: gtaschuk/graph-deploy@v0.1.12
+        with:
+          graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
+          graph_subgraph_name: "balancer-gauges-arbitrum-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.arbitrum.yaml"
+  deploy-polygon:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: gtaschuk/graph-deploy@v0.1.12
+        with:
+          graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
+          graph_subgraph_name: "balancer-gauges-polygon-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.polygon.yaml"
+  deploy-optimism:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: gtaschuk/graph-deploy@v0.1.12
+        with:
+          graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
+          graph_subgraph_name: "balancer-gauges-optimism-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.optimism.yaml"
