@@ -89,6 +89,7 @@ export function handleKillGauge(call: KillGaugeCall): void {
   // Update Pool's preferentialGauge
 
   let poolId = killedGauge.pool;
+  if (poolId === null) return;
   let pool = Pool.load(poolId);
   if (pool == null) return;
 
@@ -140,6 +141,7 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   // Update Pool's preferentialGauge
 
   let poolId = unkilledLiquidityGauge.pool;
+  if (poolId === null) return;
   let pool = Pool.load(poolId);
   if (pool == null) return;
 
