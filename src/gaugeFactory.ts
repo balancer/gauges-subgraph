@@ -58,6 +58,8 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   gauge.poolAddress = poolAddress;
   gauge.poolId = getPoolId(poolAddress);
   gauge.factory = factoryAddress.toHexString();
+  gauge.isPreferentialGauge = false;
+  gauge.isKilled = false;
   gauge.save();
 
   // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged

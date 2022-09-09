@@ -60,6 +60,9 @@ type LiquidityGauge @entity {
   " Whether Balancer DAO killed the gauge "
   isKilled: Boolean!
 
+  " Whether the LiquidityGauge is the most recent added to GaugeController "
+  isPreferentialGauge: Boolean!
+
   " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
   
