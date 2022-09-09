@@ -146,7 +146,12 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   if (pool == null) return;
 
   let preferentialGaugeId = pool.preferentialGauge;
-  if (preferentialGaugeId === null) return;
+  if (preferentialGaugeId === null) {
+    pool.preferentialGauge = unkilledLiquidityGaugeId;
+    pool.save();
+    return;
+  };
+
   let preferentialGauge = LiquidityGauge.load(
     preferentialGaugeId,
   ) as LiquidityGauge;
