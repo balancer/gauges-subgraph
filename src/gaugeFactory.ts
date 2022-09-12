@@ -57,13 +57,10 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
     pool.save();
   }
   
-  let gauge = getLiquidityGauge(gaugeAddress);
+  let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
   gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
-  gauge.poolAddress = poolAddress;
   gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
-  gauge.factory = factoryAddress.toHexString();
-  gauge.isPreferentialGauge = false;
-  gauge.isKilled = false;
+  gauge.factory = factory.id;
   gauge.save();
 
   // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged
@@ -81,12 +78,11 @@ export function handleRewardsOnlyGaugeCreated(
   let poolAddress = event.params.pool;
   const poolRegistered = isPoolRegistered(poolAddress);
 
-  let gauge = getLiquidityGauge(event.params.gauge);
+  let gauge = getLiquidityGauge(event.params.gauge, poolAddress);
   gauge.streamer = event.params.streamer;
   gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
-  gauge.poolAddress = poolAddress;
   gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
-  gauge.factory = event.address.toHexString();
+  gauge.factory = factory.id;
   gauge.save();
 
   if (poolRegistered) {

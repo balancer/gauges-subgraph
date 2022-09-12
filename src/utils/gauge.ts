@@ -26,16 +26,18 @@ export function getRewardToken(tokenAddress: Address, gaugeAddress: Address): Re
   return rewardToken;
 }
 
-export function getLiquidityGauge(address: Address): LiquidityGauge {
-  let gauge = LiquidityGauge.load(address.toHexString());
+export function getLiquidityGauge(gaugeAddress: Address, poolAddress: Address): LiquidityGauge {
+  let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
 
   if (gauge == null) {
-    gauge = new LiquidityGauge(address.toHexString());
-    gauge.poolId = Address.fromString(ZERO_ADDRESS);
+    gauge = new LiquidityGauge(gaugeAddress.toHexString());
+    gauge.poolAddress = poolAddress;
     gauge.factory = ZERO_ADDRESS;
     gauge.totalSupply = ZERO_BD;
+    gauge.isPreferentialGauge = false;
+    gauge.isKilled = false;
 
-    let gaugeToken = LiquidityGaugeTemplate.bind(address);
+    let gaugeToken = LiquidityGaugeTemplate.bind(gaugeAddress);
     let symbolCall = gaugeToken.try_symbol();
     if (!symbolCall.reverted) {
       gauge.symbol = symbolCall.value;
