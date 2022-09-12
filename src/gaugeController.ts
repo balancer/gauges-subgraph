@@ -53,12 +53,15 @@ export function handleNewGauge(event: NewGauge): void {
     liquidityGauge.save();
 
     let poolId = liquidityGauge.pool;
-    let pool = Pool.load(poolId);
+    if (poolId === null) return;
 
+    let pool = Pool.load(poolId);
     if (pool == null) return;
 
-    pool.preferentialGauge = liquidityGauge.id;
+    liquidityGauge.isPreferentialGauge = true;
+    liquidityGauge.save();
 
+    pool.preferentialGauge = liquidityGauge.id;
     pool.save();
   }
 }

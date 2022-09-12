@@ -89,6 +89,8 @@ export function handleKillGauge(call: KillGaugeCall): void {
   // Update Pool's preferentialGauge
 
   let poolId = killedGauge.pool;
+  if (poolId === null) return;
+
   let pool = Pool.load(poolId);
   if (pool == null) return;
 
@@ -124,6 +126,15 @@ export function handleKillGauge(call: KillGaugeCall): void {
   }
 
   pool.save();
+
+  let poolPreferentialGauge = pool.preferentialGauge
+  if (poolPreferentialGauge === null ) return;
+
+  let preferentialGauge = LiquidityGauge.load(poolPreferentialGauge);
+  if (preferentialGauge == null) return;
+
+  preferentialGauge.isPreferentialGauge = true;
+  preferentialGauge.save();
 }
 
 export function handleUnkillGauge(call: UnkillGaugeCall): void {
@@ -140,11 +151,21 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   // Update Pool's preferentialGauge
 
   let poolId = unkilledLiquidityGauge.pool;
+  if (poolId === null) return;
   let pool = Pool.load(poolId);
   if (pool == null) return;
 
   let preferentialGaugeId = pool.preferentialGauge;
-  if (preferentialGaugeId === null) return;
+  if (preferentialGaugeId === null) {
+    pool.preferentialGauge = unkilledLiquidityGaugeId;
+    pool.save();
+
+    unkilledLiquidityGauge.isPreferentialGauge = true;
+    unkilledLiquidityGauge.save();
+
+    return;
+  };
+
   let preferentialGauge = LiquidityGauge.load(
     preferentialGaugeId,
   ) as LiquidityGauge;
@@ -153,6 +174,10 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   if (currentPreferentialGaugeId === null) {
     pool.preferentialGauge = unkilledLiquidityGaugeId;
     pool.save();
+
+    unkilledLiquidityGauge.isPreferentialGauge = true;
+    unkilledLiquidityGauge.save();
+
     return;
   }
 
@@ -164,6 +189,9 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   if (unkilledGauge.addedTimestamp > currentPreferentialGauge.addedTimestamp) {
     pool.preferentialGauge = unkilledLiquidityGaugeId;
     pool.save();
+
+    unkilledLiquidityGauge.isPreferentialGauge = true;
+    unkilledLiquidityGauge.save();
   }
 }
 
