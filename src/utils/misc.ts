@@ -3,6 +3,8 @@ import { Address, Bytes } from '@graphprotocol/graph-ts';
 import { Pool, User } from '../types/schema';
 import { ERC20 } from '../types/templates/LiquidityGauge/ERC20';
 import { WeightedPool } from '../types/GaugeFactory/WeightedPool';
+import { Vault } from '../types/GaugeFactory/Vault';
+import { VAULT_ADDRESS } from './constants';
 
 export function createUserEntity(address: Address): void {
   let addressHex = address.toHex();
@@ -53,4 +55,15 @@ export function getPoolEntity(
   pool.gaugesList = gaugesList;
 
   return pool;
+}
+
+export function isPoolRegistered(poolAddress: Address): boolean {
+  let poolId = getPoolId(poolAddress);
+  if (!poolId) return false;
+
+  let vault = Vault.bind(VAULT_ADDRESS);
+  let getPoolCall = vault.try_getPool(poolId);
+  if (getPoolCall.reverted) return false;
+
+  return getPoolCall.value.value0 ? true : false;
 }
