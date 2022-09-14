@@ -65,7 +65,7 @@ type LiquidityGauge @entity {
 
   " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
   relativeWeightCap: BigDecimal
-  
+
   " Address of the contract that streams reward tokens to the gauge - ChildChainLiquidityGauge only "
   streamer: Bytes
 
@@ -109,7 +109,6 @@ type RootGauge @entity {
 
   " Factory contract address "
   factory: GaugeFactory!
-
 }
 
 type Gauge @entity {
@@ -144,7 +143,7 @@ type Pool @entity {
 
   " Most recent, unkilled gauge in the GaugeController "
   preferentialGauge: LiquidityGauge
-  
+
   " List of the pool's gauges addresses "
   gaugesList: [Bytes!]!
 
@@ -164,6 +163,9 @@ type RewardToken @entity {
 
   " Reference to LiquidityGauge entity "
   gauge: LiquidityGauge!
+
+  " Rate of reward tokens streamed per second "
+  rate: BigDecimal
 
   " Amount of reward tokens that has been deposited into the gauge "
   totalDeposited: BigDecimal!
