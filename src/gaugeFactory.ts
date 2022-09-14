@@ -8,7 +8,7 @@ import {
   LiquidityGauge as LiquidityGaugeTemplate,
   RewardsOnlyGauge as RewardsOnlyGaugeTemplate,
 } from './types/templates';
-import { getPoolEntity, getPoolId } from './utils/misc';
+import { getPoolEntity, getPoolId, isPoolRegistered } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
 import {
   isArbitrumFactory,
@@ -50,14 +50,17 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   }
 
   const poolAddress = lpTokenCall.value;
-  const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
-  pool.save();
+  const poolRegistered = isPoolRegistered(poolAddress);
 
-  let gauge = getLiquidityGauge(gaugeAddress);
-  gauge.pool = pool.id;
-  gauge.poolAddress = poolAddress;
-  gauge.poolId = getPoolId(poolAddress);
-  gauge.factory = factoryAddress.toHexString();
+  if (poolRegistered) {
+    const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
+    pool.save();
+  }
+  
+  let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
+  gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
+  gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
+  gauge.factory = factory.id;
   gauge.save();
 
   // Gauge's relativeWeightCap is set on event RelativeWeightCapChanged
@@ -72,18 +75,23 @@ export function handleRewardsOnlyGaugeCreated(
   factory.numGauges += 1;
   factory.save();
 
-  let gauge = getLiquidityGauge(event.params.gauge);
+  let poolAddress = event.params.pool;
+  const poolRegistered = isPoolRegistered(poolAddress);
+
+  let gauge = getLiquidityGauge(event.params.gauge, poolAddress);
   gauge.streamer = event.params.streamer;
-  gauge.poolAddress = event.params.pool;
-  gauge.poolId = getPoolId(event.params.pool);
-  gauge.factory = event.address.toHexString();
+  gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
+  gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
+  gauge.factory = factory.id;
   gauge.save();
 
-  let pool = getPoolEntity(event.params.pool, event.params.gauge);
-  pool.address = event.params.pool;
-  pool.poolId = getPoolId(event.params.pool);
-  pool.preferentialGauge = gauge.id;
-  pool.save();
+  if (poolRegistered) {
+    let pool = getPoolEntity(poolAddress, event.params.gauge);
+    pool.address = poolAddress;
+    pool.poolId = getPoolId(poolAddress);
+    pool.preferentialGauge = gauge.id;
+    pool.save();
+  }
 
   RewardsOnlyGaugeTemplate.create(event.params.gauge);
 }

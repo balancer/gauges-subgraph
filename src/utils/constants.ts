@@ -8,7 +8,6 @@ export const ONE_BD = ZERO.toBigDecimal();
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export class AddressByNetwork {
   public mainnet: string;
-
   public goerli: string;
 }
 
@@ -27,6 +26,7 @@ function forNetwork(addressByNetwork: AddressByNetwork, network: string): Addres
 }
 
 export const CONTROLLER_ADDRESS = forNetwork(controllerAddressByNetwork, network);
+export const VAULT_ADDRESS = Address.fromString('0xBA12222222228d8Ba445958a75a0704d566BF2C8');
 
 export const ARBITRUM_ROOT_GAUGE_FACTORY = Address.fromString('0xad901309d9e9DbC5Df19c84f729f429F0189a633');
 export const OPTIMISM_ROOT_GAUGE_FACTORY = Address.fromString('0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8');
