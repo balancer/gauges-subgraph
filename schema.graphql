@@ -167,6 +167,9 @@ type RewardToken @entity {
   " Rate of reward tokens streamed per second "
   rate: BigDecimal
 
+  " Timestamp at which finishes the period of rewards "
+  periodFinish: BigInt
+
   " Amount of reward tokens that has been deposited into the gauge "
   totalDeposited: BigDecimal!
 }

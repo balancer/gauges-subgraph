@@ -48,6 +48,7 @@ export function handleNotifyRewardAmount(call: Notify_reward_amountCall): void {
   const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
   const amountScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
 
+  rewardToken.rate = rewardDataCall.value.period_finish;
   rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
   rewardToken.rate = rateScaled;
   rewardToken.save();
