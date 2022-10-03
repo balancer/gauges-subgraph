@@ -1,3 +1,4 @@
+import { log } from '@graphprotocol/graph-ts';
 import { ZERO_ADDRESS } from './utils/constants';
 import { getGaugeShare, getRewardToken } from './utils/gauge';
 import { scaleDown, scaleDownBPT } from './utils/maths';
@@ -10,6 +11,8 @@ import {
 } from './types/templates/LiquidityGauge/LiquidityGauge';
 import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/ArbitrumRootGauge';
 import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
+// eslint-disable-next-line camelcase
+import { ChildChainStreamer, Notify_reward_amountCall } from './types/templates/ChildChainStreamer/ChildChainStreamer';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -21,6 +24,33 @@ export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
   const rewardToken = getRewardToken(address, call.to);
   const amountScaled = scaleDown(amount, rewardToken.decimals);
   rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
+  rewardToken.save();
+}
+
+// eslint-disable-next-line camelcase
+export function handleNotifyRewardAmount(call: Notify_reward_amountCall): void {
+  /* eslint-disable-next-line no-underscore-dangle */
+  const tokenAddress = call.inputs._token;
+  const gaugeAddress = call.to;
+
+  let streamer = ChildChainStreamer.bind(gaugeAddress);
+
+  let rewardDataCall = streamer.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning('Call to reward_data() failed: {} {}', [
+      gaugeAddress.toHexString(),
+      call.transaction.hash.toHexString(),
+    ]);
+    return;
+  }
+
+  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
+  const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
+  const amountScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
+
+  rewardToken.rate = rewardDataCall.value.period_finish;
+  rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
+  rewardToken.rate = rateScaled;
   rewardToken.save();
 }
 
