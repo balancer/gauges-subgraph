@@ -439,6 +439,8 @@ templates:
       abis:
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleChildChainTransfer
