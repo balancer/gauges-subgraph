@@ -3,10 +3,10 @@ import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
 import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
-import { createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
+import { bytesToAddress, createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
-import { RewardsOnlyGauge } from '../types/templates';
 import { scaleDown, scaleDownBPT } from './maths';
+import { ChildChainStreamer } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
 
 export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): string {
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
@@ -137,9 +137,14 @@ export function getGaugeType(typeNumber: BigInt): GaugeType {
 }
 
 export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress: Address): void {
-  let gauge = RewardsOnlyGauge.bind(gaugeAddress);
+  let gauge = LiquidityGauge.load(gaugeAddress.toHex());
+  if (!gauge) return;
 
-  let rewardDataCall = gauge.try_reward_data(tokenAddress);
+  let streamerAdress = gauge.streamer;
+  if (!streamerAdress) return;
+
+  let streamer = ChildChainStreamer.bind(bytesToAddress(streamerAdress));
+  let rewardDataCall = streamer.try_reward_data(tokenAddress);
   if (rewardDataCall.reverted) {
     log.warning('Call to reward_data() failed: {} {}', [
       gaugeAddress.toHexString(),
