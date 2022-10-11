@@ -155,10 +155,10 @@ export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress
 
   const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
   const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
-  const amountScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
+  const receivedScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
 
   rewardToken.periodFinish = rewardDataCall.value.period_finish;
-  rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
+  rewardToken.totalDeposited = receivedScaled;
   rewardToken.rate = rateScaled;
   rewardToken.save();
 }
