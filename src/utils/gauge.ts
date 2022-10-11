@@ -1,10 +1,12 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts';
+import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 
 import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
 import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
 import { createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
+import { RewardsOnlyGauge } from '../types/templates';
+import { scaleDown, scaleDownBPT } from './maths';
 
 export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): string {
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
@@ -132,4 +134,26 @@ export function getGaugeType(typeNumber: BigInt): GaugeType {
   type.save();
 
   return type;
+}
+
+export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress: Address): void {
+  let gauge = RewardsOnlyGauge.bind(gaugeAddress);
+
+  let rewardDataCall = gauge.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning('Call to reward_data() failed: {} {}', [
+      gaugeAddress.toHexString(),
+      tokenAddress.toHexString(),
+    ]);
+    return;
+  }
+
+  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
+  const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
+  const amountScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
+
+  rewardToken.periodFinish = rewardDataCall.value.period_finish;
+  rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
+  rewardToken.rate = rateScaled;
+  rewardToken.save();
 }
