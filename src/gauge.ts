@@ -1,6 +1,6 @@
-import { log } from '@graphprotocol/graph-ts';
+import { Address, log } from '@graphprotocol/graph-ts';
 import { ZERO_ADDRESS } from './utils/constants';
-import { getGaugeShare, getRewardToken } from './utils/gauge';
+import { getGaugeShare, getRewardToken, setChildChainGaugeRewardData } from './utils/gauge';
 import { scaleDown, scaleDownBPT } from './utils/maths';
 import { Gauge, LiquidityGauge, Pool, RootGauge } from './types/schema';
 
@@ -11,8 +11,8 @@ import {
 } from './types/templates/LiquidityGauge/LiquidityGauge';
 import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/ArbitrumRootGauge';
 import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
-// eslint-disable-next-line camelcase
-import { ChildChainStreamer, Notify_reward_amountCall } from './types/templates/ChildChainStreamer/ChildChainStreamer';
+import { RewardDurationUpdated } from './types/templates/ChildChainStreamer/ChildChainStreamer';
+import { ChildChainRewardToken } from './types/templates';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -24,33 +24,6 @@ export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
   const rewardToken = getRewardToken(address, call.to);
   const amountScaled = scaleDown(amount, rewardToken.decimals);
   rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
-  rewardToken.save();
-}
-
-// eslint-disable-next-line camelcase
-export function handleNotifyRewardAmount(call: Notify_reward_amountCall): void {
-  /* eslint-disable-next-line no-underscore-dangle */
-  const tokenAddress = call.inputs._token;
-  const gaugeAddress = call.to;
-
-  let streamer = ChildChainStreamer.bind(gaugeAddress);
-
-  let rewardDataCall = streamer.try_reward_data(tokenAddress);
-  if (rewardDataCall.reverted) {
-    log.warning('Call to reward_data() failed: {} {}', [
-      gaugeAddress.toHexString(),
-      call.transaction.hash.toHexString(),
-    ]);
-    return;
-  }
-
-  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
-  const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
-  const amountScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
-
-  rewardToken.periodFinish = rewardDataCall.value.period_finish;
-  rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
-  rewardToken.rate = rateScaled;
   rewardToken.save();
 }
 
@@ -230,4 +203,18 @@ export function handleRootGaugeRelativeWeightCapChanged(event: RelativeWeightCap
   let gauge = RootGauge.load(event.address.toHexString()) as RootGauge;
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
+}
+
+export function handleRewardDurationUpdated(event: RewardDurationUpdated): void {
+  ChildChainRewardToken.create(event.params.reward_token);
+}
+
+export function handleChildChainTransfer(event: Transfer): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let toAddress = event.params._to;
+  let gauge = LiquidityGauge.load(toAddress.toHexString());
+
+  if (!gauge) return;
+
+  setChildChainGaugeRewardData(toAddress, event.address);
 }

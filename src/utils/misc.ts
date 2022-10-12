@@ -6,6 +6,10 @@ import { WeightedPool } from '../types/GaugeFactory/WeightedPool';
 import { Vault } from '../types/GaugeFactory/Vault';
 import { VAULT_ADDRESS } from './constants';
 
+export function bytesToAddress(address: Bytes): Address {
+  return Address.fromString(address.toHexString());
+}
+
 export function createUserEntity(address: Address): void {
   let addressHex = address.toHex();
   if (User.load(addressHex) == null) {
