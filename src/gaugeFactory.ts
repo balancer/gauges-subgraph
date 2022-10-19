@@ -7,14 +7,11 @@ import {
   RootGauge as RootGaugeTemplate,
   LiquidityGauge as LiquidityGaugeTemplate,
   RewardsOnlyGauge as RewardsOnlyGaugeTemplate,
+  ChildChainStreamer as ChildChainStreamerTemplate,
 } from './types/templates';
 import { getPoolEntity, getPoolId, isPoolRegistered } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
-import {
-  isArbitrumFactory,
-  isOptimismFactory,
-  isPolygonFactory,
-} from './utils/constants';
+import { isArbitrumFactory, isOptimismFactory, isPolygonFactory } from './utils/constants';
 import { GaugeCreated as MainnetGaugeCreated } from './types/GaugeV2Factory/GaugeV2Factory';
 import { GaugeCreated as RootGaugeCreated } from './types/ArbitrumRootGaugeV2Factory/ArbitrumRootGaugeV2Factory';
 import { LiquidityGauge as LiquidityGaugeV2 } from './types/GaugeV2Factory/LiquidityGauge';
@@ -42,10 +39,7 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   const gaugeContract = LiquidityGaugeV2.bind(gaugeAddress);
   const lpTokenCall = gaugeContract.try_lp_token();
   if (lpTokenCall.reverted) {
-    log.warning('Call to lp_token() failed: {} {}', [
-      gaugeAddress.toHexString(),
-      event.transaction.hash.toHexString(),
-    ]);
+    log.warning('Call to lp_token() failed: {} {}', [gaugeAddress.toHexString(), event.transaction.hash.toHexString()]);
     return;
   }
 
@@ -56,7 +50,7 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
     const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
     pool.save();
   }
-  
+
   let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
   gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
   gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
@@ -68,9 +62,7 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   LiquidityGaugeTemplate.create(gaugeAddress);
 }
 
-export function handleRewardsOnlyGaugeCreated(
-  event: RewardsOnlyGaugeCreated,
-): void {
+export function handleRewardsOnlyGaugeCreated(event: RewardsOnlyGaugeCreated): void {
   let factory = getGaugeFactory(event.address);
   factory.numGauges += 1;
   factory.save();
@@ -94,6 +86,7 @@ export function handleRewardsOnlyGaugeCreated(
   }
 
   RewardsOnlyGaugeTemplate.create(event.params.gauge);
+  ChildChainStreamerTemplate.create(event.params.streamer);
 }
 
 export function handleRootGaugeCreated(event: RootGaugeCreated): void {
