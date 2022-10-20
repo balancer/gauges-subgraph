@@ -13,6 +13,7 @@ import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/Arbi
 import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
 import { RewardDurationUpdated } from './types/templates/ChildChainStreamer/ChildChainStreamer';
 import { ChildChainRewardToken } from './types/templates';
+import { ChildChainStreamer } from './types/templates/ChildChainStreamer/ChildChainStreamer';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -207,6 +208,12 @@ export function handleRootGaugeRelativeWeightCapChanged(event: RelativeWeightCap
 
 export function handleRewardDurationUpdated(event: RewardDurationUpdated): void {
   ChildChainRewardToken.create(event.params.reward_token);
+
+  let streamer = ChildChainStreamer.bind(event.address);
+  let gaugeCall = streamer.try_reward_receiver()
+  if (!gaugeCall.reverted) {
+    setChildChainGaugeRewardData(gaugeCall.value, event.params.reward_token);
+  }
 }
 
 export function handleChildChainTransfer(event: Transfer): void {
@@ -215,6 +222,6 @@ export function handleChildChainTransfer(event: Transfer): void {
   let gauge = LiquidityGauge.load(toAddress.toHexString());
 
   if (!gauge) return;
-
+  
   setChildChainGaugeRewardData(toAddress, event.address);
 }
