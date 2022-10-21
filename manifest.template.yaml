@@ -394,6 +394,8 @@ templates:
         - LiquidityGauge
         - RewardToken
       abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
         - name: ChildChainStreamer
           file: ./abis/ChildChainStreamer.json
       eventHandlers:
