@@ -53,13 +53,3 @@ export function isPolygonFactory(factory: Address): boolean {
 export function isGnosisFactory(factory: Address): boolean {
   return factory == GNOSIS_ROOT_GAUGE_V2_FACTORY;
 }
-
-export function isV2Factory(factory: Address): boolean {
-  return [
-    MAINNET_GAUGE_V2_FACTORY,
-    ARBITRUM_ROOT_GAUGE_V2_FACTORY,
-    OPTIMISM_ROOT_GAUGE_V2_FACTORY,
-    POLYGON_ROOT_GAUGE_V2_FACTORY,
-    GNOSIS_ROOT_GAUGE_V2_FACTORY,
-  ].includes(factory);
-}
