@@ -234,6 +234,34 @@ dataSources:
         - event: GaugeCreated(indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
+  {{#if gnosisRootGaugeV2Factory}}
+  - kind: ethereum/contract
+    name: GnosisRootGaugeV2Factory
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{gnosisRootGaugeV2Factory.address}}'
+      abi: GnosisRootGaugeV2Factory
+      # prettier-ignore
+      startBlock: {{ gnosisRootGaugeV2Factory.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gaugeFactory.ts
+      abis:
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGaugeV2.json
+        - name: ArbitrumRootGauge
+          file: ./abis/ArbitrumRootGauge.json
+        - name: GnosisRootGaugeV2Factory
+          file: ./abis/OptimismRootGaugeV2Factory.json
+      entities:
+        - RootGauge
+      eventHandlers:
+        - event: GaugeCreated(indexed address)
+          handler: handleRootGaugeCreated
+  {{/if}}
   {{#if childChainGaugeFactory}}
   - kind: ethereum/contract
     name: ChildChainLiquidityGaugeFactory
