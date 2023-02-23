@@ -76,3 +76,9 @@ optimism:
     address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
     transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
     startBlock: 9052485
+gnosis:
+  network: gnosis
+  childChainGaugeFactory:
+    address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
+    transactionHash: "0x80b812c2b44d29e5e6c5275ece19ca506933f63002890a733ec38f925e6aee97"
+    startBlock: 26615210
