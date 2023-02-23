@@ -34,6 +34,7 @@ export const POLYGON_ROOT_GAUGE_FACTORY = Address.fromString('0x4C4287b07d293E36
 
 export const MAINNET_GAUGE_V2_FACTORY = Address.fromString('0xf1665E19bc105BE4EDD3739F88315cC699cc5b65');
 export const ARBITRUM_ROOT_GAUGE_V2_FACTORY = Address.fromString('0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7');
+export const GNOSIS_ROOT_GAUGE_V2_FACTORY = Address.fromString('0x2a18B396829bc29F66a1E59fAdd7a0269A6605E8');
 export const OPTIMISM_ROOT_GAUGE_V2_FACTORY = Address.fromString('0x866D4B65694c66fbFD15Dd6fa933D0A6b3940A36');
 export const POLYGON_ROOT_GAUGE_V2_FACTORY = Address.fromString('0xa98Bce70c92aD2ef3288dbcd659bC0d6b62f8F13');
 
@@ -49,11 +50,16 @@ export function isPolygonFactory(factory: Address): boolean {
   return [POLYGON_ROOT_GAUGE_FACTORY, POLYGON_ROOT_GAUGE_V2_FACTORY].includes(factory);
 }
 
+export function isGnosisFactory(factory: Address): boolean {
+  return factory == GNOSIS_ROOT_GAUGE_V2_FACTORY;
+}
+
 export function isV2Factory(factory: Address): boolean {
   return [
     MAINNET_GAUGE_V2_FACTORY,
     ARBITRUM_ROOT_GAUGE_V2_FACTORY,
     OPTIMISM_ROOT_GAUGE_V2_FACTORY,
     POLYGON_ROOT_GAUGE_V2_FACTORY,
+    GNOSIS_ROOT_GAUGE_V2_FACTORY,
   ].includes(factory);
 }
