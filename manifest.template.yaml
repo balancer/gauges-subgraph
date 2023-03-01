@@ -66,6 +66,33 @@ dataSources:
         - event: GaugeCreated(indexed address)
           handler: handleLiquidityGaugeCreated
   {{/if}}
+  {{#if singleRecipientGaugeFactory}}
+  - kind: ethereum/contract
+    name: SingleRecipientGaugeFactory
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{singleRecipientGaugeFactory.address}}'
+      abi: SingleRecipientGaugeFactory
+      # prettier-ignore
+      startBlock: {{ singleRecipientGaugeFactory.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gaugeFactory.ts
+      abis:
+        - name: SingleRecipientGaugeFactory
+          file: ./abis/SingleRecipientGaugeFactory.json
+        - name: ArbitrumRootGauge # required for binding
+          file: ./abis/ArbitrumRootGauge.json
+      entities:
+        - GaugeFactory
+        - SingleRecipientGauge
+      eventHandlers:
+        - event: SingleRecipientGaugeCreated(indexed address,indexed address)
+          handler: handleSingleRecipientGaugeCreated
+  {{/if}}
   {{#if singleRecipientGaugeV2Factory}}
   - kind: ethereum/contract
     name: SingleRecipientGaugeV2Factory
@@ -73,7 +100,7 @@ dataSources:
     network: {{network}}
     source:
       address: '{{singleRecipientGaugeV2Factory.address}}'
-      abi: GaugeV2Factory
+      abi: SingleRecipientGaugeV2Factory
       # prettier-ignore
       startBlock: {{ singleRecipientGaugeV2Factory.startBlock }}
     mapping:
@@ -82,20 +109,16 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/gaugeFactory.ts
       abis:
-        - name: GaugeV2Factory
-          file: ./abis/LiquidityGaugeV2Factory.json
-        - name: LiquidityGauge
-          file: ./abis/LiquidityGaugeV2.json
-        - name: WeightedPool
-          file: ./abis/WeightedPool.json
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: ArbitrumRootGauge # required for binding
+          file: ./abis/ArbitrumRootGauge.json
+        - name: SingleRecipientGaugeV2Factory
+          file: ./abis/ArbitrumRootGaugeV2Factory.json
       entities:
         - GaugeFactory
-        - LiquidityGauge
+        - SingleRecipientGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleSingleRecipientGaugeCreated
   {{/if}}
   {{#if arbitrumRootGaugeFactory}}
   - kind: ethereum/contract
@@ -454,3 +477,27 @@ templates:
           handler: handleRootKillGauge
         - function: unkillGauge()
           handler: handleRootUnkillGauge
+  - kind: ethereum/contract
+    name: SingleRecipientGauge
+    # prettier-ignore
+    network: {{network}}
+    source:
+      abi: ArbitrumRootGauge
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/gauge.ts
+      entities:
+        - SingleRecipientGauge
+      abis:
+        - name: ArbitrumRootGauge # share the same events
+          file: ./abis/ArbitrumRootGaugeV2.json
+      eventHandlers:
+        - event: RelativeWeightCapChanged(uint256)
+          handler: handleSingleRecipientGaugeRelativeWeightCapChanged
+      callHandlers:
+        - function: killGauge()
+          handler: handleSingleRecipientKillGauge
+        - function: unkillGauge()
+          handler: handleSingleRecipientUnkillGauge
