@@ -1,36 +1,34 @@
-import { log } from '@graphprotocol/graph-ts';
-import { ZERO_ADDRESS } from './utils/constants';
+import { ZERO_ADDRESS } from "./utils/constants";
 import {
   getGaugeShare,
   getRewardToken,
   setChildChainGaugeRewardData,
-} from './utils/gauge';
-import { scaleDown, scaleDownBPT } from './utils/maths';
+} from "./utils/gauge";
+import { scaleDown, scaleDownBPT } from "./utils/maths";
 import {
   Gauge,
   LiquidityGauge,
   Pool,
   RootGauge,
   SingleRecipientGauge,
-} from './types/schema';
+} from "./types/schema";
 
 import {
   Transfer,
   // eslint-disable-next-line camelcase
   Deposit_reward_tokenCall,
-} from './types/templates/LiquidityGauge/LiquidityGauge';
+} from "./types/templates/LiquidityGauge/LiquidityGauge";
 import {
   KillGaugeCall,
   UnkillGaugeCall,
-} from './types/templates/RootGauge/ArbitrumRootGauge';
-import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
+} from "./types/templates/RootGauge/ArbitrumRootGauge";
+import { RelativeWeightCapChanged } from "./types/GaugeV2Factory/LiquidityGauge";
 import {
   ChildChainStreamer,
-  Notify_reward_amountCall,
   RewardDurationUpdated,
-} from './types/templates/ChildChainStreamer/ChildChainStreamer';
+} from "./types/templates/ChildChainStreamer/ChildChainStreamer";
 
-import { ChildChainRewardToken } from './types/templates';
+import { ChildChainRewardToken } from "./types/templates";
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -42,36 +40,6 @@ export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
   const rewardToken = getRewardToken(address, call.to);
   const amountScaled = scaleDown(amount, rewardToken.decimals);
   rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
-  rewardToken.save();
-}
-
-// eslint-disable-next-line camelcase
-export function handleNotifyRewardAmount(call: Notify_reward_amountCall): void {
-  /* eslint-disable-next-line no-underscore-dangle */
-  const tokenAddress = call.inputs._token;
-  const gaugeAddress = call.to;
-
-  let streamer = ChildChainStreamer.bind(gaugeAddress);
-
-  let rewardDataCall = streamer.try_reward_data(tokenAddress);
-  if (rewardDataCall.reverted) {
-    log.warning('Call to reward_data() failed: {} {}', [
-      gaugeAddress.toHexString(),
-      call.transaction.hash.toHexString(),
-    ]);
-    return;
-  }
-
-  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
-  const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
-  const amountScaled = scaleDown(
-    rewardDataCall.value.received,
-    rewardToken.decimals,
-  );
-
-  rewardToken.periodFinish = rewardDataCall.value.period_finish;
-  rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
-  rewardToken.rate = rateScaled;
   rewardToken.save();
 }
 
@@ -167,7 +135,7 @@ export function handleKillGauge(call: KillGaugeCall): void {
     currentPreferentialGaugeId &&
     currentPreferentialGaugeId == killedGaugeId
   ) {
-    pool.preferentialGauge = '';
+    pool.preferentialGauge = "";
 
     let preferencialGaugeTimestamp = 0;
     for (let i: i32 = 0; i < pool.gaugesList.length; i++) {
