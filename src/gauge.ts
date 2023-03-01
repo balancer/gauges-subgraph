@@ -1,6 +1,10 @@
 import { log } from '@graphprotocol/graph-ts';
 import { ZERO_ADDRESS } from './utils/constants';
-import { getGaugeShare, getRewardToken } from './utils/gauge';
+import {
+  getGaugeShare,
+  getRewardToken,
+  setChildChainGaugeRewardData,
+} from './utils/gauge';
 import { scaleDown, scaleDownBPT } from './utils/maths';
 import {
   Gauge,
@@ -20,11 +24,13 @@ import {
   UnkillGaugeCall,
 } from './types/templates/RootGauge/ArbitrumRootGauge';
 import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
-// eslint-disable-next-line camelcase
 import {
   ChildChainStreamer,
   Notify_reward_amountCall,
+  RewardDurationUpdated,
 } from './types/templates/ChildChainStreamer/ChildChainStreamer';
+
+import { ChildChainRewardToken } from './types/templates';
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -292,4 +298,25 @@ export function handleSingleRecipientGaugeRelativeWeightCapChanged(
   ) as SingleRecipientGauge;
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
+}
+export function handleRewardDurationUpdated(
+  event: RewardDurationUpdated,
+): void {
+  ChildChainRewardToken.create(event.params.reward_token);
+
+  let streamer = ChildChainStreamer.bind(event.address);
+  let gaugeCall = streamer.try_reward_receiver();
+  if (!gaugeCall.reverted) {
+    setChildChainGaugeRewardData(gaugeCall.value, event.params.reward_token);
+  }
+}
+
+export function handleChildChainTransfer(event: Transfer): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let toAddress = event.params._to;
+  let gauge = LiquidityGauge.load(toAddress.toHexString());
+
+  if (!gauge) return;
+
+  setChildChainGaugeRewardData(toAddress, event.address);
 }

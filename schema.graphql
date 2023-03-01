@@ -84,6 +84,7 @@ type LiquidityGauge @entity {
 
 enum Chain {
   Arbitrum
+  Gnosis
   Polygon
   Optimism
 }

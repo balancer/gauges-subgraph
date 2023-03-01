@@ -14,6 +14,7 @@ import { getPoolEntity, getPoolId, isPoolRegistered } from './utils/misc';
 import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory/ChildChainLiquidityGaugeFactory';
 import {
   isArbitrumFactory,
+  isGnosisFactory,
   isOptimismFactory,
   isPolygonFactory,
 } from './utils/constants';
@@ -158,6 +159,8 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
     gauge.chain = 'Optimism';
   } else if (isPolygonFactory(factoryAddress)) {
     gauge.chain = 'Polygon';
+  } else if (isGnosisFactory(factoryAddress)) {
+    gauge.chain = 'Gnosis';
   }
 
   gauge.save();
