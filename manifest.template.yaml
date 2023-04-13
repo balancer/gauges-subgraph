@@ -297,7 +297,7 @@ dataSources:
   {{/if}}
   {{#if childChainGaugeV2Factory}}
   - kind: ethereum/contract
-    name: ChildChainLiquidityGaugeFactory
+    name: ChildChainLiquidityGaugeV2Factory
     # prettier-ignore
     network: {{network}}
     source:
@@ -324,7 +324,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleChildChainGaugeV2Created
+          handler: handleLiquidityGaugeCreated
   {{/if}}
   {{#if gaugeController}}
   - kind: ethereum/contract
