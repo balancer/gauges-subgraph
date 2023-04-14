@@ -29,12 +29,12 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - name: Install
         run: yarn --frozen-lockfile
       - name: Codegen
         run: yarn codegen:$NETWORK
-      - uses: gtaschuk/graph-deploy@v0.1.5
+      - uses: balancer-labs/graph-deploy@v0.0.1
         with:
           graph_access_token: ${{ secrets.GRAPH_ACCESS_TOKEN }}
           graph_subgraph_name: $GRAPH_SUBGRAPH_NAME
