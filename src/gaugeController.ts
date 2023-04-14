@@ -1,5 +1,15 @@
-import { AddType, NewGauge, VoteForGauge } from './types/GaugeController/GaugeController';
-import { Gauge, LiquidityGauge, Pool, RootGauge } from './types/schema';
+import {
+  AddType,
+  NewGauge,
+  VoteForGauge,
+} from './types/GaugeController/GaugeController';
+import {
+  Gauge,
+  LiquidityGauge,
+  Pool,
+  RootGauge,
+  SingleRecipientGauge,
+} from './types/schema';
 import { getGaugeVote, getGaugeId, getGaugeType } from './utils/gauge';
 import { scaleDownBPT } from './utils/maths';
 
@@ -23,8 +33,10 @@ export function handleNewGauge(event: NewGauge): void {
   let type = getGaugeType(event.params.gauge_type);
   let gauge = Gauge.load(gaugeId);
 
-  let liquidityGauge = LiquidityGauge.load(event.params.addr.toHexString());
-  let rootGauge = RootGauge.load(event.params.addr.toHexString());
+  const gaugeHex = event.params.addr.toHexString();
+  let singleRecipientGauge = SingleRecipientGauge.load(gaugeHex);
+  let liquidityGauge = LiquidityGauge.load(gaugeHex);
+  let rootGauge = RootGauge.load(gaugeHex);
 
   if (gauge == null) {
     gauge = new Gauge(gaugeId);
@@ -40,6 +52,11 @@ export function handleNewGauge(event: NewGauge): void {
   if (rootGauge != null) {
     rootGauge.gauge = gaugeId;
     rootGauge.save();
+  }
+
+  if (singleRecipientGauge != null) {
+    singleRecipientGauge.gauge = gaugeId;
+    singleRecipientGauge.save();
   }
 
   // If LiquidityGauge, update Pool's prefentialGauge
@@ -63,7 +80,9 @@ export function handleNewGauge(event: NewGauge): void {
     pool.save();
 
     if (currentPreferentialGaugeId === null) return;
-    let currentPreferentialGauge = LiquidityGauge.load(currentPreferentialGaugeId) as LiquidityGauge;
+    let currentPreferentialGauge = LiquidityGauge.load(
+      currentPreferentialGaugeId,
+    ) as LiquidityGauge;
     currentPreferentialGauge.isPreferentialGauge = false;
     currentPreferentialGauge.save();
   }

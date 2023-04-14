@@ -1,19 +1,34 @@
-import { Address, log } from '@graphprotocol/graph-ts';
-import { ZERO_ADDRESS } from './utils/constants';
-import { getGaugeShare, getRewardToken, setChildChainGaugeRewardData } from './utils/gauge';
-import { scaleDown, scaleDownBPT } from './utils/maths';
-import { Gauge, LiquidityGauge, Pool, RootGauge } from './types/schema';
+import { ZERO_ADDRESS } from "./utils/constants";
+import {
+  getGaugeShare,
+  getRewardToken,
+  setChildChainGaugeRewardData,
+} from "./utils/gauge";
+import { scaleDown, scaleDownBPT } from "./utils/maths";
+import {
+  Gauge,
+  LiquidityGauge,
+  Pool,
+  RootGauge,
+  SingleRecipientGauge,
+} from "./types/schema";
 
 import {
   Transfer,
   // eslint-disable-next-line camelcase
   Deposit_reward_tokenCall,
-} from './types/templates/LiquidityGauge/LiquidityGauge';
-import { KillGaugeCall, UnkillGaugeCall } from './types/templates/RootGauge/ArbitrumRootGauge';
-import { RelativeWeightCapChanged } from './types/GaugeV2Factory/LiquidityGauge';
-import { RewardDurationUpdated } from './types/templates/ChildChainStreamer/ChildChainStreamer';
-import { ChildChainRewardToken } from './types/templates';
-import { ChildChainStreamer } from './types/templates/ChildChainStreamer/ChildChainStreamer';
+} from "./types/templates/LiquidityGauge/LiquidityGauge";
+import {
+  KillGaugeCall,
+  UnkillGaugeCall,
+} from "./types/templates/RootGauge/ArbitrumRootGauge";
+import { RelativeWeightCapChanged } from "./types/GaugeV2Factory/LiquidityGauge";
+import {
+  ChildChainStreamer,
+  RewardDurationUpdated,
+} from "./types/templates/ChildChainStreamer/ChildChainStreamer";
+
+import { ChildChainRewardToken } from "./types/templates";
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -79,6 +94,24 @@ export function handleRootUnkillGauge(call: UnkillGaugeCall): void {
   gauge.save();
 }
 
+export function handleSingleRecipientKillGauge(call: KillGaugeCall): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let gauge = SingleRecipientGauge.load(
+    call.to.toHexString(),
+  ) as SingleRecipientGauge;
+  gauge.isKilled = true;
+  gauge.save();
+}
+
+export function handleSingleRecipientUnkillGauge(call: UnkillGaugeCall): void {
+  // eslint-disable-next-line no-underscore-dangle
+  let gauge = SingleRecipientGauge.load(
+    call.to.toHexString(),
+  ) as SingleRecipientGauge;
+  gauge.isKilled = false;
+  gauge.save();
+}
+
 export function handleKillGauge(call: KillGaugeCall): void {
   // eslint-disable-next-line no-underscore-dangle
   let killedGaugeId = call.to.toHexString();
@@ -98,21 +131,29 @@ export function handleKillGauge(call: KillGaugeCall): void {
 
   let currentPreferentialGaugeId = pool.preferentialGauge;
 
-  if (currentPreferentialGaugeId && currentPreferentialGaugeId == killedGaugeId) {
-    pool.preferentialGauge = '';
+  if (
+    currentPreferentialGaugeId &&
+    currentPreferentialGaugeId == killedGaugeId
+  ) {
+    pool.preferentialGauge = "";
 
     let preferencialGaugeTimestamp = 0;
     for (let i: i32 = 0; i < pool.gaugesList.length; i++) {
       if (currentPreferentialGaugeId == pool.gaugesList[i].toHex()) continue;
 
-      let liquidityGauge = LiquidityGauge.load(pool.gaugesList[i].toHex()) as LiquidityGauge;
+      let liquidityGauge = LiquidityGauge.load(
+        pool.gaugesList[i].toHex(),
+      ) as LiquidityGauge;
 
       let gaugeId = liquidityGauge.gauge;
       if (gaugeId === null) continue; // Gauge not added to GaugeController
 
       let gauge = Gauge.load(gaugeId) as Gauge;
 
-      if (!liquidityGauge.isKilled && gauge.addedTimestamp > preferencialGaugeTimestamp) {
+      if (
+        !liquidityGauge.isKilled &&
+        gauge.addedTimestamp > preferencialGaugeTimestamp
+      ) {
         pool.preferentialGauge = liquidityGauge.id;
         preferencialGaugeTimestamp = gauge.addedTimestamp;
       }
@@ -160,7 +201,9 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
     return;
   }
 
-  let preferentialGauge = LiquidityGauge.load(preferentialGaugeId) as LiquidityGauge;
+  let preferentialGauge = LiquidityGauge.load(
+    preferentialGaugeId,
+  ) as LiquidityGauge;
 
   let currentPreferentialGaugeId = preferentialGauge.gauge;
   if (currentPreferentialGaugeId === null) {
@@ -174,7 +217,9 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   }
 
   let unkilledGauge = Gauge.load(unkilledGaugeId) as Gauge;
-  let currentPreferentialGauge = Gauge.load(currentPreferentialGaugeId) as Gauge;
+  let currentPreferentialGauge = Gauge.load(
+    currentPreferentialGaugeId,
+  ) as Gauge;
 
   if (unkilledGauge.addedTimestamp > currentPreferentialGauge.addedTimestamp) {
     pool.preferentialGauge = unkilledLiquidityGaugeId;
@@ -183,10 +228,11 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
     unkilledLiquidityGauge.isPreferentialGauge = true;
     unkilledLiquidityGauge.save();
 
-    let currentPreferentialLiquidityGaugeId = currentPreferentialGauge.liquidityGauge;
+    let currentPreferentialLiquidityGaugeId =
+      currentPreferentialGauge.liquidityGauge;
     if (currentPreferentialLiquidityGaugeId) {
       let currentPreferentialLiquidityGauge = LiquidityGauge.load(
-        currentPreferentialLiquidityGaugeId
+        currentPreferentialLiquidityGaugeId,
       ) as LiquidityGauge;
       currentPreferentialLiquidityGauge.isPreferentialGauge = false;
       currentPreferentialLiquidityGauge.save();
@@ -194,23 +240,40 @@ export function handleUnkillGauge(call: UnkillGaugeCall): void {
   }
 }
 
-export function handleRelativeWeightCapChanged(event: RelativeWeightCapChanged): void {
-  let gauge = LiquidityGauge.load(event.address.toHexString()) as LiquidityGauge;
+export function handleRelativeWeightCapChanged(
+  event: RelativeWeightCapChanged,
+): void {
+  let gauge = LiquidityGauge.load(
+    event.address.toHexString(),
+  ) as LiquidityGauge;
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
 }
 
-export function handleRootGaugeRelativeWeightCapChanged(event: RelativeWeightCapChanged): void {
+export function handleRootGaugeRelativeWeightCapChanged(
+  event: RelativeWeightCapChanged,
+): void {
   let gauge = RootGauge.load(event.address.toHexString()) as RootGauge;
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
 }
 
-export function handleRewardDurationUpdated(event: RewardDurationUpdated): void {
+export function handleSingleRecipientGaugeRelativeWeightCapChanged(
+  event: RelativeWeightCapChanged,
+): void {
+  let gauge = SingleRecipientGauge.load(
+    event.address.toHexString(),
+  ) as SingleRecipientGauge;
+  gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
+  gauge.save();
+}
+export function handleRewardDurationUpdated(
+  event: RewardDurationUpdated,
+): void {
   ChildChainRewardToken.create(event.params.reward_token);
 
   let streamer = ChildChainStreamer.bind(event.address);
-  let gaugeCall = streamer.try_reward_receiver()
+  let gaugeCall = streamer.try_reward_receiver();
   if (!gaugeCall.reverted) {
     setChildChainGaugeRewardData(gaugeCall.value, event.params.reward_token);
   }
@@ -222,6 +285,6 @@ export function handleChildChainTransfer(event: Transfer): void {
   let gauge = LiquidityGauge.load(toAddress.toHexString());
 
   if (!gauge) return;
-  
+
   setChildChainGaugeRewardData(toAddress, event.address);
 }
