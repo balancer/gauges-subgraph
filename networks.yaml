@@ -16,6 +16,10 @@ goerli:
     address: "0x33A99Dcc4C85C014cf12626959111D5898bbCAbF"
     transactionHash: "0x172ba908936fabe43044de42694598c9e0923500eabfebede6c97112005b255e"
     startBlock: 7001463
+  childChainGaugeV2Factory:
+    address: "0x7Ba29fE8E83dd6097A7298075C4AFfdBda3121cC"
+    transactionHash: "0xefae73eda892b77d6f0347a3ceab8f027f16f7f29c0aee59a82be40dadf730d4"
+    startBlock: 8706166
 mainnet:
   network: mainnet
   gaugeFactory:
@@ -68,21 +72,37 @@ polygon:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
     transactionHash: "0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5"
     startBlock: 27098624
+  childChainGaugeV2Factory:
+    address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
+    transactionHash: "0xdf70ba12273e9bc62d4c70de2d677b6ed247871dc9bb7b36f09198843e062ab9"
+    startBlock: 40687417
 arbitrum:
   network: arbitrum-one
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
     transactionHash: "0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874"
     startBlock: 9756975
+  childChainGaugeV2Factory:
+    address: "0x6817149cb753BF529565B4D023d7507eD2ff4Bc0"
+    transactionHash: "0xe5c75ef317212901cb64bbac65ccb8ccd4bfd4628aa2b31699d67668a7871aef"
+    startBlock: 72942741
 optimism:
   network: optimism
   childChainGaugeFactory:
     address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
     transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
     startBlock: 9052485
+  childChainGaugeV2Factory:
+    address: "0xa523f47A933D5020b23629dDf689695AA94612Dc"
+    transactionHash: "0x7515c98129e75ecc496d396d4e430134777781b822aeb31f0d2147a3bdbe8c66"
+    startBlock: 83239534
 gnosis:
   network: gnosis
   childChainGaugeFactory:
     address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
     transactionHash: "0x80b812c2b44d29e5e6c5275ece19ca506933f63002890a733ec38f925e6aee97"
     startBlock: 26615210
+  childChainGaugeV2Factory:
+    address: "0x83E443EF4f9963C77bd860f94500075556668cb8"
+    transactionHash: "0x9f8de23e7ae78fcd8b7821595470910b7a861791aacb650c62adb643a552dee8"
+    startBlock: 27088528
