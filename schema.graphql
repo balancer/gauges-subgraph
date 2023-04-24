@@ -28,7 +28,7 @@ type OmniVotingEscrowLock @entity {
   chain: Chain!
 
   " Indicates whether the lock was bridged from or to the chain "
-  direction: BridgeDirection!
+  direction: Direction!
 
   " veBAL balance at the moment user locks "
   bias: BigDecimal!

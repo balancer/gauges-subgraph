@@ -92,6 +92,10 @@ export function getGaugeIdFromController(gaugeAddress: Address): string {
   return gaugeId;
 }
 
+export function getOmniVotingEscrowId(userAddress: Address, votingEscrowAddress: Address, chainId: i32): string {
+  return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex()).concat('-').concat(chainId.toString());
+}
+
 export function getVotingEscrowId(userAddress: Address, votingEscrowAddress: Address): string {
   return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
 }
