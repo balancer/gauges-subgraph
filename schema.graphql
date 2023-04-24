@@ -7,14 +7,37 @@ type VotingEscrow @entity {
 
   " List of veBAL locks created "
   locks: [VotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
+
+  " List of veBAL locks created "
+  omniLocks: [OmniVotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
 }
 
-enum Chain {
-  Ethereum
-  Arbitrum
-  Gnosis
-  Polygon
-  Optimism
+enum Direction {
+  From
+  To
+}
+
+type OmniVotingEscrowLock @entity {
+  " Equal to: <userAdress>-<omniVotingEscrow> "
+  id: ID!
+
+  " Reference to User entity "
+  user: User!
+
+  " Chain where the lock was bridged from / to "
+  chain: Chain!
+
+  " Indicates whether the lock was bridged from or to the chain "
+  direction: BridgeDirection!
+
+  " veBAL balance at the moment user locks "
+  bias: BigDecimal!
+
+  " veBAL decay rate (per second) "
+  slope: BigDecimal!
+
+  " Reference to VotingEscrow entity "
+  votingEscrowID: VotingEscrow!
 }
 
 type VotingEscrowLock @entity {
@@ -113,6 +136,13 @@ type LiquidityGauge @entity {
 
   " List of reward tokens depositted in the gauge "
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
+}
+
+enum Chain {
+  Arbitrum
+  Gnosis
+  Polygon
+  Optimism
 }
 
 type RootGauge @entity {
@@ -272,4 +302,7 @@ type User @entity {
 
   " List of locks the user created "
   votingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
+
+  " List of omni locks the user created "
+  omniVotingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
 }
