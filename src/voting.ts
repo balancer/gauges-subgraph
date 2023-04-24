@@ -1,8 +1,8 @@
-import { VotingEscrowLock, VotingEscrow } from './types/schema';
+import { VotingEscrowLock, VotingEscrow, LockSnapshot } from './types/schema';
 import { Deposit, Supply, Withdraw } from './types/VotingEscrow/votingEscrow';
-import { ZERO_BD } from './utils/constants';
-import { getVotingEscrowId } from './utils/gauge';
-import { scaleDownBPT } from './utils/maths';
+import { LOCK_MAXTIME, ZERO_BD } from './utils/constants';
+import { getLockSnapshotId, getVotingEscrowId } from './utils/gauge';
+import { scaleDownBPT, scaleUp } from './utils/maths';
 import { createUserEntity } from './utils/misc';
 
 export function handleDeposit(event: Deposit): void {
@@ -19,11 +19,33 @@ export function handleDeposit(event: Deposit): void {
     votingShare.lockedBalance = ZERO_BD;
   }
 
-  votingShare.unlockTime = event.params.locktime;
+  let blockTimestamp = event.block.timestamp;
   let depositAmount = scaleDownBPT(event.params.value);
+
+  votingShare.unlockTime = event.params.locktime;
+  votingShare.updatedAt = blockTimestamp.toI32();
+
   votingShare.lockedBalance = votingShare.lockedBalance.plus(depositAmount);
-  votingShare.updatedAt = event.block.timestamp.toI32();
+
+  const slopeBI = scaleUp(votingShare.lockedBalance, 18).div(LOCK_MAXTIME);
+  const biasBI = slopeBI.times(votingShare.unlockTime.minus(blockTimestamp));
+  votingShare.slope = scaleDownBPT(slopeBI);
+  votingShare.bias = scaleDownBPT(biasBI);
+
   votingShare.save();
+
+  const snapshotId = getLockSnapshotId(userAddress, blockTimestamp.toI32());
+  let lockSnapshot = LockSnapshot.load(snapshotId);
+
+  if (lockSnapshot == null) {
+    lockSnapshot = new LockSnapshot(snapshotId);
+    lockSnapshot.timestamp = votingShare.updatedAt;
+    lockSnapshot.user = userAddress.toHexString();
+    lockSnapshot.slope = votingShare.slope;
+    lockSnapshot.bias = votingShare.bias;
+  }
+
+  lockSnapshot.save();
 }
 
 export function handleWithdraw(event: Withdraw): void {
@@ -33,12 +55,11 @@ export function handleWithdraw(event: Withdraw): void {
   let id = getVotingEscrowId(userAddress, event.address);
   let votingShare = VotingEscrowLock.load(id);
 
-  if (votingShare == null) {
-    votingShare = new VotingEscrowLock(id);
-    votingShare.user = userAddress.toHexString();
-    votingShare.votingEscrowID = event.address.toHexString();
-  }
+  if (votingShare == null) return;
 
+  votingShare = new VotingEscrowLock(id);
+  votingShare.user = userAddress.toHexString();
+  votingShare.votingEscrowID = event.address.toHexString();
   votingShare.lockedBalance = ZERO_BD;
   votingShare.updatedAt = event.block.timestamp.toI32();
   votingShare.save();

@@ -96,6 +96,10 @@ export function getVotingEscrowId(userAddress: Address, votingEscrowAddress: Add
   return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
 }
 
+export function getLockSnapshotId(userAddress: Address, timestamp: i32): string {
+  return userAddress.toHex().concat('-').concat(timestamp.toString());
+}
+
 export function getGaugeVoteId(userAddress: Address, gaugeAddress: Address): string {
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
