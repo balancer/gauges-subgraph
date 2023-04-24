@@ -1,4 +1,6 @@
 import { VotingEscrowLock, VotingEscrow, LockSnapshot } from './types/schema';
+import { UserBalToChain } from './types/OmniVotingEscrow/omniVotingEscrow';
+import { UserBalFromChain } from './types/OmniVotingEscrowChild/omniVotingEscrowChild';
 import { Deposit, Supply, Withdraw } from './types/VotingEscrow/votingEscrow';
 import { LOCK_MAXTIME, ZERO_BD } from './utils/constants';
 import { getLockSnapshotId, getVotingEscrowId } from './utils/gauge';
@@ -76,3 +78,7 @@ export function handleSupply(event: Supply): void {
   votingEscrow.stakedSupply = scaleDownBPT(event.params.supply);
   votingEscrow.save();
 }
+
+export function handleUserBalFromChain(event: UserBalFromChain): void {}
+
+export function handleUserBalToChain(event: UserBalToChain): void {}

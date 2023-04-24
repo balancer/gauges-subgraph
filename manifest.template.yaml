@@ -436,6 +436,54 @@ dataSources:
         - event: Supply(uint256,uint256)
           handler: handleSupply
   {{/if}}
+  {{#if omniVotingEscrow}}
+  - kind: ethereum/contract
+    name: OmniVotingEscrow
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{omniVotingEscrow.address}}'
+      abi: omniVotingEscrow
+      # prettier-ignore
+      startBlock: {{ omniVotingEscrow.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/voting.ts
+      abis:
+        - name: omniVotingEscrow
+          file: ./abis/OmniVotingEscrow.json
+      entities:
+        - UserVotingEscrowShare
+      eventHandlers:
+        - event: UserBalToChain(uint16,address,address,(int128,int128,uint256,uint256),(int128,int128,uint256,uint256))
+          handler: handleUserBalToChain
+  {{/if}}
+  {{#if omniVotingEscrowChild}}
+  - kind: ethereum/contract
+    name: OmniVotingEscrowChild
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{omniVotingEscrowChild.address}}'
+      abi: omniVotingEscrowChild
+      # prettier-ignore
+      startBlock: {{ omniVotingEscrowChild.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/voting.ts
+      abis:
+        - name: omniVotingEscrowChild
+          file: ./abis/OmniVotingEscrowChild.json
+      entities:
+        - UserVotingEscrowShare
+      eventHandlers:
+        - event: UserBalFromChain(uint16,address,(int128,int128,uint256,uint256),(int128,int128,uint256,uint256))
+          handler: handleUserBalFromChain
+  {{/if}}
 templates:
   - kind: ethereum/contract
     name: LiquidityGauge

@@ -9,6 +9,14 @@ type VotingEscrow @entity {
   locks: [VotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
 }
 
+enum Chain {
+  Ethereum
+  Arbitrum
+  Gnosis
+  Polygon
+  Optimism
+}
+
 type VotingEscrowLock @entity {
   " Equal to: <userAdress>-<votingEscrow> "
   id: ID!
@@ -105,13 +113,6 @@ type LiquidityGauge @entity {
 
   " List of reward tokens depositted in the gauge "
   tokens: [RewardToken!] @derivedFrom(field: "gauge")
-}
-
-enum Chain {
-  Arbitrum
-  Gnosis
-  Polygon
-  Optimism
 }
 
 type RootGauge @entity {

@@ -54,6 +54,10 @@ mainnet:
     address: "0xC128a9954e6c874eA3d62ce62B468bA073093F25"
     transactionHash: "0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3"
     startBlock: 14457013
+  omniVotingEscrow:
+    address: "0x767C2052d3E0C85FDE64176A08bfdCCE05114193"
+    transactionHash: "0x77781c9df4da03373f48c80729133c95db542428138750a0192fefe91affcd17"
+    startBlock: 17040484
   arbitrumRootGaugeFactory:
     address: "0xad901309d9e9DbC5Df19c84f729f429F0189a633"
     transactionHash: "0x8562ca63b19952e67ea14b1b5d3e7a9bf3fce96df80474adb7d88ead72cb6db8"
@@ -94,6 +98,10 @@ polygon:
     startBlock: 40687417
 arbitrum:
   network: arbitrum-one
+  omniVotingEscrowChild:
+    address: "0xF5CbDBAfd62F93191eC1a0461352819D0ecFDd5c"
+    transactionHash: "0x5f32fc32c55493f7412315ab4a7156df3ccaee8314d9b3fadb02629531f3bd51"
+    startBlock: 80501659
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
     transactionHash: "0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874"
