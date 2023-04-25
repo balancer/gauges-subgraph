@@ -1,5 +1,6 @@
 goerli:
   network: goerli
+  supportTraces: true
   gaugeFactory:
     address: "0x224E808FBD9e491Be8988B8A0451FBF777C81B8A"
     transactionHash: "0x2d5d9089caf830b09e6ab586b56b140e6e0ab28d2d2070425bfb97ada9c95d08"
@@ -30,6 +31,7 @@ goerli:
     startBlock: 8706166
 mainnet:
   network: mainnet
+  supportTraces: true
   gaugeFactory:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     transactionHash: "0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d"
