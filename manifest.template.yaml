@@ -1,5 +1,10 @@
 specVersion: 0.0.2
 description: Liquidity Gauges of the Balancer Protocol
+{{#if graft}}
+graft:
+  base: {{graft.base}}
+  block: {{graft.block}}
+{{/if}}
 repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
