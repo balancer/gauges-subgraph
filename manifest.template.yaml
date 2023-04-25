@@ -1,6 +1,8 @@
 specVersion: 0.0.2
 description: Liquidity Gauges of the Balancer Protocol
 {{#if graft}}
+features:
+  - grafting
 graft:
   base: {{graft.base}}
   block: {{graft.block}}
