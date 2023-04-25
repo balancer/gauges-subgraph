@@ -461,6 +461,7 @@ templates:
           handler: handleRelativeWeightCapChanged
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+      {{#if supportTraces}}
       callHandlers:
         - function: deposit_reward_token(address,uint256)
           handler: handleDepositRewardToken
@@ -468,6 +469,7 @@ templates:
           handler: handleKillGauge
         - function: unkillGauge()
           handler: handleUnkillGauge
+      {{/if}}
   - kind: ethereum/contract
     name: RewardsOnlyGauge
     # prettier-ignore
@@ -533,11 +535,13 @@ templates:
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleRootGaugeRelativeWeightCapChanged
+      {{#if supportTraces}}
       callHandlers:
         - function: killGauge()
           handler: handleRootKillGauge
         - function: unkillGauge()
           handler: handleRootUnkillGauge
+      {{/if}}
   - kind: ethereum/contract
     name: SingleRecipientGauge
     # prettier-ignore
@@ -557,11 +561,13 @@ templates:
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleSingleRecipientGaugeRelativeWeightCapChanged
+      {{#if supportTraces}}
       callHandlers:
         - function: killGauge()
           handler: handleSingleRecipientKillGauge
         - function: unkillGauge()
           handler: handleSingleRecipientUnkillGauge
+      {{/if}}
   - kind: ethereum/contract
     name: ChildChainRewardToken
     # prettier-ignore
