@@ -1,4 +1,3 @@
-import { BigInt } from '@graphprotocol/graph-ts';
 import {
   VotingEscrowLock,
   VotingEscrow,
@@ -77,33 +76,6 @@ export function handleWithdraw(event: Withdraw): void {
   votingShare.save();
 }
 
-function setOmniVotingEscrowLock(
-  contractAddress: Address,
-  userAddress: Address,
-  direction: string,
-  chainId: i32,
-  bias: BigInt,
-  slope: BigInt,
-): void {
-  createUserEntity(userAddress);
-
-  let id = getOmniVotingEscrowId(userAddress, contractAddress, chainId);
-  let omniLock = OmniVotingEscrowLock.load(id);
-
-  if (omniLock == null) {
-    omniLock = new OmniVotingEscrowLock(id);
-    omniLock.user = userAddress.toHexString();
-    omniLock.votingEscrowID = contractAddress.toHexString();
-    omniLock.chain = chainId;
-  }
-
-  omniLock.direction = direction;
-  omniLock.bias = scaleDownBPT(bias);
-  omniLock.slope = scaleDownBPT(slope);
-
-  omniLock.save();
-}
-
 export function handleSupply(event: Supply): void {
   let id = event.address.toHexString();
   let votingEscrow = VotingEscrow.load(id);
@@ -117,23 +89,52 @@ export function handleSupply(event: Supply): void {
 }
 
 export function handleUserBalFromChain(event: UserBalFromChain): void {
-  setOmniVotingEscrowLock(
-    event.address,
-    event.params.user,
-    'From',
-    event.params.srcChainId,
-    event.params.userPoint.bias,
-    event.params.userPoint.slope,
-  );
+  let userAddress = event.params.user;
+  createUserEntity(userAddress);
+
+  let id = getVotingEscrowId(userAddress, event.address);
+  let votingShare = VotingEscrowLock.load(id);
+
+  if (votingShare == null) {
+    votingShare = new VotingEscrowLock(id);
+    votingShare.user = userAddress.toHexString();
+    votingShare.votingEscrowID = event.address.toHexString();
+  }
+
+  // TODO: is event.params.ts == blockTimestamp?
+  votingShare.unlockTime = event.params.userPoint.ts;
+  votingShare.updatedAt = event.block.timestamp.toI32();
+
+  const lockedBalanceBI = event.params.userPoint.slope.times(LOCK_MAXTIME);
+  votingShare.lockedBalance = scaleDownBPT(lockedBalanceBI);
+
+  votingShare.slope = scaleDownBPT(event.params.userPoint.slope);
+  votingShare.bias = scaleDownBPT(event.params.userPoint.bias);
+
+  votingShare.save();
 }
 
 export function handleUserBalToChain(event: UserBalToChain): void {
-  setOmniVotingEscrowLock(
-    event.address,
-    event.params.localUser,
-    'To',
-    event.params.dstChainId,
-    event.params.userPoint.bias,
-    event.params.userPoint.slope,
-  );
+  // TODO: find diff between localUser and remoteUser
+  // maybe create 2 separate fields for this
+  let userAddress = event.params.localUser;
+  createUserEntity(userAddress);
+
+  let contractAddress = event.address;
+  let dstChainId = event.params.dstChainId;
+
+  let id = getOmniVotingEscrowId(userAddress, contractAddress, dstChainId);
+  let omniLock = OmniVotingEscrowLock.load(id);
+
+  if (omniLock == null) {
+    omniLock = new OmniVotingEscrowLock(id);
+    omniLock.user = userAddress.toHexString();
+    omniLock.votingEscrowID = event.address.toHexString();
+    omniLock.dstChainId = event.params.dstChainId;
+  }
+
+  omniLock.bias = scaleDownBPT(event.params.userPoint.bias);
+  omniLock.slope = scaleDownBPT(event.params.userPoint.slope);
+
+  omniLock.save();
 }

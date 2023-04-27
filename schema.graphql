@@ -12,11 +12,6 @@ type VotingEscrow @entity {
   omniLocks: [OmniVotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
 }
 
-enum Direction {
-  From
-  To
-}
-
 type OmniVotingEscrowLock @entity {
   " Equal to: <userAdress>-<omniVotingEscrow> "
   id: ID!
@@ -24,11 +19,8 @@ type OmniVotingEscrowLock @entity {
   " Reference to User entity "
   user: User!
 
-  " Chain where the lock was bridged from / to "
-  chain: Chain!
-
-  " Indicates whether the lock was bridged from or to the chain "
-  direction: Direction!
+  " Chain where the lock was bridged to "
+  dstChainId: Int!
 
   " veBAL balance at the moment user locks "
   bias: BigDecimal!
