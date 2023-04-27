@@ -112,6 +112,9 @@ arbitrum:
     startBlock: 72942741
 optimism:
   network: optimism
+  graft:
+    base: QmSyjna4aFT7rUVwKzsWBf8qZ4nicAnEAKn8V7Sis8KPWz
+    block: 83239534
   childChainGaugeFactory:
     address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
     transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
