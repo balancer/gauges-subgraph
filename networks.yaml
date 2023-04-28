@@ -133,3 +133,9 @@ gnosis:
     address: "0x83E443EF4f9963C77bd860f94500075556668cb8"
     transactionHash: "0x9f8de23e7ae78fcd8b7821595470910b7a861791aacb650c62adb643a552dee8"
     startBlock: 27088528
+avalanche:
+  network: avalanche
+  childChainGaugeFactory:
+    address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
+    transactionHash: "0xc8a449d928a916389eea16be827b0432d169975fead105d87850136581a108ca"
+    startBlock: 26386697
