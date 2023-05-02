@@ -16,8 +16,11 @@ type OmniVotingEscrowLock @entity {
   " Equal to: <userAdress>-<omniVotingEscrow> "
   id: ID!
 
-  " Reference to User entity "
-  user: User!
+  " User on the local chain (reference to User entity) "
+  localUser: User!
+
+  " User address on the remote chain "
+  remoteUser: Bytes!
 
   " Chain where the lock was bridged to "
   dstChainId: Int!
@@ -296,5 +299,5 @@ type User @entity {
   votingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
 
   " List of omni locks the user created "
-  omniVotingLocks: [OmniVotingEscrowLock!] @derivedFrom(field: "user")
+  omniVotingLocks: [OmniVotingEscrowLock!] @derivedFrom(field: "localUser")
 }

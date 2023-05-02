@@ -128,7 +128,8 @@ export function handleUserBalToChain(event: UserBalToChain): void {
 
   if (omniLock == null) {
     omniLock = new OmniVotingEscrowLock(id);
-    omniLock.user = userAddress.toHexString();
+    omniLock.localUser = userAddress.toHexString();
+    omniLock.remoteUser = event.params.remoteUser;
     omniLock.votingEscrowID = event.address.toHexString();
     omniLock.dstChainId = event.params.dstChainId;
   }
