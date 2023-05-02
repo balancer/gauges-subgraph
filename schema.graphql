@@ -296,5 +296,5 @@ type User @entity {
   votingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
 
   " List of omni locks the user created "
-  omniVotingLocks: [VotingEscrowLock!] @derivedFrom(field: "user")
+  omniVotingLocks: [OmniVotingEscrowLock!] @derivedFrom(field: "user")
 }
