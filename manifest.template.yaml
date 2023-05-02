@@ -23,7 +23,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/mappings/eventEmitter.ts
+      file: ./src/eventEmitter.ts
       entities:
         - Pool
       abis:
