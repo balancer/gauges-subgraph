@@ -1,6 +1,9 @@
 goerli:
   network: goerli
   supportTraces: true
+  EventEmitter:
+    address: "0x4bcFCEDF1114030ff85a647dD436B7b3dEb45d9E"
+    startBlock: 8305794
   gaugeFactory:
     address: "0x224E808FBD9e491Be8988B8A0451FBF777C81B8A"
     transactionHash: "0x2d5d9089caf830b09e6ab586b56b140e6e0ab28d2d2070425bfb97ada9c95d08"
@@ -32,6 +35,9 @@ goerli:
 mainnet:
   network: mainnet
   supportTraces: true
+  EventEmitter:
+    address: "0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290"
+    startBlock: 16419620
   gaugeFactory:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     transactionHash: "0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d"
@@ -89,6 +95,9 @@ polygon:
   graft:
     block: 40687417
     base: QmU5c6nMwLYogKTimpWbiqXd2YeY1ovbo4dLRSgd2UBB7m
+  EventEmitter:
+    address: "0xcdcECFa416EE3022030E707dC3EA13a8997D74c8"
+    startBlock: 38152461
   childChainGaugeFactory:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
     transactionHash: "0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5"
@@ -102,6 +111,9 @@ arbitrum:
   graft:
     block: 72942741
     base: QmQNtqzZbE4JsXBUzeMvUHkJYGv2YVKtKet7d4Zn4Wzs2r
+  EventEmitter:
+    address: "0x8f32D631093B5418d0546f77442c5fa66187E59D"
+    startBlock: 53475240
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
     transactionHash: "0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874"
