@@ -1,6 +1,5 @@
 import { LogArgument } from './types/EventEmitter/EventEmitter';
 import { Pool, LiquidityGauge } from './types/schema';
-import { BigDecimal } from '@graphprotocol/graph-ts';
 
 export function handleLogArgument(event: LogArgument): void {
   const identifier = event.params.identifier.toHexString();
