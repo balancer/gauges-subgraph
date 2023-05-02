@@ -125,6 +125,9 @@ optimism:
     startBlock: 83239534
 gnosis:
   network: gnosis
+  EventEmitter:
+    address: "0xd8bf95b44772213905a8a74881862347acbabc48"
+    startBlock: 26892431
   childChainGaugeFactory:
     address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
     transactionHash: "0x80b812c2b44d29e5e6c5275ece19ca506933f63002890a733ec38f925e6aee97"
