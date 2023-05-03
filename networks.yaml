@@ -93,8 +93,8 @@ mainnet:
 polygon:
   network: matic
   graft:
-    block: 40687417
-    base: QmU5c6nMwLYogKTimpWbiqXd2YeY1ovbo4dLRSgd2UBB7m
+    block: 42247242
+    base: QmcSEjV1MgaKjHLFCuAXDeNZysXX7wK36YJWKT1R4RKnko
   EventEmitter:
     address: "0xcdcECFa416EE3022030E707dC3EA13a8997D74c8"
     startBlock: 38152461
@@ -109,8 +109,8 @@ polygon:
 arbitrum:
   network: arbitrum-one
   graft:
-    block: 72942741
-    base: QmQNtqzZbE4JsXBUzeMvUHkJYGv2YVKtKet7d4Zn4Wzs2r
+    block: 86871634
+    base: QmccYAZWRRXmAKGJPqW5CRKcuRB5B1Ckn5otomKsBEqNk5
   EventEmitter:
     address: "0x8f32D631093B5418d0546f77442c5fa66187E59D"
     startBlock: 53475240
@@ -125,8 +125,8 @@ arbitrum:
 optimism:
   network: optimism
   graft:
-    base: QmSyjna4aFT7rUVwKzsWBf8qZ4nicAnEAKn8V7Sis8KPWz
-    block: 83239534
+    base: QmdFVHmuKXvf44SCqFjCJbpfh4UWKQ6s3RVVsqDg597Vge
+    block: 96122413
   childChainGaugeFactory:
     address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
     transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
