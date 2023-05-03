@@ -112,6 +112,26 @@ type RootGauge @entity {
   factory: GaugeFactory!
 }
 
+type SingleRecipientGauge @entity {
+  " SingleRecipientGauge contract address"
+  id: ID!
+
+  " Address where emissions for this gauge will be sent to "
+  recipient: Bytes!
+
+  " Reference to Gauge entity - created when SingleRecipientGauge is added to GaugeController"
+  gauge: Gauge
+
+  " Whether Balancer DAO killed the gauge "
+  isKilled: Boolean!
+
+  " Relative weight cap of the gauge (0.01 = 1%) - V2 factories only "
+  relativeWeightCap: BigDecimal
+
+  " Factory contract address "
+  factory: GaugeFactory!
+}
+
 type Gauge @entity {
   " Equal to: <gaugeAddress>-<typeID> "
   id: ID!

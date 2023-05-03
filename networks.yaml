@@ -1,5 +1,6 @@
 goerli:
   network: goerli
+  supportTraces: true
   gaugeFactory:
     address: "0x224E808FBD9e491Be8988B8A0451FBF777C81B8A"
     transactionHash: "0x2d5d9089caf830b09e6ab586b56b140e6e0ab28d2d2070425bfb97ada9c95d08"
@@ -8,6 +9,14 @@ goerli:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
     transactionHash: "0xf4281462a669f2e6a10ffcee1e24e60ce807acc8cfd8fc86697050b99035f0d0"
     startBlock: 7460127
+  singleRecipientGaugeFactory:
+    address: "0xd14FFA46C211eac64338c27549c3312380f850Fa"
+    transactionHash: "0xa552176f1c626fdb1109bde8daed0bd6746d495142ce72dbfb8f350d6e8d24fe"
+    startBlock: 7001540
+  singleRecipientGaugeV2Factory:
+    address: "0xE3881627B8DeeBCCF9c23B291430a549Fc0bE5F7"
+    transactionHash: "0xa01ee6d2fdb0d1cd878ac577154ca526159d04a125569546f71e041de11803a3"
+    startBlock: 8538547
   gaugeController:
     address: "0xBB1CE49b16d55A1f2c6e88102f32144C7334B116"
     transactionHash: "0x1bc729c9985648b7785d46fb806ceff3e32d1ef9963e664af7a5ba15d0b73b23"
@@ -16,8 +25,13 @@ goerli:
     address: "0x33A99Dcc4C85C014cf12626959111D5898bbCAbF"
     transactionHash: "0x172ba908936fabe43044de42694598c9e0923500eabfebede6c97112005b255e"
     startBlock: 7001463
+  childChainGaugeV2Factory:
+    address: "0x7Ba29fE8E83dd6097A7298075C4AFfdBda3121cC"
+    transactionHash: "0xefae73eda892b77d6f0347a3ceab8f027f16f7f29c0aee59a82be40dadf730d4"
+    startBlock: 8706166
 mainnet:
   network: mainnet
+  supportTraces: true
   gaugeFactory:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     transactionHash: "0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d"
@@ -26,6 +40,14 @@ mainnet:
     address: "0xf1665E19bc105BE4EDD3739F88315cC699cc5b65"
     transactionHash: "0xf01b94a0fbbaa2c3c77b88dac38cf7ace5969bafa8702ee3c085f373e46f2751"
     startBlock: 15399251
+  singleRecipientGaugeFactory:
+    address: "0x94f68b54191F62f781Fe8298A8A5Fa3ed772d227"
+    transactionHash: "0xe4268aa3fbd18072c7bd95ab145b3c955af635997d5c8aff3c766f1ab5cb8b6f"
+    startBlock: 14457748
+  singleRecipientGaugeV2Factory:
+    address: "0x4fb47126Fa83A8734991E41B942Ac29A3266C968"
+    transactionHash: "0xe50c6c6cf7a08c64b5a2d7207a11c8c6a4d527ceac99958089c2dc65a5057583"
+    startBlock: 16686720
   gaugeController:
     address: "0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD"
     transactionHash: "0x69d0355862729073f8d25ef9d6d3ecaa1f001f7e339a465430326c931125b3c6"
@@ -64,25 +86,56 @@ mainnet:
     startBlock: 16687758
 polygon:
   network: matic
+  graft:
+    block: 40687417
+    base: QmU5c6nMwLYogKTimpWbiqXd2YeY1ovbo4dLRSgd2UBB7m
   childChainGaugeFactory:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
     transactionHash: "0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5"
     startBlock: 27098624
+  childChainGaugeV2Factory:
+    address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
+    transactionHash: "0xdf70ba12273e9bc62d4c70de2d677b6ed247871dc9bb7b36f09198843e062ab9"
+    startBlock: 40687417
 arbitrum:
   network: arbitrum-one
+  graft:
+    block: 72942741
+    base: QmQNtqzZbE4JsXBUzeMvUHkJYGv2YVKtKet7d4Zn4Wzs2r
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
     transactionHash: "0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874"
     startBlock: 9756975
+  childChainGaugeV2Factory:
+    address: "0x6817149cb753BF529565B4D023d7507eD2ff4Bc0"
+    transactionHash: "0xe5c75ef317212901cb64bbac65ccb8ccd4bfd4628aa2b31699d67668a7871aef"
+    startBlock: 72942741
 optimism:
   network: optimism
+  graft:
+    base: QmSyjna4aFT7rUVwKzsWBf8qZ4nicAnEAKn8V7Sis8KPWz
+    block: 83239534
   childChainGaugeFactory:
     address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
     transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
     startBlock: 9052485
+  childChainGaugeV2Factory:
+    address: "0xa523f47A933D5020b23629dDf689695AA94612Dc"
+    transactionHash: "0x7515c98129e75ecc496d396d4e430134777781b822aeb31f0d2147a3bdbe8c66"
+    startBlock: 83239534
 gnosis:
   network: gnosis
   childChainGaugeFactory:
     address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
     transactionHash: "0x80b812c2b44d29e5e6c5275ece19ca506933f63002890a733ec38f925e6aee97"
     startBlock: 26615210
+  childChainGaugeV2Factory:
+    address: "0x83E443EF4f9963C77bd860f94500075556668cb8"
+    transactionHash: "0x9f8de23e7ae78fcd8b7821595470910b7a861791aacb650c62adb643a552dee8"
+    startBlock: 27088528
+avalanche:
+  network: avalanche
+  childChainGaugeFactory:
+    address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
+    transactionHash: "0xc8a449d928a916389eea16be827b0432d169975fead105d87850136581a108ca"
+    startBlock: 26386697
