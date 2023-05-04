@@ -62,7 +62,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleMainnetLiquidityGaugeCreated
   {{/if}}
   {{#if gaugeV2Factory}}
   - kind: ethereum/contract
@@ -93,7 +93,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleMainnetLiquidityGaugeCreated
   {{/if}}
   {{#if singleRecipientGaugeFactory}}
   - kind: ethereum/contract
@@ -407,7 +407,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleChildChainV2LiquidityGaugeCreated
   {{/if}}
   {{#if gaugeController}}
   - kind: ethereum/contract
