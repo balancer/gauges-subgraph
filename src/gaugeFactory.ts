@@ -63,16 +63,17 @@ function handleLiquidityGaugeCreated(event: LiquidityGaugeCreated, childChainGau
   const poolAddress = lpTokenCall.value;
   const poolRegistered = isPoolRegistered(poolAddress);
 
+  let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
+
   if (poolRegistered) {
     const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
     // If we're on a child chain and the pool doesn't have a preferential gauge yet
     if (childChainGauge && pool.preferentialGauge === null) {
-      pool.preferentialGauge = gaugeAddress.toHexString();
+      pool.preferentialGauge = gauge.id;
     }
     pool.save();
   }
 
-  let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
   gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
   gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
   gauge.factory = factory.id;
