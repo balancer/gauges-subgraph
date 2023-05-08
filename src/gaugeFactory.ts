@@ -18,7 +18,7 @@ import {
   isOptimismFactory,
   isPolygonFactory,
 } from './utils/constants';
-import { GaugeCreated as MainnetGaugeCreated } from './types/GaugeV2Factory/GaugeV2Factory';
+import { GaugeCreated as LiquidityGaugeCreated } from './types/GaugeV2Factory/GaugeV2Factory';
 import { GaugeCreated as RootGaugeCreated } from './types/ArbitrumRootGaugeV2Factory/ArbitrumRootGaugeV2Factory';
 import { LiquidityGauge as LiquidityGaugeV2 } from './types/GaugeV2Factory/LiquidityGauge';
 import { ArbitrumRootGauge as RootGaugeContract } from './types/templates/RootGauge/ArbitrumRootGauge';
@@ -35,7 +35,15 @@ function getGaugeFactory(address: Address): GaugeFactory {
   return factory;
 }
 
-export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
+export function handleMainnetLiquidityGaugeCreated(event: LiquidityGaugeCreated): void {
+  handleLiquidityGaugeCreated(event, false);
+}
+
+export function handleChildChainV2LiquidityGaugeCreated(event: LiquidityGaugeCreated): void {
+  handleLiquidityGaugeCreated(event, true);
+}
+
+function handleLiquidityGaugeCreated(event: LiquidityGaugeCreated, childChainGauge: boolean): void {
   const gaugeAddress = event.params.gauge;
   const factoryAddress = event.address;
   let factory = getGaugeFactory(factoryAddress);
@@ -55,12 +63,17 @@ export function handleLiquidityGaugeCreated(event: MainnetGaugeCreated): void {
   const poolAddress = lpTokenCall.value;
   const poolRegistered = isPoolRegistered(poolAddress);
 
+  let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
+
   if (poolRegistered) {
     const pool = getPoolEntity(lpTokenCall.value, gaugeAddress);
+    // If we're on a child chain and the pool doesn't have a preferential gauge yet
+    if (childChainGauge && pool.preferentialGauge === null) {
+      pool.preferentialGauge = gauge.id;
+    }
     pool.save();
   }
 
-  let gauge = getLiquidityGauge(gaugeAddress, poolAddress);
   gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
   gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
   gauge.factory = factory.id;
@@ -101,7 +114,7 @@ export function handleRewardsOnlyGaugeCreated(
 }
 
 export function handleSingleRecipientGaugeCreated(
-  event: MainnetGaugeCreated,
+  event: LiquidityGaugeCreated,
 ): void {
   const gaugeAddress = event.params.gauge;
   const factoryAddress = event.address;

@@ -11,6 +11,28 @@ repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
 dataSources:
+  {{#if EventEmitter}}
+  - kind: ethereum/contract
+    name: EventEmitter
+    network: {{network}}
+    source:
+      address: '{{EventEmitter.address}}'
+      abi: EventEmitter
+      startBlock: {{EventEmitter.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/eventEmitter.ts
+      entities:
+        - Pool
+      abis:
+        - name: EventEmitter
+          file: ./abis/EventEmitter.json
+      eventHandlers:
+        - event: LogArgument(indexed address,indexed bytes32,bytes,uint256)
+          handler: handleLogArgument
+  {{/if}}
   {{#if gaugeFactory}}
   - kind: ethereum/contract
     name: GaugeFactory
@@ -40,7 +62,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleMainnetLiquidityGaugeCreated
   {{/if}}
   {{#if gaugeV2Factory}}
   - kind: ethereum/contract
@@ -71,7 +93,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleMainnetLiquidityGaugeCreated
   {{/if}}
   {{#if singleRecipientGaugeFactory}}
   - kind: ethereum/contract
@@ -385,7 +407,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleChildChainV2LiquidityGaugeCreated
   {{/if}}
   {{#if gaugeController}}
   - kind: ethereum/contract
