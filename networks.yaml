@@ -32,6 +32,10 @@ goerli:
     address: "0x7Ba29fE8E83dd6097A7298075C4AFfdBda3121cC"
     transactionHash: "0xefae73eda892b77d6f0347a3ceab8f027f16f7f29c0aee59a82be40dadf730d4"
     startBlock: 8706166
+  authorizerAdaptorEntrypoint:
+    address: "0xacAaC3e6D6Df918Bf3c809DFC7d42de0e4a72d4C"
+    transactionHash: "0x9aa8cff640c2a1992c0ad8732b202adada780c2ffb659dc1a31a2a92777fc14e"
+    startBlock: 8013204
 mainnet:
   network: mainnet
   supportTraces: true
@@ -90,6 +94,10 @@ mainnet:
     address: "0x2a18B396829bc29F66a1E59fAdd7a0269A6605E8"
     transactionHash: "0xbdd20d395f0af20c81f988e61479c6f31862b8a33584ca0b44de7d874aaef0e4"
     startBlock: 16687758
+  authorizerAdaptorEntrypoint:
+    address: "0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA"
+    transactionHash: "0xfe4e542bea9a1508ba030bb73cd7e44c03dc80f585adbb6d578a04a171d6bcf4"
+    startBlock: 16042168
 polygon:
   network: matic
   graft:
@@ -106,6 +114,10 @@ polygon:
     address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
     transactionHash: "0xdf70ba12273e9bc62d4c70de2d677b6ed247871dc9bb7b36f09198843e062ab9"
     startBlock: 40687417
+  authorizerAdaptorEntrypoint:
+    address: "0xAB093cd16e765b5B23D34030aaFaF026558e0A19"
+    transactionHash: "0x5bfda7dda2c1f2b7624d0be4874b66b51150f9df7a623cab05c539a8570a15e0"
+    startBlock: 36020863
 arbitrum:
   network: arbitrum-one
   graft:
@@ -122,6 +134,10 @@ arbitrum:
     address: "0x6817149cb753BF529565B4D023d7507eD2ff4Bc0"
     transactionHash: "0xe5c75ef317212901cb64bbac65ccb8ccd4bfd4628aa2b31699d67668a7871aef"
     startBlock: 72942741
+  authorizerAdaptorEntrypoint:
+    address: "0x97207B095e4D5C9a6e4cfbfcd2C3358E03B90c4A"
+    transactionHash: "0x5fe116d6c6499d960c5b19e7a5a06f5a5f99a2afe50312c450279f8907350c4f"
+    startBlock: 40916259
 optimism:
   network: optimism
   graft:
@@ -135,6 +151,10 @@ optimism:
     address: "0xa523f47A933D5020b23629dDf689695AA94612Dc"
     transactionHash: "0x7515c98129e75ecc496d396d4e430134777781b822aeb31f0d2147a3bdbe8c66"
     startBlock: 83239534
+  authorizerAdaptorEntrypoint:
+    address: "0xed86ff0c507D3AF5F35d3523B77C17415FCfFaCb"
+    transactionHash: "0xefb058cbe562f0bc7687ddb67ca2f01c65d5e91238e2b5819da3c25a3410cca5"
+    startBlock: 41872979
 gnosis:
   network: gnosis
   EventEmitter:
@@ -148,9 +168,17 @@ gnosis:
     address: "0x83E443EF4f9963C77bd860f94500075556668cb8"
     transactionHash: "0x9f8de23e7ae78fcd8b7821595470910b7a861791aacb650c62adb643a552dee8"
     startBlock: 27088528
+  authorizerAdaptorEntrypoint:
+    address: "0x8F42aDBbA1B16EaAE3BB5754915E0D06059aDd75"
+    transactionHash: "0x125b85b96ba628ecf87c452e55f2760109d63fcfad7051d1534c4daa63fb5305"
+    startBlock: 25140518
 avalanche:
   network: avalanche
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
     transactionHash: "0xc8a449d928a916389eea16be827b0432d169975fead105d87850136581a108ca"
     startBlock: 26386697
+  authorizerAdaptorEntrypoint:
+    address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
+    transactionHash: "0x59d28d6d6d9887dd0c00f0bdc04a25d90f6d0f8f52d39eb66a81379b3ed293bc"
+    startBlock: 26387586
