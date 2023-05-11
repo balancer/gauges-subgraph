@@ -75,6 +75,9 @@ type LiquidityGauge @entity {
   " Total of BPTs users have staked in the LiquidityGauge "
   totalSupply: BigDecimal!
 
+  " List of reward tokens depositted in the gauge - ChildChainLiquidityGauge only "
+  rewardTokensList: [Bytes!]
+
   " List of user shares "
   shares: [GaugeShare!] @derivedFrom(field: "gauge")
 
