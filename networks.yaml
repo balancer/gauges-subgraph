@@ -105,8 +105,8 @@ mainnet:
 polygon:
   network: matic
   graft:
-    block: 40687417
-    base: QmcSEjV1MgaKjHLFCuAXDeNZysXX7wK36YJWKT1R4RKnko
+    block: 42610000
+    base: QmTMYUbqpYZEYAzBTbMLmNgb13UyzdvyuKbfWMKJFzPWWB
   EventEmitter:
     address: "0xcdcECFa416EE3022030E707dC3EA13a8997D74c8"
     startBlock: 38152461
@@ -125,8 +125,8 @@ polygon:
 arbitrum:
   network: arbitrum-one
   graft:
-    block: 72942741
-    base: QmccYAZWRRXmAKGJPqW5CRKcuRB5B1Ckn5otomKsBEqNk5
+    block: 80501659
+    base: QmcKEX764wP6e62ywbZd28b1VFx5iq7jYzs8c3SM53PJce
   EventEmitter:
     address: "0x8f32D631093B5418d0546f77442c5fa66187E59D"
     startBlock: 53475240
