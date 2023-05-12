@@ -43,13 +43,13 @@ type VotingEscrowLock @entity {
   user: User!
 
   " veBAL balance at the moment user locks "
-  bias: BigDecimal!
+  bias: BigDecimal # TODO: make required on next full sync
 
   " veBAL decay rate (per second) "
-  slope: BigDecimal!
+  slope: BigDecimal # TODO: make required on next full sync
 
   " Timestamp at which B-80BAL-20WETH BPT can be unlocked by user [seconds] "
-  unlockTime: BigInt!
+  unlockTime: BigInt # TODO: make required on next full sync
 
   " Amount of B-80BAL-20WETH BPT the user has locked "
   lockedBalance: BigDecimal!
