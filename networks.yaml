@@ -55,9 +55,9 @@ mainnet:
     transactionHash: "0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3"
     startBlock: 14457013
   omniVotingEscrow:
-    address: "0x767C2052d3E0C85FDE64176A08bfdCCE05114193"
-    transactionHash: "0x77781c9df4da03373f48c80729133c95db542428138750a0192fefe91affcd17"
-    startBlock: 17040484
+    address: "0xa224C9C7371e7DA1E5DE87bd7CB6688619c28Eb2"
+    transactionHash: "0x251450176390046888c13abc4eea6c4d8f622a246f593b7190f8739da9cf4720"
+    startBlock: 17224343
   arbitrumRootGaugeFactory:
     address: "0xad901309d9e9DbC5Df19c84f729f429F0189a633"
     transactionHash: "0x8562ca63b19952e67ea14b1b5d3e7a9bf3fce96df80474adb7d88ead72cb6db8"
