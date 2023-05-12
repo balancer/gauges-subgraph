@@ -465,6 +465,30 @@ dataSources:
         - event: Supply(uint256,uint256)
           handler: handleSupply
   {{/if}}
+  {{#if authorizerAdaptorEntrypoint}}
+  - kind: ethereum/contract
+    name: AuthorizerAdaptorEntrypoint
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{authorizerAdaptorEntrypoint.address}}'
+      abi: authorizerAdaptorEntrypoint
+      # prettier-ignore
+      startBlock: {{ authorizerAdaptorEntrypoint.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/authorizerAdaptorEntrypoint.ts
+      abis:
+        - name: authorizerAdaptorEntrypoint
+          file: ./abis/AuthorizerAdaptorEntrypoint.json
+      entities:
+        - LiquidityGauge
+      eventHandlers:
+        - event: ActionPerformed(indexed bytes4,indexed address,indexed address,bytes)
+          handler: handleActionPerformed
+  {{/if}}
   {{#if omniVotingEscrow}}
   - kind: ethereum/contract
     name: OmniVotingEscrow
