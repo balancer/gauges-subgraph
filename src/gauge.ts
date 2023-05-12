@@ -270,7 +270,8 @@ export function handleSingleRecipientGaugeRelativeWeightCapChanged(
 export function handleRewardDurationUpdated(
   event: RewardDurationUpdated,
 ): void {
-  ChildChainRewardToken.create(event.params.reward_token);
+  // TODO: temp commenting this out to speed up a full sync
+  // ChildChainRewardToken.create(event.params.reward_token);
 
   let streamer = ChildChainStreamer.bind(event.address);
   let gaugeCall = streamer.try_reward_receiver();
