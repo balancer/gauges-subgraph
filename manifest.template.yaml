@@ -1,9 +1,38 @@
 specVersion: 0.0.2
 description: Liquidity Gauges of the Balancer Protocol
+{{#if graft}}
+features:
+  - grafting
+graft:
+  base: {{graft.base}}
+  block: {{graft.block}}
+{{/if}}
 repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
 dataSources:
+  {{#if EventEmitter}}
+  - kind: ethereum/contract
+    name: EventEmitter
+    network: {{network}}
+    source:
+      address: '{{EventEmitter.address}}'
+      abi: EventEmitter
+      startBlock: {{EventEmitter.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/eventEmitter.ts
+      entities:
+        - Pool
+      abis:
+        - name: EventEmitter
+          file: ./abis/EventEmitter.json
+      eventHandlers:
+        - event: LogArgument(indexed address,indexed bytes32,bytes,uint256)
+          handler: handleLogArgument
+  {{/if}}
   {{#if gaugeFactory}}
   - kind: ethereum/contract
     name: GaugeFactory
@@ -33,7 +62,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleMainnetLiquidityGaugeCreated
   {{/if}}
   {{#if gaugeV2Factory}}
   - kind: ethereum/contract
@@ -64,7 +93,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleMainnetLiquidityGaugeCreated
   {{/if}}
   {{#if singleRecipientGaugeFactory}}
   - kind: ethereum/contract
@@ -378,7 +407,7 @@ dataSources:
         - LiquidityGauge
       eventHandlers:
         - event: GaugeCreated(indexed address)
-          handler: handleLiquidityGaugeCreated
+          handler: handleChildChainV2LiquidityGaugeCreated
   {{/if}}
   {{#if gaugeController}}
   - kind: ethereum/contract
@@ -509,6 +538,7 @@ templates:
           handler: handleRelativeWeightCapChanged
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+      {{#if supportTraces}}
       callHandlers:
         - function: deposit_reward_token(address,uint256)
           handler: handleDepositRewardToken
@@ -516,6 +546,7 @@ templates:
           handler: handleKillGauge
         - function: unkillGauge()
           handler: handleUnkillGauge
+      {{/if}}
   - kind: ethereum/contract
     name: RewardsOnlyGauge
     # prettier-ignore
@@ -581,11 +612,13 @@ templates:
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleRootGaugeRelativeWeightCapChanged
+      {{#if supportTraces}}
       callHandlers:
         - function: killGauge()
           handler: handleRootKillGauge
         - function: unkillGauge()
           handler: handleRootUnkillGauge
+      {{/if}}
   - kind: ethereum/contract
     name: SingleRecipientGauge
     # prettier-ignore
@@ -605,11 +638,13 @@ templates:
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleSingleRecipientGaugeRelativeWeightCapChanged
+      {{#if supportTraces}}
       callHandlers:
         - function: killGauge()
           handler: handleSingleRecipientKillGauge
         - function: unkillGauge()
           handler: handleSingleRecipientUnkillGauge
+      {{/if}}
   - kind: ethereum/contract
     name: ChildChainRewardToken
     # prettier-ignore
