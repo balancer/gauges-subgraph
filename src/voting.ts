@@ -98,7 +98,16 @@ export function handleUserBalFromChain(event: UserBalFromChain): void {
   if (votingShare == null) {
     votingShare = new VotingEscrowLock(id);
     votingShare.user = userAddress.toHexString();
-    votingShare.votingEscrowID = event.address.toHexString();
+
+    // if the VotingEscrow entity doesn't exist, create it
+    let votingEscrowID = event.address.toHexString();
+    let votingEscrow = VotingEscrow.load(votingEscrowID);
+    if (votingEscrow == null) {
+      votingEscrow = new VotingEscrow(votingEscrowID);
+      votingEscrow.save();
+    }
+
+    votingShare.votingEscrowID = votingEscrowID;
   }
 
   // TODO: is event.params.ts == blockTimestamp?
