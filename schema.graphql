@@ -2,8 +2,8 @@ type VotingEscrow @entity {
   " VotingEscrow contract address "
   id: ID!
 
-  " Amount of B-80BAL-20WETH BPT locked "
-  stakedSupply: BigDecimal!
+  " Amount of B-80BAL-20WETH BPT locked, only applies on mainnet "
+  stakedSupply: BigDecimal
 
   " List of veBAL locks created "
   locks: [VotingEscrowLock!] @derivedFrom(field: "votingEscrowID")
