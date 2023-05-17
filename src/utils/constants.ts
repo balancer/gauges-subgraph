@@ -5,6 +5,8 @@ export const ONE = BigInt.fromI32(1);
 export const ZERO_BD = ZERO.toBigDecimal();
 export const ONE_BD = ZERO.toBigDecimal();
 
+export const LOCK_MAXTIME = BigInt.fromI32(365 * 86400); // 1 YEAR
+
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export class AddressByNetwork {
   public mainnet: string;
