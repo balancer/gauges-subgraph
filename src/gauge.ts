@@ -287,12 +287,20 @@ export function handleRewardDurationUpdated(
   if (!gauge) return;
 
   const rewardToken = event.params.reward_token;
-  if (gauge.rewardTokensList) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    gauge.rewardTokensList = gauge.rewardTokensList!.concat([rewardToken]);
-  } else {
-    gauge.rewardTokensList = [rewardToken];
+
+  if (gauge.rewardTokensList?.includes(rewardToken)) {
+    setChildChainGaugeRewardData(gaugeAddress, rewardToken);
+    return;
   }
 
-  setChildChainGaugeRewardData(gaugeAddress, rewardToken);
+  let rewardTokens = new Array<Bytes>(1);
+  rewardTokens[0] = rewardToken;
+
+  if (gauge.rewardTokensList == null) {
+    gauge.rewardTokensList = rewardTokens;
+  } else {
+    gauge.rewardTokensList = gauge.rewardTokensList.concat(rewardTokens);
+  }
+
+  gauge.save();
 }
