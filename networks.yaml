@@ -190,3 +190,13 @@ avalanche:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     transactionHash: "0x59d28d6d6d9887dd0c00f0bdc04a25d90f6d0f8f52d39eb66a81379b3ed293bc"
     startBlock: 26387586
+polygon-zkevm:
+  network: polygon-zkevm
+  childChainGaugeV2Factory:
+    address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
+    transactionHash: "0xafa057ee3239bf5f250c35f466b121698e23118111a9379548a54f9fbea6b26f"
+    startBlock: 203653
+  authorizerAdaptorEntrypoint:
+    address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
+    transactionHash: "0xc06ecf323db248ff24f29e598e9f26dd04da736dd51aed2d4983f759744ab490"
+    startBlock: 203624
