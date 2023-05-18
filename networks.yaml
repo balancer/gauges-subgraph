@@ -6,35 +6,27 @@ goerli:
     startBlock: 8305794
   gaugeFactory:
     address: "0x224E808FBD9e491Be8988B8A0451FBF777C81B8A"
-    transactionHash: "0x2d5d9089caf830b09e6ab586b56b140e6e0ab28d2d2070425bfb97ada9c95d08"
     startBlock: 7001506
   gaugeV2Factory:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
-    transactionHash: "0xf4281462a669f2e6a10ffcee1e24e60ce807acc8cfd8fc86697050b99035f0d0"
     startBlock: 7460127
   singleRecipientGaugeFactory:
     address: "0xd14FFA46C211eac64338c27549c3312380f850Fa"
-    transactionHash: "0xa552176f1c626fdb1109bde8daed0bd6746d495142ce72dbfb8f350d6e8d24fe"
     startBlock: 7001540
   singleRecipientGaugeV2Factory:
     address: "0xE3881627B8DeeBCCF9c23B291430a549Fc0bE5F7"
-    transactionHash: "0xa01ee6d2fdb0d1cd878ac577154ca526159d04a125569546f71e041de11803a3"
     startBlock: 8538547
   gaugeController:
     address: "0xBB1CE49b16d55A1f2c6e88102f32144C7334B116"
-    transactionHash: "0x1bc729c9985648b7785d46fb806ceff3e32d1ef9963e664af7a5ba15d0b73b23"
     startBlock: 7001464
   votingEscrow:
     address: "0x33A99Dcc4C85C014cf12626959111D5898bbCAbF"
-    transactionHash: "0x172ba908936fabe43044de42694598c9e0923500eabfebede6c97112005b255e"
     startBlock: 7001463
   childChainGaugeV2Factory:
     address: "0x7Ba29fE8E83dd6097A7298075C4AFfdBda3121cC"
-    transactionHash: "0xefae73eda892b77d6f0347a3ceab8f027f16f7f29c0aee59a82be40dadf730d4"
     startBlock: 8706166
   authorizerAdaptorEntrypoint:
     address: "0xacAaC3e6D6Df918Bf3c809DFC7d42de0e4a72d4C"
-    transactionHash: "0x9aa8cff640c2a1992c0ad8732b202adada780c2ffb659dc1a31a2a92777fc14e"
     startBlock: 8013204
 mainnet:
   network: mainnet
@@ -44,63 +36,48 @@ mainnet:
     startBlock: 16419620
   gaugeFactory:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
-    transactionHash: "0x69b9fe9b5530d8640cb66546dffd7deeca2bdf40e005caf3049836fa031b640d"
     startBlock: 14457664
   gaugeV2Factory:
     address: "0xf1665E19bc105BE4EDD3739F88315cC699cc5b65"
-    transactionHash: "0xf01b94a0fbbaa2c3c77b88dac38cf7ace5969bafa8702ee3c085f373e46f2751"
     startBlock: 15399251
   singleRecipientGaugeFactory:
     address: "0x94f68b54191F62f781Fe8298A8A5Fa3ed772d227"
-    transactionHash: "0xe4268aa3fbd18072c7bd95ab145b3c955af635997d5c8aff3c766f1ab5cb8b6f"
     startBlock: 14457748
   singleRecipientGaugeV2Factory:
     address: "0x4fb47126Fa83A8734991E41B942Ac29A3266C968"
-    transactionHash: "0xe50c6c6cf7a08c64b5a2d7207a11c8c6a4d527ceac99958089c2dc65a5057583"
     startBlock: 16686720
   gaugeController:
     address: "0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD"
-    transactionHash: "0x69d0355862729073f8d25ef9d6d3ecaa1f001f7e339a465430326c931125b3c6"
     startBlock: 14457014
   votingEscrow:
     address: "0xC128a9954e6c874eA3d62ce62B468bA073093F25"
-    transactionHash: "0x3d421900747b1793d12c516b9d20057327a1057b76a56b98b0556d18d70571f3"
     startBlock: 14457013
   omniVotingEscrow:
     address: "0xa224C9C7371e7DA1E5DE87bd7CB6688619c28Eb2"
-    transactionHash: "0x251450176390046888c13abc4eea6c4d8f622a246f593b7190f8739da9cf4720"
     startBlock: 17224343
   arbitrumRootGaugeFactory:
     address: "0xad901309d9e9DbC5Df19c84f729f429F0189a633"
-    transactionHash: "0x8562ca63b19952e67ea14b1b5d3e7a9bf3fce96df80474adb7d88ead72cb6db8"
     startBlock: 14580456
   arbitrumRootGaugeV2Factory:
     address: "0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7"
-    transactionHash: "0xb248cc9ba244d101fefb51f6b273bd91692aa83288b07d44af9628b0c15ddb23"
     startBlock: 15399347
   polygonRootGaugeFactory:
     address: "0x4C4287b07d293E361281bCeEe8715c8CDeB64E34"
-    transactionHash: "0xcc3044f91aed68a5811d2b180b5a21528592bbf5eacf2108647957ab7dc25dbe"
     startBlock: 14577894
   polygonRootGaugeV2Factory:
     address: "0xa98Bce70c92aD2ef3288dbcd659bC0d6b62f8F13"
-    transactionHash: "0xd10a4b1d88388a71099e19d1e3546607d232372d3e35fc8b16a5b6ced1c46b77"
     startBlock: 15399420
   optimismRootGaugeFactory:
     address: "0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8"
-    transactionHash: "0xf0328cf6727cb365162b10c18c80e01529cee4c8d22b51827e6834f11c7f2157"
     startBlock: 15141554
   optimismRootGaugeV2Factory:
     address: "0x866D4B65694c66fbFD15Dd6fa933D0A6b3940A36"
-    transactionHash: "0xfe9343c5f8457996f1ae1e218e80cbfe28e582cb9d12271b1e6c024b89f11ef0"
     startBlock: 15399472
   gnosisRootGaugeV2Factory:
     address: "0x2a18B396829bc29F66a1E59fAdd7a0269A6605E8"
-    transactionHash: "0xbdd20d395f0af20c81f988e61479c6f31862b8a33584ca0b44de7d874aaef0e4"
     startBlock: 16687758
   authorizerAdaptorEntrypoint:
     address: "0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA"
-    transactionHash: "0xfe4e542bea9a1508ba030bb73cd7e44c03dc80f585adbb6d578a04a171d6bcf4"
     startBlock: 16042168
 polygon:
   network: matic
@@ -112,15 +89,12 @@ polygon:
     startBlock: 38152461
   childChainGaugeFactory:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
-    transactionHash: "0x0dcff784ada6e0e4e21db3da70e09545d31c3e425cf028df7d1289f914a7f1d5"
     startBlock: 27098624
   childChainGaugeV2Factory:
     address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
-    transactionHash: "0xdf70ba12273e9bc62d4c70de2d677b6ed247871dc9bb7b36f09198843e062ab9"
     startBlock: 40687417
   authorizerAdaptorEntrypoint:
     address: "0xAB093cd16e765b5B23D34030aaFaF026558e0A19"
-    transactionHash: "0x5bfda7dda2c1f2b7624d0be4874b66b51150f9df7a623cab05c539a8570a15e0"
     startBlock: 36020863
 arbitrum:
   network: arbitrum-one
@@ -132,19 +106,15 @@ arbitrum:
     startBlock: 53475240
   omniVotingEscrowChild:
     address: "0xF5CbDBAfd62F93191eC1a0461352819D0ecFDd5c"
-    transactionHash: "0x5f32fc32c55493f7412315ab4a7156df3ccaee8314d9b3fadb02629531f3bd51"
     startBlock: 80501659
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
-    transactionHash: "0x4cc294e3e988adc1d0f0244451426583284f5270acb865f87ac55e18fe405874"
     startBlock: 9756975
   childChainGaugeV2Factory:
     address: "0x6817149cb753BF529565B4D023d7507eD2ff4Bc0"
-    transactionHash: "0xe5c75ef317212901cb64bbac65ccb8ccd4bfd4628aa2b31699d67668a7871aef"
     startBlock: 72942741
   authorizerAdaptorEntrypoint:
     address: "0x97207B095e4D5C9a6e4cfbfcd2C3358E03B90c4A"
-    transactionHash: "0x5fe116d6c6499d960c5b19e7a5a06f5a5f99a2afe50312c450279f8907350c4f"
     startBlock: 40916259
 optimism:
   network: optimism
@@ -153,15 +123,12 @@ optimism:
   #   block: 97500000
   childChainGaugeFactory:
     address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
-    transactionHash: "0x4afed3f4aaa2e32a3313db5fe5e42faf54b4d59f8003bed8316914510c4112f7"
     startBlock: 9052485
   childChainGaugeV2Factory:
     address: "0xa523f47A933D5020b23629dDf689695AA94612Dc"
-    transactionHash: "0x7515c98129e75ecc496d396d4e430134777781b822aeb31f0d2147a3bdbe8c66"
     startBlock: 83239534
   authorizerAdaptorEntrypoint:
     address: "0xed86ff0c507D3AF5F35d3523B77C17415FCfFaCb"
-    transactionHash: "0xefb058cbe562f0bc7687ddb67ca2f01c65d5e91238e2b5819da3c25a3410cca5"
     startBlock: 41872979
 gnosis:
   network: gnosis
@@ -170,23 +137,29 @@ gnosis:
     startBlock: 26892431
   childChainGaugeFactory:
     address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
-    transactionHash: "0x80b812c2b44d29e5e6c5275ece19ca506933f63002890a733ec38f925e6aee97"
     startBlock: 26615210
   childChainGaugeV2Factory:
     address: "0x83E443EF4f9963C77bd860f94500075556668cb8"
-    transactionHash: "0x9f8de23e7ae78fcd8b7821595470910b7a861791aacb650c62adb643a552dee8"
     startBlock: 27088528
   authorizerAdaptorEntrypoint:
     address: "0x8F42aDBbA1B16EaAE3BB5754915E0D06059aDd75"
-    transactionHash: "0x125b85b96ba628ecf87c452e55f2760109d63fcfad7051d1534c4daa63fb5305"
     startBlock: 25140518
 avalanche:
   network: avalanche
   childChainGaugeFactory:
     address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
-    transactionHash: "0xc8a449d928a916389eea16be827b0432d169975fead105d87850136581a108ca"
     startBlock: 26386697
   authorizerAdaptorEntrypoint:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
-    transactionHash: "0x59d28d6d6d9887dd0c00f0bdc04a25d90f6d0f8f52d39eb66a81379b3ed293bc"
     startBlock: 26387586
+polygon-zkevm:
+  network: polygon-zkevm
+  EventEmitter:
+    address: "0x16e29e62cC00fCBa1234C7ad89BD731427c8D9aF"
+    startBlock: 281361
+  childChainGaugeV2Factory:
+    address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
+    startBlock: 203653
+  authorizerAdaptorEntrypoint:
+    address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
+    startBlock: 203624
