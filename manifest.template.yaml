@@ -29,6 +29,8 @@ dataSources:
       abis:
         - name: EventEmitter
           file: ./abis/EventEmitter.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
       eventHandlers:
         - event: LogArgument(indexed address,indexed bytes32,bytes,uint256)
           handler: handleLogArgument
@@ -483,6 +485,8 @@ dataSources:
       abis:
         - name: authorizerAdaptorEntrypoint
           file: ./abis/AuthorizerAdaptorEntrypoint.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
       entities:
         - LiquidityGauge
       eventHandlers:
@@ -557,6 +561,8 @@ templates:
           file: ./abis/ERC20.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV2.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleRelativeWeightCapChanged
