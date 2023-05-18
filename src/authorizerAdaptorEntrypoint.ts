@@ -1,9 +1,13 @@
 import { Bytes } from "@graphprotocol/graph-ts";
 import { ActionPerformed } from "./types/AuthorizerAdaptorEntrypoint/authorizerAdaptorEntrypoint";
 import { bytesToAddress } from "./utils/misc";
-import { setChildChainGaugeRewardData } from "./utils/gauge";
+import { setRewardData } from "./utils/gauge";
 import { LiquidityGauge } from "./types/schema";
 
+/**
+ * When a reward token is added to a gauge via the AuthorizerAdaptorEntrypoint, we set the reward data for that token
+ * In doing so, we create the reward token entity if it does not exist, as well as an entry in the gauge's rewardTokensList
+ */
 function handleAddRewardToken(event: ActionPerformed): void {
   const gaugeAddress = event.params.target;
   const callData = event.params.data;
@@ -14,18 +18,7 @@ function handleAddRewardToken(event: ActionPerformed): void {
   let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
   if (!gauge) return;
 
-  let rewardTokens = new Array<Bytes>(1);
-  rewardTokens[0] = tokenAddress;
-
-  if (gauge.rewardTokensList == null) {
-    gauge.rewardTokensList = rewardTokens;
-  } else {
-    gauge.rewardTokensList = gauge.rewardTokensList.concat(rewardTokens);
-  }
-
-  gauge.save();
-
-  setChildChainGaugeRewardData(gaugeAddress, tokenAddress);
+  setRewardData(gaugeAddress, tokenAddress);
 }
 
 export function handleActionPerformed(event: ActionPerformed): void {

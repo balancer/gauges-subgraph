@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts';
 
 import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
 import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD } from './constants';
@@ -12,6 +12,10 @@ export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): 
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
+/** 
+ * Returns the reward token entity for a given gauge and token address
+ * Creates the entity if it does not exist, as well as an entry in the gauge's rewardTokensList
+ */
 export function getRewardToken(tokenAddress: Address, gaugeAddress: Address): RewardToken {
   let id = getRewardTokenId(tokenAddress, gaugeAddress);
   let rewardToken = RewardToken.load(id);
@@ -23,6 +27,18 @@ export function getRewardToken(tokenAddress: Address, gaugeAddress: Address): Re
     rewardToken.decimals = getTokenDecimals(tokenAddress);
     rewardToken.totalDeposited = ZERO_BD;
     rewardToken.save();
+
+    let gauge = LiquidityGauge.load(gaugeAddress.toHex());
+    if (!gauge) return rewardToken;
+    let rewardTokensList = gauge.rewardTokensList;
+    if (rewardTokensList == null) {
+      rewardTokensList = new Array<Bytes>(1);
+      rewardTokensList[0] = tokenAddress;
+    } else {
+      rewardTokensList.push(tokenAddress);
+    }
+    gauge.rewardTokensList = rewardTokensList;
+    gauge.save();  
   }
 
   return rewardToken;
@@ -144,11 +160,23 @@ export function getGaugeType(typeNumber: BigInt): GaugeType {
   return type;
 }
 
-export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress: Address): void {
+/**
+ * Sets the reward data for a reward token of a given gauge
+ * If the token does not exist on the gauge, it will be created
+ * @param gaugeAddress 
+ * @param tokenAddress 
+ * @returns 
+ */
+export function setRewardData(gaugeAddress: Address, tokenAddress: Address): void {
   let gauge = LiquidityGauge.load(gaugeAddress.toHex());
   if (!gauge) return;
 
-  let rewardContractAddress = gauge.streamer ? bytesToAddress(gauge.streamer) : gaugeAddress;
+  // the reward data is stored on the gauge contract, unless the gauge has a streamer associated with it
+  let rewardContractAddress = gaugeAddress;
+  let streamerAdress = gauge.streamer;
+  if (streamerAdress) {
+    rewardContractAddress = bytesToAddress(streamerAdress);
+  }
 
   let rewardContract = RewardContract.bind(rewardContractAddress);
   let rewardDataCall = rewardContract.try_reward_data(tokenAddress);
@@ -160,6 +188,7 @@ export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress
     return;
   }
 
+  // getRewardToken will create the token if it does not exist
   const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
   const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
   const receivedScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);

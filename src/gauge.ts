@@ -3,7 +3,7 @@ import { ZERO_ADDRESS } from "./utils/constants";
 import {
   getGaugeShare,
   getRewardToken,
-  setChildChainGaugeRewardData,
+  setRewardData,
 } from "./utils/gauge";
 import { scaleDown, scaleDownBPT } from "./utils/maths";
 import {
@@ -30,14 +30,23 @@ import {
 } from "./types/templates/ChildChainStreamer/ChildChainStreamer";
 import { bytesToAddress } from "./utils/misc";
 
+/**
+ * On mainnet we can detect when a reward token is deposited into a gauge by listening for the Deposit_reward_tokenCall
+ * When a reward token is deposited in the gauge, we set its reward data, creating the reward token entity in the process if it doesn't exist
+ */
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
   /* eslint-disable no-underscore-dangle */
-  const address = call.inputs._reward_token;
+  const gaugeAddress = call.to;
+  const tokenAddress = call.inputs._reward_token;
   const amount = call.inputs._amount;
   /* eslint-enable no-underscore-dangle */
 
-  const rewardToken = getRewardToken(address, call.to);
+  let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
+  if (!gauge) return;
+  setRewardData(gaugeAddress, tokenAddress);
+
+  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
   const amountScaled = scaleDown(amount, rewardToken.decimals);
   rewardToken.totalDeposited = rewardToken.totalDeposited.plus(amountScaled);
   rewardToken.save();
@@ -83,7 +92,7 @@ export function handleTransfer(event: Transfer): void {
   if (!rewardTokens) return;
 
   for (let i: i32 = 0; i < rewardTokens.length; i++) {
-    setChildChainGaugeRewardData(gaugeAddress, bytesToAddress(rewardTokens[i]));
+    setRewardData(gaugeAddress, bytesToAddress(rewardTokens[i]));
   }
 }
 
@@ -275,9 +284,15 @@ export function handleSingleRecipientGaugeRelativeWeightCapChanged(
   gauge.save();
 }
 
+/**
+ * RewardDurationUpdated is an event emitted by the ChildChainStreamer contract
+ * We use it as a trigger to update the reward data of the respecitve token
+ * on the gauge asssociated with the ChildChainStreamer contract in question
+ */
 export function handleRewardDurationUpdated(
   event: RewardDurationUpdated,
 ): void {
+  // find the gauge associated with the ChildChainStreamer contract
   let streamer = ChildChainStreamer.bind(event.address);
   let gaugeCall = streamer.try_reward_receiver();
   if (gaugeCall.reverted) return;
@@ -287,20 +302,5 @@ export function handleRewardDurationUpdated(
   if (!gauge) return;
 
   const rewardToken = event.params.reward_token;
-
-  if (gauge.rewardTokensList?.includes(rewardToken)) {
-    setChildChainGaugeRewardData(gaugeAddress, rewardToken);
-    return;
-  }
-
-  let rewardTokens = new Array<Bytes>(1);
-  rewardTokens[0] = rewardToken;
-
-  if (gauge.rewardTokensList == null) {
-    gauge.rewardTokensList = rewardTokens;
-  } else {
-    gauge.rewardTokensList = gauge.rewardTokensList.concat(rewardTokens);
-  }
-
-  gauge.save();
+  setRewardData(gaugeAddress, rewardToken);
 }

@@ -1,6 +1,6 @@
 import { LogArgument } from './types/EventEmitter/EventEmitter';
 import { Pool, LiquidityGauge } from './types/schema';
-import { setChildChainGaugeRewardData } from './utils/gauge';
+import { setRewardData } from './utils/gauge';
 import { bytesToAddress } from './utils/misc';
 
 export function handleLogArgument(event: LogArgument): void {
@@ -12,12 +12,12 @@ export function handleLogArgument(event: LogArgument): void {
     setPreferentialGauge(event);
   }
   // keccak256(setChildChainGaugeRewardsData) = 0x685ed9250f0df428a962860f87b2d95fbbd38473b0f6773f3650d19ffbbb9fb5
-  if (identifier == '0x685ed9250f0df428a962860f87b2d95fbbd38473b0f6773f3650d19ffbbb9fb5') {
-    setChildChainGaugeRewardsData(event);
+  if (identifier == '0x94e5a0dff823a8fce9322f522279854e2370a9ef309a74a7a86367e2a2872b2d') {
+    setGaugeRewardsData(event);
   }
 }
 
-function setChildChainGaugeRewardsData(event: LogArgument): void {
+function setGaugeRewardsData(event: LogArgument): void {
   /**
    * Sets the reward data for all reward tokens of a given gauge
    *
@@ -31,7 +31,7 @@ function setChildChainGaugeRewardsData(event: LogArgument): void {
   if (!rewardTokens) return;
 
   for (let i: i32 = 0; i < rewardTokens.length; i++) {
-    setChildChainGaugeRewardData(gaugeAddress, bytesToAddress(rewardTokens[i]));
+    setRewardData(bytesToAddress(gaugeAddress), bytesToAddress(rewardTokens[i]));
   }
 }
 
