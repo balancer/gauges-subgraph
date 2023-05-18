@@ -669,24 +669,3 @@ templates:
         - function: unkillGauge()
           handler: handleSingleRecipientUnkillGauge
       {{/if}}
-  - kind: ethereum/contract
-    name: ChildChainRewardToken
-    # prettier-ignore
-    network: {{network}}
-    source:
-      abi: ERC20
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/gauge.ts
-      entities:
-        - RewardToken
-      abis:
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ChildChainStreamer
-          file: ./abis/ChildChainStreamer.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleChildChainTransfer

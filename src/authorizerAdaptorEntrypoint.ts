@@ -1,8 +1,8 @@
-import { Bytes, dataSource, ethereum } from "@graphprotocol/graph-ts";
+import { Bytes } from "@graphprotocol/graph-ts";
 import { ActionPerformed } from "./types/AuthorizerAdaptorEntrypoint/authorizerAdaptorEntrypoint";
 import { bytesToAddress } from "./utils/misc";
-import { getRewardToken } from "./utils/gauge";
-import { ChildChainRewardToken } from "./types/templates";
+import { setChildChainGaugeRewardData } from "./utils/gauge";
+import { LiquidityGauge } from "./types/schema";
 
 function handleAddRewardToken(event: ActionPerformed): void {
   const gaugeAddress = event.params.target;
@@ -10,13 +10,22 @@ function handleAddRewardToken(event: ActionPerformed): void {
   // parse callData, which is a 32-byte token address followed by a 32-byte distributor address
   let token = Bytes.fromUint8Array(callData.subarray(0, 32));
   let tokenAddress = bytesToAddress(token);
-  // create the reward token entity if it doesn't exist
-  getRewardToken(tokenAddress, gaugeAddress);
-  // create the ChildChainRewardToken datasource if we're not on mainnet
-  // TODO: improve logic to remove the need to create this datasource
-  if (dataSource.network() != "mainnet") {
-    ChildChainRewardToken.create(tokenAddress);
+
+  let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
+  if (!gauge) return;
+
+  let rewardTokens = new Array<Bytes>(1);
+  rewardTokens[0] = tokenAddress;
+
+  if (gauge.rewardTokensList == null) {
+    gauge.rewardTokensList = rewardTokens;
+  } else {
+    gauge.rewardTokensList = gauge.rewardTokensList.concat(rewardTokens);
   }
+
+  gauge.save();
+
+  setChildChainGaugeRewardData(gaugeAddress, tokenAddress);
 }
 
 export function handleActionPerformed(event: ActionPerformed): void {

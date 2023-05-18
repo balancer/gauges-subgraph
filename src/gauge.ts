@@ -1,3 +1,4 @@
+import { Bytes } from "@graphprotocol/graph-ts";
 import { ZERO_ADDRESS } from "./utils/constants";
 import {
   getGaugeShare,
@@ -27,8 +28,7 @@ import {
   ChildChainStreamer,
   RewardDurationUpdated,
 } from "./types/templates/ChildChainStreamer/ChildChainStreamer";
-
-import { ChildChainRewardToken } from "./types/templates";
+import { bytesToAddress } from "./utils/misc";
 
 // eslint-disable-next-line camelcase
 export function handleDepositRewardToken(call: Deposit_reward_tokenCall): void {
@@ -78,6 +78,13 @@ export function handleTransfer(event: Transfer): void {
   }
 
   gauge.save();
+
+  const rewardTokens = gauge.rewardTokensList;
+  if (!rewardTokens) return;
+
+  for (let i: i32 = 0; i < rewardTokens.length; i++) {
+    setChildChainGaugeRewardData(gaugeAddress, bytesToAddress(rewardTokens[i]));
+  }
 }
 
 export function handleRootKillGauge(call: KillGaugeCall): void {
@@ -267,25 +274,33 @@ export function handleSingleRecipientGaugeRelativeWeightCapChanged(
   gauge.relativeWeightCap = scaleDownBPT(event.params.new_relative_weight_cap);
   gauge.save();
 }
+
 export function handleRewardDurationUpdated(
   event: RewardDurationUpdated,
 ): void {
-  // TODO: temp commenting this out to speed up a full sync
-  // ChildChainRewardToken.create(event.params.reward_token);
-
   let streamer = ChildChainStreamer.bind(event.address);
   let gaugeCall = streamer.try_reward_receiver();
-  if (!gaugeCall.reverted) {
-    setChildChainGaugeRewardData(gaugeCall.value, event.params.reward_token);
-  }
-}
+  if (gaugeCall.reverted) return;
 
-export function handleChildChainTransfer(event: Transfer): void {
-  // eslint-disable-next-line no-underscore-dangle
-  let toAddress = event.params._to;
-  let gauge = LiquidityGauge.load(toAddress.toHexString());
-
+  const gaugeAddress = gaugeCall.value;
+  let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
   if (!gauge) return;
 
-  setChildChainGaugeRewardData(toAddress, event.address);
+  const rewardToken = event.params.reward_token;
+
+  if (gauge.rewardTokensList?.includes(rewardToken)) {
+    setChildChainGaugeRewardData(gaugeAddress, rewardToken);
+    return;
+  }
+
+  let rewardTokens = new Array<Bytes>(1);
+  rewardTokens[0] = rewardToken;
+
+  if (gauge.rewardTokensList == null) {
+    gauge.rewardTokensList = rewardTokens;
+  } else {
+    gauge.rewardTokensList = gauge.rewardTokensList.concat(rewardTokens);
+  }
+
+  gauge.save();
 }

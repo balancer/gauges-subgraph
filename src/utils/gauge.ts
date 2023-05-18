@@ -6,7 +6,7 @@ import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/Liq
 import { bytesToAddress, createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
 import { scaleDown, scaleDownBPT } from './maths';
-import { ChildChainStreamer } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
+import { ChildChainStreamer as RewardContract } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
 
 export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): string {
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
@@ -148,11 +148,10 @@ export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress
   let gauge = LiquidityGauge.load(gaugeAddress.toHex());
   if (!gauge) return;
 
-  let streamerAdress = gauge.streamer;
-  if (!streamerAdress) return;
+  let rewardContractAddress = gauge.streamer ? bytesToAddress(gauge.streamer) : gaugeAddress;
 
-  let streamer = ChildChainStreamer.bind(bytesToAddress(streamerAdress));
-  let rewardDataCall = streamer.try_reward_data(tokenAddress);
+  let rewardContract = RewardContract.bind(rewardContractAddress);
+  let rewardDataCall = rewardContract.try_reward_data(tokenAddress);
   if (rewardDataCall.reverted) {
     log.warning('Call to reward_data() failed: {} {}', [
       gaugeAddress.toHexString(),

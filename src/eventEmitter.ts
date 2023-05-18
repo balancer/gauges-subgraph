@@ -1,5 +1,7 @@
 import { LogArgument } from './types/EventEmitter/EventEmitter';
 import { Pool, LiquidityGauge } from './types/schema';
+import { setChildChainGaugeRewardData } from './utils/gauge';
+import { bytesToAddress } from './utils/misc';
 
 export function handleLogArgument(event: LogArgument): void {
   const identifier = event.params.identifier.toHexString();
@@ -8,6 +10,28 @@ export function handleLogArgument(event: LogArgument): void {
   // keccak256(setPreferentialGauge) = 0x88aea7780a038b8536bb116545f59b8a089101d5e526639d3c54885508ce50e2
   if (identifier == '0x88aea7780a038b8536bb116545f59b8a089101d5e526639d3c54885508ce50e2') {
     setPreferentialGauge(event);
+  }
+  // keccak256(setChildChainGaugeRewardsData) = 0x685ed9250f0df428a962860f87b2d95fbbd38473b0f6773f3650d19ffbbb9fb5
+  if (identifier == '0x685ed9250f0df428a962860f87b2d95fbbd38473b0f6773f3650d19ffbbb9fb5') {
+    setChildChainGaugeRewardsData(event);
+  }
+}
+
+function setChildChainGaugeRewardsData(event: LogArgument): void {
+  /**
+   * Sets the reward data for all reward tokens of a given gauge
+   *
+   * @param message - The gauge address (eg. 0x12345abce... - all lowercase)
+   */
+  const gaugeAddress = event.params.message;
+  const gauge = LiquidityGauge.load(gaugeAddress.toHexString());
+  if (!gauge) return;
+
+  const rewardTokens = gauge.rewardTokensList;
+  if (!rewardTokens) return;
+
+  for (let i: i32 = 0; i < rewardTokens.length; i++) {
+    setChildChainGaugeRewardData(gaugeAddress, bytesToAddress(rewardTokens[i]));
   }
 }
 
