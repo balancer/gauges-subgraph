@@ -288,7 +288,8 @@ export function handleSingleRecipientGaugeRelativeWeightCapChanged(
  * RewardDurationUpdated is an event emitted by the ChildChainStreamer contract
  * It is emitted when a token if added to the ChildChainStreamer contract, so
  * we use it as a trigger to update the reward data of the respecitve token
- * on the gauge asssociated with the ChildChainStreamer contract in question
+ * on the gauge asssociated with the ChildChainStreamer contract in question.
+ * If the token does not exist on the gauge, we create it.
  */
 export function handleRewardDurationUpdated(
   event: RewardDurationUpdated,
