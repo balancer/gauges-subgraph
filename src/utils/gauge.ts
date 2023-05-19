@@ -1,12 +1,14 @@
-import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts';
+import { Address, BigDecimal, BigInt, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
 
 import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
-import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD } from './constants';
+import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD, isL1Factory } from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
 import { bytesToAddress, createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
 import { scaleDown, scaleDownBPT } from './maths';
-import { ChildChainStreamer as RewardContract } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
+import { ChildChainStreamer } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
+import { ChildChainLiquidityGaugeV2 } from '../types/templates/ChildChainStreamer/ChildChainLiquidityGaugeV2';
+
 
 export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): string {
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
@@ -160,41 +162,99 @@ export function getGaugeType(typeNumber: BigInt): GaugeType {
   return type;
 }
 
+// Define a simple struct to hold the data returned by calls to reward_data()
+class RewardData {
+  rate: BigInt = ZERO;
+  period_finish: BigInt = ZERO;
+  received: BigInt = ZERO;
+  reverted: boolean = false;
+}
+
 /**
  * Sets the reward data for a reward token of a given gauge
  * If the token does not exist on the gauge, it will be created
- * @param gaugeAddress 
- * @param tokenAddress 
- * @returns 
  */
 export function setRewardData(gaugeAddress: Address, tokenAddress: Address): void {
   let gauge = LiquidityGauge.load(gaugeAddress.toHex());
   if (!gauge) return;
 
-  // the reward data is stored on the gauge contract, unless the gauge has a streamer associated with it
-  let rewardContractAddress = gaugeAddress;
-  let streamerAdress = gauge.streamer;
-  if (streamerAdress) {
-    rewardContractAddress = bytesToAddress(streamerAdress);
+
+  // On L1 gauges and child chains gauges V2, reward data is stored in the gauge itself
+  // On child chains gauges V1, reward data is stored in the streamer contract
+  // Moreover, the output of reward_data() is different for mainnet vs child chain gauges V1 vs child chain gauges V2.
+  // This means we can't reuse the same contract on .bind, so we make speficic functions for each case
+  
+  let reward_data: RewardData;
+  let streamer = gauge.streamer;
+  if (streamer) { 
+    let streamerAddress = bytesToAddress(streamer);
+    reward_data = readRewardDataFromStreamer(streamerAddress, tokenAddress);
+  } else if (isL1Factory(Address.fromString(gauge.factory))) {
+    reward_data = readRewardDataFromL1Gauge(gaugeAddress, tokenAddress);
+  } else {
+    reward_data = readRewardDataFromChildChainLiquidityGaugeV2(gaugeAddress, tokenAddress);
   }
 
-  let rewardContract = RewardContract.bind(rewardContractAddress);
-  let rewardDataCall = rewardContract.try_reward_data(tokenAddress);
+  if (reward_data.reverted) return;
+
+  // getRewardToken will create the token if it does not exist
+  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
+  rewardToken.periodFinish = reward_data.period_finish;
+  rewardToken.rate = scaleDownBPT(reward_data.rate);
+  if (reward_data.received.gt(ZERO)) {
+    rewardToken.totalDeposited = scaleDown(reward_data.received, rewardToken.decimals)
+  }
+  rewardToken.save();
+}
+
+function readRewardDataFromStreamer(streamerAddress: Address, tokenAddress: Address) : RewardData {
+  let rewardData = new RewardData();
+  let streamerContract = ChildChainStreamer.bind(streamerAddress);
+  let rewardDataCall = streamerContract.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning('Call to reward_data() failed: {} {}', [
+      streamerAddress.toHexString(),
+      tokenAddress.toHexString(),
+    ]);
+    rewardData.reverted = true;
+  } else {
+    rewardData.rate = rewardDataCall.value.rate;
+    rewardData.period_finish = rewardDataCall.value.period_finish;
+    rewardData.received = rewardDataCall.value.received;
+  }
+  return rewardData;
+}
+
+function readRewardDataFromL1Gauge(gaugeAddress: Address, tokenAddress: Address) : RewardData {
+  let rewardData = new RewardData();
+  let gaugeContract = LiquidityGaugeTemplate.bind(gaugeAddress);
+  let rewardDataCall = gaugeContract.try_reward_data(tokenAddress);
   if (rewardDataCall.reverted) {
     log.warning('Call to reward_data() failed: {} {}', [
       gaugeAddress.toHexString(),
       tokenAddress.toHexString(),
     ]);
-    return;
+    rewardData.reverted = true;
+  } else {
+    rewardData.rate = rewardDataCall.value.rate;
+    rewardData.period_finish = rewardDataCall.value.period_finish;
   }
+  return rewardData;
+}
 
-  // getRewardToken will create the token if it does not exist
-  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
-  const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
-  const receivedScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
-
-  rewardToken.periodFinish = rewardDataCall.value.period_finish;
-  rewardToken.totalDeposited = receivedScaled;
-  rewardToken.rate = rateScaled;
-  rewardToken.save();
+function readRewardDataFromChildChainLiquidityGaugeV2(gaugeAddress: Address, tokenAddress: Address) : RewardData {
+  let rewardData = new RewardData();
+  let gaugeContract = ChildChainLiquidityGaugeV2.bind(gaugeAddress);
+  let rewardDataCall = gaugeContract.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning('Call to reward_data() failed: {} {}', [
+      gaugeAddress.toHexString(),
+      tokenAddress.toHexString(),
+    ]);
+    rewardData.reverted = true;
+  } else {
+    rewardData.rate = rewardDataCall.value.rate;
+    rewardData.period_finish = rewardDataCall.value.period_finish;
+  }
+  return rewardData;
 }
