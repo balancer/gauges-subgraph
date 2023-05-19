@@ -598,6 +598,8 @@ templates:
           file: ./abis/RewardsOnlyGauge.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGauge.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
