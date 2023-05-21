@@ -12,7 +12,7 @@ function handleAddRewardToken(event: ActionPerformed): void {
   const gaugeAddress = event.params.target;
   const callData = event.params.data;
   // parse callData, which is a 4-byte selector, followed by a 32-byte token address followed by a 32-byte distributor address
-  let token = Bytes.fromUint8Array(callData.subarray(4, 36));
+  let token = Bytes.fromUint8Array(callData.subarray(16, 36));
   let tokenAddress = bytesToAddress(token);
 
   let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
