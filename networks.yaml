@@ -119,7 +119,7 @@ arbitrum:
 optimism:
   network: optimism
   graft:
-    base: QmNnLctiWkhVEpUxVGvGLfajH7F75EPo7RF1WSsziESKGm
+    base: QmSeFvZomou9922Pi43zDTx7KU8h9kzi8VDPNJ8ckgQdb9
     block: 99765962
   EventEmitter:
     address: "0x082990116f256E078572a1b69772115d2cF6b0a2"
