@@ -118,9 +118,9 @@ arbitrum:
     startBlock: 40916259
 optimism:
   network: optimism
-  # graft:
-  #   base: QmNnLctiWkhVEpUxVGvGLfajH7F75EPo7RF1WSsziESKGm
-  #   block: 97500000
+  graft:
+    base: QmNnLctiWkhVEpUxVGvGLfajH7F75EPo7RF1WSsziESKGm
+    block: 99765962
   EventEmitter:
     address: "0x082990116f256E078572a1b69772115d2cF6b0a2"
     startBlock: 99124541
