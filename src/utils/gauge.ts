@@ -225,7 +225,8 @@ class RewardData {
 
   received: BigInt = ZERO;
 
-  reverted = false;
+  // eslint-disable-next-line
+  reverted: boolean = false;
 }
 
 /**
