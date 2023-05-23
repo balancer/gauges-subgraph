@@ -1,4 +1,4 @@
-import { Bytes, log } from '@graphprotocol/graph-ts';
+import { Bytes } from '@graphprotocol/graph-ts';
 import { ActionPerformed } from './types/AuthorizerAdaptorEntrypoint/authorizerAdaptorEntrypoint';
 import { bytesToAddress } from './utils/misc';
 import { setRewardData } from './utils/gauge';
@@ -23,12 +23,8 @@ function handleAddRewardToken(event: ActionPerformed): void {
 
 export function handleActionPerformed(event: ActionPerformed): void {
   const selector = event.params.selector.toHexString();
-  // although selector is only 4-byte, it is indexed (ie an event topic) so we need to pad it to 32 bytes
-  if (selector == '0xe8de0d4d') {
+  if (selector == '0xe8de0d4d00000000000000000000000000000000000000000000000000000000') {
     // add_reward(_reward_token (address), _distributor (address))
     handleAddRewardToken(event);
-  }
-  else {
-    log.warning('handleActionPerformed: unknown selector: {}', [selector]);
   }
 }
