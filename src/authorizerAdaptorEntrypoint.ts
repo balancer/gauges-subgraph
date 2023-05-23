@@ -23,7 +23,7 @@ function handleAddRewardToken(event: ActionPerformed): void {
 
 export function handleActionPerformed(event: ActionPerformed): void {
   const selector = event.params.selector.toHexString();
-  if (selector == '0xe8de0d4d00000000000000000000000000000000000000000000000000000000') {
+  if (selector == '0xe8de0d4d') {
     // add_reward(_reward_token (address), _distributor (address))
     handleAddRewardToken(event);
   }
