@@ -8,11 +8,17 @@ export function handleLogArgument(event: LogArgument): void {
 
   // convention: identifier = keccak256(function_name)
   // keccak256(setPreferentialGauge) = 0x88aea7780a038b8536bb116545f59b8a089101d5e526639d3c54885508ce50e2
-  if (identifier == '0x88aea7780a038b8536bb116545f59b8a089101d5e526639d3c54885508ce50e2') {
+  if (
+    identifier ==
+    '0x88aea7780a038b8536bb116545f59b8a089101d5e526639d3c54885508ce50e2'
+  ) {
     setPreferentialGauge(event);
   }
   // keccak256(setChildChainGaugeRewardsData) = 0x685ed9250f0df428a962860f87b2d95fbbd38473b0f6773f3650d19ffbbb9fb5
-  if (identifier == '0x94e5a0dff823a8fce9322f522279854e2370a9ef309a74a7a86367e2a2872b2d') {
+  if (
+    identifier ==
+    '0x94e5a0dff823a8fce9322f522279854e2370a9ef309a74a7a86367e2a2872b2d'
+  ) {
     setGaugeRewardsData(event);
   }
 }
@@ -31,7 +37,10 @@ function setGaugeRewardsData(event: LogArgument): void {
   if (!rewardTokens) return;
 
   for (let i: i32 = 0; i < rewardTokens.length; i++) {
-    setRewardData(bytesToAddress(gaugeAddress), bytesToAddress(rewardTokens[i]));
+    setRewardData(
+      bytesToAddress(gaugeAddress),
+      bytesToAddress(rewardTokens[i]),
+    );
   }
 }
 
@@ -57,7 +66,7 @@ function setPreferentialGauge(event: LogArgument): void {
     let pool = Pool.load(poolId);
     if (pool == null) return;
 
-    pool.preferentialGauge = "";
+    pool.preferentialGauge = '';
     pool.save();
   } else {
     gauge.isPreferentialGauge = true;

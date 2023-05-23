@@ -1,8 +1,8 @@
-import { Bytes } from "@graphprotocol/graph-ts";
-import { ActionPerformed } from "./types/AuthorizerAdaptorEntrypoint/authorizerAdaptorEntrypoint";
-import { bytesToAddress } from "./utils/misc";
-import { setRewardData } from "./utils/gauge";
-import { LiquidityGauge } from "./types/schema";
+import { Bytes } from '@graphprotocol/graph-ts';
+import { ActionPerformed } from './types/AuthorizerAdaptorEntrypoint/authorizerAdaptorEntrypoint';
+import { bytesToAddress } from './utils/misc';
+import { setRewardData } from './utils/gauge';
+import { LiquidityGauge } from './types/schema';
 
 /**
  * When a reward token is added to a gauge via the AuthorizerAdaptorEntrypoint, we set the reward data for that token
@@ -23,7 +23,8 @@ function handleAddRewardToken(event: ActionPerformed): void {
 
 export function handleActionPerformed(event: ActionPerformed): void {
   const selector = event.params.selector.toHexString();
-  if (selector == "0xe8de0d4d") { // add_reward(_reward_token (address), _distributor (address))
+  if (selector == '0xe8de0d4d') {
+    // add_reward(_reward_token (address), _distributor (address))
     handleAddRewardToken(event);
   }
 }
