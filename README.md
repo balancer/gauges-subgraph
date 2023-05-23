@@ -1,1 +1,1 @@
-# Balancer Gauges and veBAL subgraph
+# Balancer Gauges and veBAL subgraphs
