@@ -567,6 +567,8 @@ templates:
           file: ./abis/ERC20.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV2.json
+        - name: ChildChainLiquidityGaugeV2
+          file: ./abis/ChildChainLiquidityGaugeV2.json
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleRelativeWeightCapChanged
