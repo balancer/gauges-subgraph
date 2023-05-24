@@ -50,7 +50,7 @@ function setPreferentialGauge(event: LogArgument): void {
    * It is expected that a new gauge will be set as preferential after unsetting the old one
    *
    * @param message - The gauge address (eg. 0x12345abce... - all lowercase)
-   * @param value - 0 if swapEnabled is to be set false; any other value sets it to true
+   * @param value - 0 if prefentialGauge is to be set false; any other value sets it to true
    */ //
   const gaugeId = event.params.message.toHexString();
   const gauge = LiquidityGauge.load(gaugeId);
