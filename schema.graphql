@@ -63,7 +63,7 @@ type VotingEscrowLock @entity {
   " Reference to VotingEscrow entity "
   votingEscrowID: VotingEscrow!
 
-  " Timestamp at which the data was created [seconds]. Same as timestamp "
+  " Timestamp at which the lcok was created [seconds]. Same as timestamp "
   updatedAt: Int!
 }
 
