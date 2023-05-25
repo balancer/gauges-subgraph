@@ -81,9 +81,9 @@ mainnet:
     startBlock: 16042168
 polygon:
   network: matic
-  # graft:
-  #   block: 42610000
-  #   base: QmTMYUbqpYZEYAzBTbMLmNgb13UyzdvyuKbfWMKJFzPWWB
+  graft:
+    block: 43134339
+    base: QmVt59K4gVfjnbHnNwN62p9DBn6znC51H99wnuUUJppMQX
   EventEmitter:
     address: "0xcdcECFa416EE3022030E707dC3EA13a8997D74c8"
     startBlock: 38152461
