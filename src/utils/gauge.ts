@@ -282,10 +282,10 @@ function readRewardDataFromStreamer(
   let streamerContract = ChildChainStreamer.bind(streamerAddress);
   let rewardDataCall = streamerContract.try_reward_data(tokenAddress);
   if (rewardDataCall.reverted) {
-    log.warning('readRewardDataFromStreamer Call to reward_data() failed: {} {}', [
-      streamerAddress.toHexString(),
-      tokenAddress.toHexString(),
-    ]);
+    log.warning(
+      'readRewardDataFromStreamer Call to reward_data() failed: {} {}',
+      [streamerAddress.toHexString(), tokenAddress.toHexString()],
+    );
     rewardData.reverted = true;
   } else {
     rewardData.rate = rewardDataCall.value.rate;
@@ -303,10 +303,10 @@ function readRewardDataFromL1Gauge(
   let gaugeContract = LiquidityGaugeTemplate.bind(gaugeAddress);
   let rewardDataCall = gaugeContract.try_reward_data(tokenAddress);
   if (rewardDataCall.reverted) {
-    log.warning('readRewardDataFromL1Gauge Call to reward_data() failed: {} {}', [
-      gaugeAddress.toHexString(),
-      tokenAddress.toHexString(),
-    ]);
+    log.warning(
+      'readRewardDataFromL1Gauge Call to reward_data() failed: {} {}',
+      [gaugeAddress.toHexString(), tokenAddress.toHexString()],
+    );
     rewardData.reverted = true;
   } else {
     rewardData.rate = rewardDataCall.value.rate;
@@ -323,10 +323,10 @@ function readRewardDataFromChildChainLiquidityGaugeV2(
   let gaugeContract = ChildChainLiquidityGaugeV2.bind(gaugeAddress);
   let rewardDataCall = gaugeContract.try_reward_data(tokenAddress);
   if (rewardDataCall.reverted) {
-    log.warning('readRewardDataFromChildChainLiquidityGaugeV2 Call to reward_data() failed: {} {}', [
-      gaugeAddress.toHexString(),
-      tokenAddress.toHexString(),
-    ]);
+    log.warning(
+      'readRewardDataFromChildChainLiquidityGaugeV2 Call to reward_data() failed: {} {}',
+      [gaugeAddress.toHexString(), tokenAddress.toHexString()],
+    );
     rewardData.reverted = true;
   } else {
     rewardData.rate = rewardDataCall.value.rate;
