@@ -120,8 +120,7 @@ export function handleUserBalFromChain(event: UserBalFromChain): void {
   votingShare.bias = scaleDownBPT(event.params.userPoint.bias);
   votingShare.timestamp = event.params.userPoint.ts.toI32();
   votingShare.unlockTime = event.params.userPoint.ts
-    .plus(event.params.userPoint.bias.div(event.params.userPoint.slope))
-    .toI32();
+    .plus(event.params.userPoint.bias.div(event.params.userPoint.slope));
 
   votingShare.save();
 }
