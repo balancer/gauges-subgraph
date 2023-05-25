@@ -31,6 +31,9 @@ type OmniVotingEscrowLock @entity {
   " veBAL decay rate (per second) "
   slope: BigDecimal!
 
+  " Timestamp the lock was created [seconds] "
+  timestamp: Int!
+
   " Reference to VotingEscrow entity "
   votingEscrowID: VotingEscrow!
 }
@@ -48,6 +51,9 @@ type VotingEscrowLock @entity {
   " veBAL decay rate (per second) "
   slope: BigDecimal!
 
+  " Timestamp at which the lock was created [seconds] "
+  timestamp: Int!
+
   " Timestamp at which B-80BAL-20WETH BPT can be unlocked by user [seconds] "
   unlockTime: BigInt!
 
@@ -57,7 +63,7 @@ type VotingEscrowLock @entity {
   " Reference to VotingEscrow entity "
   votingEscrowID: VotingEscrow!
 
-  " Timestamp at which the lock was updated [seconds] "
+  " Timestamp at which the data was created [seconds]. Same as timestamp "
   updatedAt: Int!
 }
 
