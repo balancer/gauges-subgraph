@@ -22,7 +22,7 @@ import {
   getTokenSymbol,
 } from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
-import { scaleDown, scaleDownBPT } from './maths';
+import { scaleDown } from './maths';
 import { ChildChainStreamer } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
 import { ChildChainLiquidityGaugeV2 } from '../types/templates/ChildChainStreamer/ChildChainLiquidityGaugeV2';
 
