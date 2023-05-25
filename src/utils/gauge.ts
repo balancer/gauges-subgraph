@@ -264,7 +264,7 @@ export function setRewardData(
   // getRewardToken will create the token if it does not exist
   const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
   rewardToken.periodFinish = reward_data.period_finish;
-  rewardToken.rate = scaleDownBPT(reward_data.rate);
+  rewardToken.rate = scaleDown(reward_data.rate, rewardToken.decimals);
   if (reward_data.received.gt(ZERO)) {
     rewardToken.totalDeposited = scaleDown(
       reward_data.received,
