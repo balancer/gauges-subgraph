@@ -35,15 +35,22 @@ function getGaugeFactory(address: Address): GaugeFactory {
   return factory;
 }
 
-export function handleMainnetLiquidityGaugeCreated(event: LiquidityGaugeCreated): void {
+export function handleMainnetLiquidityGaugeCreated(
+  event: LiquidityGaugeCreated,
+): void {
   handleLiquidityGaugeCreated(event, false);
 }
 
-export function handleChildChainV2LiquidityGaugeCreated(event: LiquidityGaugeCreated): void {
+export function handleChildChainV2LiquidityGaugeCreated(
+  event: LiquidityGaugeCreated,
+): void {
   handleLiquidityGaugeCreated(event, true);
 }
 
-function handleLiquidityGaugeCreated(event: LiquidityGaugeCreated, childChainGauge: boolean): void {
+function handleLiquidityGaugeCreated(
+  event: LiquidityGaugeCreated,
+  childChainGauge: boolean,
+): void {
   const gaugeAddress = event.params.gauge;
   const factoryAddress = event.address;
   let factory = getGaugeFactory(factoryAddress);

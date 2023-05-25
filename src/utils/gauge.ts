@@ -1,18 +1,46 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts';
 
-import { LiquidityGauge, GaugeShare, RewardToken, GaugeVote, GaugeType } from '../types/schema';
-import { CONTROLLER_ADDRESS, ZERO, ZERO_ADDRESS, ZERO_BD } from './constants';
+import {
+  LiquidityGauge,
+  GaugeShare,
+  RewardToken,
+  GaugeVote,
+  GaugeType,
+} from '../types/schema';
+import {
+  CONTROLLER_ADDRESS,
+  ZERO,
+  ZERO_ADDRESS,
+  ZERO_BD,
+  isL1Factory,
+} from './constants';
 import { LiquidityGauge as LiquidityGaugeTemplate } from '../types/templates/LiquidityGauge/LiquidityGauge';
-import { bytesToAddress, createUserEntity, getTokenDecimals, getTokenSymbol } from './misc';
+import {
+  bytesToAddress,
+  createUserEntity,
+  getTokenDecimals,
+  getTokenSymbol,
+} from './misc';
 import { GaugeController } from '../types/GaugeController/GaugeController';
 import { scaleDown, scaleDownBPT } from './maths';
 import { ChildChainStreamer } from '../types/templates/ChildChainStreamer/ChildChainStreamer';
+import { ChildChainLiquidityGaugeV2 } from '../types/templates/ChildChainStreamer/ChildChainLiquidityGaugeV2';
 
-export function getRewardTokenId(tokenAddress: Address, gaugeAddress: Address): string {
+export function getRewardTokenId(
+  tokenAddress: Address,
+  gaugeAddress: Address,
+): string {
   return tokenAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function getRewardToken(tokenAddress: Address, gaugeAddress: Address): RewardToken {
+/**
+ * Returns the reward token entity for a given gauge and token address
+ * Creates the entity if it does not exist, as well as an entry in the gauge's rewardTokensList
+ */
+export function getRewardToken(
+  tokenAddress: Address,
+  gaugeAddress: Address,
+): RewardToken {
   let id = getRewardTokenId(tokenAddress, gaugeAddress);
   let rewardToken = RewardToken.load(id);
 
@@ -23,12 +51,27 @@ export function getRewardToken(tokenAddress: Address, gaugeAddress: Address): Re
     rewardToken.decimals = getTokenDecimals(tokenAddress);
     rewardToken.totalDeposited = ZERO_BD;
     rewardToken.save();
+
+    let gauge = LiquidityGauge.load(gaugeAddress.toHex());
+    if (!gauge) return rewardToken;
+    let rewardTokensList = gauge.rewardTokensList;
+    if (rewardTokensList == null) {
+      rewardTokensList = new Array<Bytes>(1);
+      rewardTokensList[0] = tokenAddress;
+    } else {
+      rewardTokensList.push(tokenAddress);
+    }
+    gauge.rewardTokensList = rewardTokensList;
+    gauge.save();
   }
 
   return rewardToken;
 }
 
-export function getLiquidityGauge(gaugeAddress: Address, poolAddress: Address): LiquidityGauge {
+export function getLiquidityGauge(
+  gaugeAddress: Address,
+  poolAddress: Address,
+): LiquidityGauge {
   let gauge = LiquidityGauge.load(gaugeAddress.toHexString());
 
   if (gauge == null) {
@@ -51,11 +94,17 @@ export function getLiquidityGauge(gaugeAddress: Address, poolAddress: Address): 
   return gauge;
 }
 
-export function getGaugeShareId(userAddress: Address, gaugeAddress: Address): string {
+export function getGaugeShareId(
+  userAddress: Address,
+  gaugeAddress: Address,
+): string {
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function createGaugeShare(userAddress: Address, gaugeAddress: Address): GaugeShare {
+export function createGaugeShare(
+  userAddress: Address,
+  gaugeAddress: Address,
+): GaugeShare {
   createUserEntity(userAddress);
   let id = getGaugeShareId(userAddress, gaugeAddress);
 
@@ -68,7 +117,10 @@ export function createGaugeShare(userAddress: Address, gaugeAddress: Address): G
   return gaugeShare;
 }
 
-export function getGaugeShare(userAddress: Address, gaugeAddress: Address): GaugeShare {
+export function getGaugeShare(
+  userAddress: Address,
+  gaugeAddress: Address,
+): GaugeShare {
   let id = getGaugeShareId(userAddress, gaugeAddress);
   let gaugeShare = GaugeShare.load(id);
 
@@ -92,15 +144,44 @@ export function getGaugeIdFromController(gaugeAddress: Address): string {
   return gaugeId;
 }
 
-export function getVotingEscrowId(userAddress: Address, votingEscrowAddress: Address): string {
+export function getOmniVotingEscrowId(
+  userAddress: Address,
+  votingEscrowAddress: Address,
+  chainId: i32,
+): string {
+  return userAddress
+    .toHex()
+    .concat('-')
+    .concat(votingEscrowAddress.toHex())
+    .concat('-')
+    .concat(chainId.toString());
+}
+
+export function getVotingEscrowId(
+  userAddress: Address,
+  votingEscrowAddress: Address,
+): string {
   return userAddress.toHex().concat('-').concat(votingEscrowAddress.toHex());
 }
 
-export function getGaugeVoteId(userAddress: Address, gaugeAddress: Address): string {
+export function getLockSnapshotId(
+  userAddress: Address,
+  timestamp: i32,
+): string {
+  return userAddress.toHex().concat('-').concat(timestamp.toString());
+}
+
+export function getGaugeVoteId(
+  userAddress: Address,
+  gaugeAddress: Address,
+): string {
   return userAddress.toHex().concat('-').concat(gaugeAddress.toHex());
 }
 
-export function getGaugeVote(userAddress: Address, gaugeAddress: Address): GaugeVote {
+export function getGaugeVote(
+  userAddress: Address,
+  gaugeAddress: Address,
+): GaugeVote {
   let id = getGaugeVoteId(userAddress, gaugeAddress);
   let gaugeVote = GaugeVote.load(id);
 
@@ -136,29 +217,120 @@ export function getGaugeType(typeNumber: BigInt): GaugeType {
   return type;
 }
 
-export function setChildChainGaugeRewardData(gaugeAddress: Address, tokenAddress: Address): void {
+// Define a simple struct to hold the data returned by calls to reward_data()
+class RewardData {
+  rate: BigInt = ZERO;
+
+  period_finish: BigInt = ZERO;
+
+  received: BigInt = ZERO;
+
+  // eslint-disable-next-line
+  reverted: boolean = false;
+}
+
+/**
+ * Sets the reward data for a reward token of a given gauge
+ * If the token does not exist on the gauge, it will be created
+ */
+export function setRewardData(
+  gaugeAddress: Address,
+  tokenAddress: Address,
+): void {
   let gauge = LiquidityGauge.load(gaugeAddress.toHex());
   if (!gauge) return;
 
-  let streamerAdress = gauge.streamer;
-  if (!streamerAdress) return;
+  // On L1 gauges and child chains gauges V2, reward data is stored in the gauge itself
+  // On child chains gauges V1, reward data is stored in the streamer contract
+  // Moreover, the output of reward_data() is different for mainnet vs child chain gauges V1 vs child chain gauges V2.
+  // This means we can't reuse the same contract on .bind, so we make speficic functions for each case
 
-  let streamer = ChildChainStreamer.bind(bytesToAddress(streamerAdress));
-  let rewardDataCall = streamer.try_reward_data(tokenAddress);
-  if (rewardDataCall.reverted) {
-    log.warning('Call to reward_data() failed: {} {}', [
-      gaugeAddress.toHexString(),
-      tokenAddress.toHexString(),
-    ]);
-    return;
+  let reward_data: RewardData;
+  let streamer = gauge.streamer;
+  if (streamer) {
+    let streamerAddress = bytesToAddress(streamer);
+    reward_data = readRewardDataFromStreamer(streamerAddress, tokenAddress);
+  } else if (isL1Factory(Address.fromString(gauge.factory))) {
+    reward_data = readRewardDataFromL1Gauge(gaugeAddress, tokenAddress);
+  } else {
+    reward_data = readRewardDataFromChildChainLiquidityGaugeV2(
+      gaugeAddress,
+      tokenAddress,
+    );
   }
 
-  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
-  const rateScaled = scaleDownBPT(rewardDataCall.value.rate);
-  const receivedScaled = scaleDown(rewardDataCall.value.received, rewardToken.decimals);
+  if (reward_data.reverted) return;
 
-  rewardToken.periodFinish = rewardDataCall.value.period_finish;
-  rewardToken.totalDeposited = receivedScaled;
-  rewardToken.rate = rateScaled;
+  // getRewardToken will create the token if it does not exist
+  const rewardToken = getRewardToken(tokenAddress, gaugeAddress);
+  rewardToken.periodFinish = reward_data.period_finish;
+  rewardToken.rate = scaleDownBPT(reward_data.rate);
+  if (reward_data.received.gt(ZERO)) {
+    rewardToken.totalDeposited = scaleDown(
+      reward_data.received,
+      rewardToken.decimals,
+    );
+  }
   rewardToken.save();
+}
+
+function readRewardDataFromStreamer(
+  streamerAddress: Address,
+  tokenAddress: Address,
+): RewardData {
+  let rewardData = new RewardData();
+  let streamerContract = ChildChainStreamer.bind(streamerAddress);
+  let rewardDataCall = streamerContract.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning(
+      'readRewardDataFromStreamer Call to reward_data() failed: {} {}',
+      [streamerAddress.toHexString(), tokenAddress.toHexString()],
+    );
+    rewardData.reverted = true;
+  } else {
+    rewardData.rate = rewardDataCall.value.rate;
+    rewardData.period_finish = rewardDataCall.value.period_finish;
+    rewardData.received = rewardDataCall.value.received;
+  }
+  return rewardData;
+}
+
+function readRewardDataFromL1Gauge(
+  gaugeAddress: Address,
+  tokenAddress: Address,
+): RewardData {
+  let rewardData = new RewardData();
+  let gaugeContract = LiquidityGaugeTemplate.bind(gaugeAddress);
+  let rewardDataCall = gaugeContract.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning(
+      'readRewardDataFromL1Gauge Call to reward_data() failed: {} {}',
+      [gaugeAddress.toHexString(), tokenAddress.toHexString()],
+    );
+    rewardData.reverted = true;
+  } else {
+    rewardData.rate = rewardDataCall.value.rate;
+    rewardData.period_finish = rewardDataCall.value.period_finish;
+  }
+  return rewardData;
+}
+
+function readRewardDataFromChildChainLiquidityGaugeV2(
+  gaugeAddress: Address,
+  tokenAddress: Address,
+): RewardData {
+  let rewardData = new RewardData();
+  let gaugeContract = ChildChainLiquidityGaugeV2.bind(gaugeAddress);
+  let rewardDataCall = gaugeContract.try_reward_data(tokenAddress);
+  if (rewardDataCall.reverted) {
+    log.warning(
+      'readRewardDataFromChildChainLiquidityGaugeV2 Call to reward_data() failed: {} {}',
+      [gaugeAddress.toHexString(), tokenAddress.toHexString()],
+    );
+    rewardData.reverted = true;
+  } else {
+    rewardData.rate = rewardDataCall.value.rate;
+    rewardData.period_finish = rewardDataCall.value.period_finish;
+  }
+  return rewardData;
 }

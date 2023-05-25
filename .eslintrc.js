@@ -1,27 +1,12 @@
 module.exports = {
-  extends: "airbnb-base-typescript-prettier",
+  root: true,
   parser: "@typescript-eslint/parser",
-  parserOptions: {
-      "project": "./tsconfig.json",
-      "tsconfigRootDir": __dirname,
-      "sourceType": "module"
-  },
-  env: {
-    es6: true,
-  },
+  plugins: ["@typescript-eslint", "prettier", "mocha-no-only"],
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   rules: {
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "ts": "never"
-      }
-    ],
-    "import/prefer-default-export": "off",
-    "prefer-destructuring": "off",
-    "prefer-template": "off",
-    "eqeqeq": "off",
-    "prefer-const": "off",
-    "@typescript-eslint/no-shadow": "off"
-  }
-}
+    "comma-spacing": ["error", { before: false, after: true }],
+    "prefer-const": ["off"],
+    "prettier/prettier": "error",
+    "mocha-no-only/mocha-no-only": ["error"],
+  },
+};

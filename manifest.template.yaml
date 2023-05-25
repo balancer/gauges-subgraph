@@ -29,6 +29,10 @@ dataSources:
       abis:
         - name: EventEmitter
           file: ./abis/EventEmitter.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
+        - name: ChildChainLiquidityGaugeV2
+          file: ./abis/ChildChainLiquidityGaugeV2.json
       eventHandlers:
         - event: LogArgument(indexed address,indexed bytes32,bytes,uint256)
           handler: handleLogArgument
@@ -465,6 +469,84 @@ dataSources:
         - event: Supply(uint256,uint256)
           handler: handleSupply
   {{/if}}
+  {{#if authorizerAdaptorEntrypoint}}
+  - kind: ethereum/contract
+    name: AuthorizerAdaptorEntrypoint
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{authorizerAdaptorEntrypoint.address}}'
+      abi: authorizerAdaptorEntrypoint
+      # prettier-ignore
+      startBlock: {{ authorizerAdaptorEntrypoint.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/authorizerAdaptorEntrypoint.ts
+      abis:
+        - name: authorizerAdaptorEntrypoint
+          file: ./abis/AuthorizerAdaptorEntrypoint.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
+        - name: ChildChainLiquidityGaugeV2
+          file: ./abis/ChildChainLiquidityGaugeV2.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      entities:
+        - LiquidityGauge
+      eventHandlers:
+        - event: ActionPerformed(indexed bytes4,indexed address,indexed address,bytes)
+          handler: handleActionPerformed
+  {{/if}}
+  {{#if omniVotingEscrow}}
+  - kind: ethereum/contract
+    name: OmniVotingEscrow
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{omniVotingEscrow.address}}'
+      abi: omniVotingEscrow
+      # prettier-ignore
+      startBlock: {{ omniVotingEscrow.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/voting.ts
+      abis:
+        - name: omniVotingEscrow
+          file: ./abis/OmniVotingEscrow.json
+      entities:
+        - UserVotingEscrowShare
+      eventHandlers:
+        - event: UserBalToChain(uint16,address,address,(int128,int128,uint256,uint256),(int128,int128,uint256,uint256))
+          handler: handleUserBalToChain
+  {{/if}}
+  {{#if omniVotingEscrowChild}}
+  - kind: ethereum/contract
+    name: OmniVotingEscrowChild
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{omniVotingEscrowChild.address}}'
+      abi: omniVotingEscrowChild
+      # prettier-ignore
+      startBlock: {{ omniVotingEscrowChild.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/voting.ts
+      abis:
+        - name: omniVotingEscrowChild
+          file: ./abis/OmniVotingEscrowChild.json
+      entities:
+        - UserVotingEscrowShare
+      eventHandlers:
+        - event: UserBalFromChain(uint16,address,(int128,int128,uint256,uint256),(int128,int128,uint256,uint256))
+          handler: handleUserBalFromChain
+  {{/if}}
 templates:
   - kind: ethereum/contract
     name: LiquidityGauge
@@ -485,6 +567,8 @@ templates:
           file: ./abis/ERC20.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV2.json
+        - name: ChildChainLiquidityGaugeV2
+          file: ./abis/ChildChainLiquidityGaugeV2.json
       eventHandlers:
         - event: RelativeWeightCapChanged(uint256)
           handler: handleRelativeWeightCapChanged
@@ -520,6 +604,10 @@ templates:
           file: ./abis/RewardsOnlyGauge.json
         - name: LiquidityGauge
           file: ./abis/LiquidityGauge.json
+        - name: ChildChainStreamer
+          file: ./abis/ChildChainStreamer.json
+        - name: ChildChainLiquidityGaugeV2
+          file: ./abis/ChildChainLiquidityGaugeV2.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -542,6 +630,8 @@ templates:
           file: ./abis/ERC20.json
         - name: ChildChainStreamer
           file: ./abis/ChildChainStreamer.json
+        - name: ChildChainLiquidityGaugeV2
+          file: ./abis/ChildChainLiquidityGaugeV2.json
       eventHandlers:
         - event: RewardDurationUpdated(indexed address,uint256)
           handler: handleRewardDurationUpdated
@@ -597,24 +687,3 @@ templates:
         - function: unkillGauge()
           handler: handleSingleRecipientUnkillGauge
       {{/if}}
-  - kind: ethereum/contract
-    name: ChildChainRewardToken
-    # prettier-ignore
-    network: {{network}}
-    source:
-      abi: ERC20
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/gauge.ts
-      entities:
-        - RewardToken
-      abis:
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ChildChainStreamer
-          file: ./abis/ChildChainStreamer.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleChildChainTransfer

@@ -69,5 +69,5 @@ export function isPoolRegistered(poolAddress: Address): boolean {
   let getPoolCall = vault.try_getPool(poolId);
   if (getPoolCall.reverted) return false;
 
-  return getPoolCall.value.value0 ? true : false;
+  return !!getPoolCall.value.value0;
 }
