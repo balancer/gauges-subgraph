@@ -54,7 +54,7 @@ mainnet:
     startBlock: 14457013
   omniVotingEscrow:
     address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
-    startBlock: 17333025
+    startBlock: 17331264
   arbitrumRootGaugeFactory:
     address: "0xad901309d9e9DbC5Df19c84f729f429F0189a633"
     startBlock: 14580456
@@ -89,7 +89,7 @@ polygon:
     startBlock: 38152461
   omniVotingEscrowChild:
     address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
-    startBlock: 43285451
+    startBlock: 43103222
   childChainGaugeFactory:
     address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
     startBlock: 27098624
@@ -146,7 +146,7 @@ gnosis:
     startBlock: 26892431
   omniVotingEscrowChild:
     address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
-    startBlock: 28185174
+    startBlock: 28110199
   childChainGaugeFactory:
     address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
     startBlock: 26615210
