@@ -42,6 +42,7 @@ export function handleDeposit(event: Deposit): void {
   const biasBI = slopeBI.times(votingShare.unlockTime.minus(blockTimestamp));
   votingShare.slope = scaleDownBPT(slopeBI);
   votingShare.bias = scaleDownBPT(biasBI);
+  votingShare.timestamp = blockTimestamp.toI32();
 
   votingShare.save();
 
@@ -110,8 +111,6 @@ export function handleUserBalFromChain(event: UserBalFromChain): void {
     votingShare.votingEscrowID = votingEscrowID;
   }
 
-  // TODO: is event.params.ts == blockTimestamp?
-  votingShare.unlockTime = event.params.userPoint.ts;
   votingShare.updatedAt = event.block.timestamp.toI32();
 
   const lockedBalanceBI = event.params.userPoint.slope.times(LOCK_MAXTIME);
@@ -119,13 +118,15 @@ export function handleUserBalFromChain(event: UserBalFromChain): void {
 
   votingShare.slope = scaleDownBPT(event.params.userPoint.slope);
   votingShare.bias = scaleDownBPT(event.params.userPoint.bias);
+  votingShare.timestamp = event.params.userPoint.ts.toI32();
+  votingShare.unlockTime = event.params.userPoint.ts.plus(
+    event.params.userPoint.bias.div(event.params.userPoint.slope),
+  );
 
   votingShare.save();
 }
 
 export function handleUserBalToChain(event: UserBalToChain): void {
-  // TODO: find diff between localUser and remoteUser
-  // maybe create 2 separate fields for this
   let userAddress = event.params.localUser;
   createUserEntity(userAddress);
 
@@ -145,6 +146,7 @@ export function handleUserBalToChain(event: UserBalToChain): void {
 
   omniLock.bias = scaleDownBPT(event.params.userPoint.bias);
   omniLock.slope = scaleDownBPT(event.params.userPoint.slope);
+  omniLock.timestamp = event.params.userPoint.ts.toI32();
 
   omniLock.save();
 }
