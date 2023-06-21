@@ -76,6 +76,12 @@ mainnet:
   gnosisRootGaugeV2Factory:
     address: "0x2a18B396829bc29F66a1E59fAdd7a0269A6605E8"
     startBlock: 16687758
+  avalancheRootGaugeV2Factory:
+    address: "0x10f3e79911A490aa5B5D5CDA6F111029c4Eab5AC"
+    startBlock: 17396953
+  polygonZkEVMRootGaugeV2Factory:
+    address: "0x9bF951848288cCD87d06FaC426150262cD3447De"
+    startBlock: 17295833
   authorizerAdaptorEntrypoint:
     address: "0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA"
     startBlock: 16042168
