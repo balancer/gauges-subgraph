@@ -74,10 +74,10 @@ export const POLYGON_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0xa98Bce70c92aD2ef3288dbcd659bC0d6b62f8F13',
 );
 export const AVALANCHE_ROOT_GAUGE_V2_FACTORY = Address.fromString(
-  '0x10f3e79911A490aa5B5D5CDA6F111029c4Eab5AC'
+  '0x10f3e79911A490aa5B5D5CDA6F111029c4Eab5AC',
 );
 export const POLYGON_ZKEVM_ROOT_GAUGE_V2_FACTORY = Address.fromString(
-  '0x9bF951848288cCD87d06FaC426150262cD3447De'
+  '0x9bF951848288cCD87d06FaC426150262cD3447De',
 );
 
 export function isArbitrumFactory(factory: Address): boolean {
