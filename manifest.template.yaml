@@ -368,9 +368,9 @@ dataSources:
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
-          file: ./abis/ArbitrumRootGauge.json
+          file: ./abis/ArbitrumRootGauge.json # required for binding
         - name: AvalancheRootGaugeV2Factory
-          file: ./abis/OptimismRootGaugeV2Factory.json
+          file: ./abis/OptimismRootGaugeV2Factory.json # has the same GaugeCreated event
       entities:
         - RootGauge
       eventHandlers:
@@ -396,9 +396,9 @@ dataSources:
         - name: LiquidityGauge
           file: ./abis/LiquidityGaugeV2.json
         - name: ArbitrumRootGauge
-          file: ./abis/ArbitrumRootGauge.json
+          file: ./abis/ArbitrumRootGauge.json # required for binding
         - name: PolygonZkEVMRootGaugeV2Factory
-          file: ./abis/OptimismRootGaugeV2Factory.json
+          file: ./abis/OptimismRootGaugeV2Factory.json # has the same GaugeCreated event
       entities:
         - RootGauge
       eventHandlers:
