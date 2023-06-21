@@ -349,7 +349,7 @@ dataSources:
         - event: GaugeCreated(indexed address)
           handler: handleRootGaugeCreated
   {{/if}}
-  {{#if gnosisRootGaugeV2Factory}}
+  {{#if avalancheRootGaugeV2Factory}}
   - kind: ethereum/contract
     name: AvalancheRootGaugeV2Factory
     # prettier-ignore
