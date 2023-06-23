@@ -147,6 +147,8 @@ enum Chain {
   Gnosis
   Polygon
   Optimism
+  Avalanche
+  zkEVM
 }
 
 type RootGauge @entity {
