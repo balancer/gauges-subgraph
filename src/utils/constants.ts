@@ -10,7 +10,7 @@ export const LOCK_MAXTIME = BigInt.fromI32(365 * 86400); // 1 YEAR
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export class AddressByNetwork {
   public mainnet: string;
-
+  public sepolia: string;
   public goerli: string;
 }
 
@@ -18,6 +18,7 @@ let network: string = dataSource.network();
 
 let controllerAddressByNetwork: AddressByNetwork = {
   mainnet: '0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD',
+  sepolia: '0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4',
   goerli: '0xBB1CE49b16d55A1f2c6e88102f32144C7334B116',
 };
 
@@ -27,6 +28,8 @@ function forNetwork(
 ): Address {
   if (network == 'mainnet') {
     return Address.fromString(addressByNetwork.mainnet);
+  } else if (network == 'sepolia') {
+    return Address.fromString(addressByNetwork.sepolia);
   }
   return Address.fromString(addressByNetwork.goerli);
 }
@@ -61,6 +64,9 @@ export const GOERLI_GAUGE_V1_FACTORY = Address.fromString(
 export const GOERLI_GAUGE_V2_FACTORY = Address.fromString(
   '0x3b8cA519122CdD8efb272b0D3085453404B25bD0',
 );
+export const SEPOLIA_GAUGE_V2_FACTORY = Address.fromString(
+  '0x2FF226CD12C80511a641A6101F071d853A4e5363',
+);
 export const ARBITRUM_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7',
 );
@@ -93,9 +99,11 @@ export function isMainnetFactory(factory: Address): boolean {
 export function isGoerliFactory(factory: Address): boolean {
   return [GOERLI_GAUGE_V1_FACTORY, GOERLI_GAUGE_V2_FACTORY].includes(factory);
 }
-
+export function isSepoliaFactory(factory: Address): boolean {
+  return factory == SEPOLIA_GAUGE_V2_FACTORY;
+}
 export function isL1Factory(factory: Address): boolean {
-  return isMainnetFactory(factory) || isGoerliFactory(factory);
+  return isMainnetFactory(factory) || isGoerliFactory(factory) || isSepoliaFactory(factory);
 }
 
 export function isOptimismFactory(factory: Address): boolean {
