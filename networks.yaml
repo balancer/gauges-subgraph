@@ -85,6 +85,27 @@ mainnet:
   authorizerAdaptorEntrypoint:
     address: "0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA"
     startBlock: 16042168
+sepolia:
+  network: sepolia
+  supportTraces: true
+  gaugeV2Factory:
+    address: "0x2FF226CD12C80511a641A6101F071d853A4e5363"
+    startBlock: 3425130
+  singleRecipientGaugeV2Factory:
+    address: "0x7EE4D172Ae50C627a1BFA9A99E1260C54dA26fdF"
+    startBlock: 3425172
+  gaugeController:
+    address: "0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4"
+    startBlock: 3425067
+  votingEscrow:
+    address: "0x150A72e4D4d81BbF045565E232c50Ed0931ad795"
+    startBlock: 3425066
+  childChainGaugeV2Factory:
+    address: "0xC370cD86d5488c1788b62f11b09adb0C47F47440"
+    startBlock: 3425268
+  authorizerAdaptorEntrypoint:
+    address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
+    startBlock: 3421600
 polygon:
   network: matic
   # graft:
