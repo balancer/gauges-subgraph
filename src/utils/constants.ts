@@ -103,7 +103,11 @@ export function isSepoliaFactory(factory: Address): boolean {
   return factory == SEPOLIA_GAUGE_V2_FACTORY;
 }
 export function isL1Factory(factory: Address): boolean {
-  return isMainnetFactory(factory) || isGoerliFactory(factory) || isSepoliaFactory(factory);
+  return (
+    isMainnetFactory(factory) ||
+    isGoerliFactory(factory) ||
+    isSepoliaFactory(factory)
+  );
 }
 
 export function isOptimismFactory(factory: Address): boolean {
