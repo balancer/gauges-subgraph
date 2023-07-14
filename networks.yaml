@@ -202,3 +202,14 @@ polygon-zkevm:
   authorizerAdaptorEntrypoint:
     address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
     startBlock: 203624
+base:
+  network: base
+  EventEmitter:
+    address: "0x94eA79f1dD4f1B89D87fE1E71c9723b8003AB3d3"
+    startBlock: 1275405
+  childChainGaugeV2Factory:
+    address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
+    startBlock: 1204492
+  authorizerAdaptorEntrypoint:
+    address: "0x9129E834e15eA19b6069e8f08a8EcFc13686B8dC"
+    startBlock: 1205742
