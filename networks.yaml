@@ -204,6 +204,9 @@ polygon-zkevm:
     startBlock: 203624
 base:
   network: base
+  EventEmitter:
+    address: "0x94eA79f1dD4f1B89D87fE1E71c9723b8003AB3d3"
+    startBlock: 1275405
   childChainGaugeV2Factory:
     address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
     startBlock: 1204492
