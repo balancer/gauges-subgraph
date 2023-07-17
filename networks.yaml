@@ -85,6 +85,27 @@ mainnet:
   authorizerAdaptorEntrypoint:
     address: "0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA"
     startBlock: 16042168
+sepolia:
+  network: sepolia
+  supportTraces: true
+  gaugeV2Factory:
+    address: "0x2FF226CD12C80511a641A6101F071d853A4e5363"
+    startBlock: 3425130
+  singleRecipientGaugeV2Factory:
+    address: "0x7EE4D172Ae50C627a1BFA9A99E1260C54dA26fdF"
+    startBlock: 3425172
+  gaugeController:
+    address: "0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4"
+    startBlock: 3425067
+  votingEscrow:
+    address: "0x150A72e4D4d81BbF045565E232c50Ed0931ad795"
+    startBlock: 3425066
+  childChainGaugeV2Factory:
+    address: "0xC370cD86d5488c1788b62f11b09adb0C47F47440"
+    startBlock: 3425268
+  authorizerAdaptorEntrypoint:
+    address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
+    startBlock: 3421600
 polygon:
   network: matic
   # graft:
@@ -164,9 +185,9 @@ gnosis:
     startBlock: 25140518
 avalanche:
   network: avalanche
-  childChainGaugeFactory:
-    address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
-    startBlock: 26386697
+  childChainGaugeV2Factory:
+    address: "0x161f4014C27773840ccb4EC1957113e6DD028846"
+    startBlock: 29338806
   authorizerAdaptorEntrypoint:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     startBlock: 26387586
@@ -181,3 +202,14 @@ polygon-zkevm:
   authorizerAdaptorEntrypoint:
     address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
     startBlock: 203624
+base:
+  network: base
+  EventEmitter:
+    address: "0x94eA79f1dD4f1B89D87fE1E71c9723b8003AB3d3"
+    startBlock: 1275405
+  childChainGaugeV2Factory:
+    address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
+    startBlock: 1204492
+  authorizerAdaptorEntrypoint:
+    address: "0x9129E834e15eA19b6069e8f08a8EcFc13686B8dC"
+    startBlock: 1205742

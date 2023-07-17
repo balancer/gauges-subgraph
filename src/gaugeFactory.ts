@@ -186,7 +186,7 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
   } else if (isAvalancheFactory(factoryAddress)) {
     gauge.chain = 'Avalanche';
   } else if (isPolygonZkEVMFactory(factoryAddress)) {
-    gauge.chain = 'zkEVM';
+    gauge.chain = 'PolygonZkEvm';
   }
 
   gauge.save();
