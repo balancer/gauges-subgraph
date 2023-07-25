@@ -186,8 +186,8 @@ gnosis:
 avalanche:
   network: avalanche
   childChainGaugeV2Factory:
-    address: "0x161f4014C27773840ccb4EC1957113e6DD028846"
-    startBlock: 29338806
+    address: "0xf23b4DB826DbA14c0e857029dfF076b1c0264843"
+    startBlock: 32558551
   authorizerAdaptorEntrypoint:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     startBlock: 26387586
