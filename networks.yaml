@@ -169,7 +169,7 @@ optimism:
 gnosis:
   network: gnosis
   graft:
-    block: 29344803
+    block: 29344802
     base: QmbF9ybzefDh29hdERkY9VxwMrvA15U5sgVcnPJxDpEwbC
   EventEmitter:
     address: "0xd8bf95b44772213905a8a74881862347acbabc48"
