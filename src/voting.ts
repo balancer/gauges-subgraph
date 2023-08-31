@@ -7,7 +7,7 @@ import {
 import { UserBalToChain } from './types/OmniVotingEscrow/omniVotingEscrow';
 import { UserBalFromChain } from './types/OmniVotingEscrowChild/omniVotingEscrowChild';
 import { Deposit, Supply, Withdraw } from './types/VotingEscrow/votingEscrow';
-import { LOCK_MAXTIME, ZERO_BD } from './utils/constants';
+import { LOCK_MAXTIME, ZERO, ZERO_BD } from './utils/constants';
 import {
   getLockSnapshotId,
   getOmniVotingEscrowId,
@@ -90,6 +90,8 @@ export function handleSupply(event: Supply): void {
 }
 
 export function handleUserBalFromChain(event: UserBalFromChain): void {
+  if (event.params.userPoint.slope.equals(ZERO)) return;
+
   let userAddress = event.params.user;
   createUserEntity(userAddress);
 
