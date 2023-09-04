@@ -79,6 +79,7 @@ function handleLiquidityGaugeCreated(
     // If we're on a child chain and the pool doesn't have a preferential gauge yet
     if (childChainGauge && pool.preferentialGauge === null) {
       pool.preferentialGauge = gauge.id;
+      gauge.isPreferentialGauge = true;
     }
     pool.save();
   }
