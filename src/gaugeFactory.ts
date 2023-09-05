@@ -109,15 +109,17 @@ export function handleRewardsOnlyGaugeCreated(
   gauge.pool = poolRegistered ? poolAddress.toHexString() : null;
   gauge.poolId = poolRegistered ? getPoolId(poolAddress) : null;
   gauge.factory = factory.id;
-  gauge.save();
 
   if (poolRegistered) {
     let pool = getPoolEntity(poolAddress, event.params.gauge);
     pool.address = poolAddress;
     pool.poolId = getPoolId(poolAddress);
     pool.preferentialGauge = gauge.id;
+    gauge.isPreferentialGauge = true;
     pool.save();
   }
+
+  gauge.save();
 
   RewardsOnlyGaugeTemplate.create(event.params.gauge);
   ChildChainStreamerTemplate.create(event.params.streamer);
