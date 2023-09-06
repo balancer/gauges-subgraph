@@ -79,6 +79,9 @@ mainnet:
   avalancheRootGaugeV2Factory:
     address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
     startBlock: 18064732
+  baseRootGaugeV2Factory:
+    address: "0x8e3B64b3737097F283E965869e3503AA20F31E4D"
+    startBlock: 18077886
   polygonZkEVMRootGaugeV2Factory:
     address: "0x9bF951848288cCD87d06FaC426150262cD3447De"
     startBlock: 17295833

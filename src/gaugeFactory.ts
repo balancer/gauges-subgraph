@@ -15,6 +15,7 @@ import { RewardsOnlyGaugeCreated } from './types/ChildChainLiquidityGaugeFactory
 import {
   isArbitrumFactory,
   isAvalancheFactory,
+  isBaseFactory,
   isGnosisFactory,
   isOptimismFactory,
   isPolygonFactory,
@@ -190,6 +191,8 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
     gauge.chain = 'Avalanche';
   } else if (isPolygonZkEVMFactory(factoryAddress)) {
     gauge.chain = 'PolygonZkEvm';
+  } else if (isBaseFactory(factoryAddress)) {
+    gauge.chain = 'Base';
   }
 
   gauge.save();
