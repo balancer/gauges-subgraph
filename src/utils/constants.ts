@@ -76,6 +76,9 @@ export const GNOSIS_ROOT_GAUGE_V2_FACTORY = Address.fromString(
 export const OPTIMISM_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0x866D4B65694c66fbFD15Dd6fa933D0A6b3940A36',
 );
+export const BASE_ROOT_GAUGE_V2_FACTORY = Address.fromString(
+  '0x8e3B64b3737097F283E965869e3503AA20F31E4D',
+);
 export const POLYGON_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0xa98Bce70c92aD2ef3288dbcd659bC0d6b62f8F13',
 );
@@ -132,4 +135,8 @@ export function isAvalancheFactory(factory: Address): boolean {
 
 export function isPolygonZkEVMFactory(factory: Address): boolean {
   return factory == POLYGON_ZKEVM_ROOT_GAUGE_V2_FACTORY;
+}
+
+export function isBaseFactory(factory: Address): boolean {
+  return factory == BASE_ROOT_GAUGE_V2_FACTORY;
 }
