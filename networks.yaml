@@ -197,6 +197,9 @@ avalanche:
   authorizerAdaptorEntrypoint:
     address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
     startBlock: 26387586
+  omniVotingEscrowChild:
+    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    startBlock: 30445851
 polygon-zkevm:
   network: polygon-zkevm
   EventEmitter:
@@ -208,6 +211,9 @@ polygon-zkevm:
   authorizerAdaptorEntrypoint:
     address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
     startBlock: 203624
+  omniVotingEscrowChild:
+    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    startBlock: 394609
 base:
   network: base
   EventEmitter:
@@ -222,3 +228,6 @@ base:
   authorizerAdaptorEntrypoint:
     address: "0x9129E834e15eA19b6069e8f08a8EcFc13686B8dC"
     startBlock: 1205742
+  omniVotingEscrowChild:
+    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    startBlock: 2417884
