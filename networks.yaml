@@ -191,6 +191,9 @@ gnosis:
     startBlock: 25140518
 avalanche:
   network: avalanche
+  EventEmitter:
+    address: "0xf04378a3ff97b3f979a46f91f9b2d5A1D2394773"
+    startBlock: 33336746
   childChainGaugeV2Factory:
     address: "0xf23b4DB826DbA14c0e857029dfF076b1c0264843"
     startBlock: 32558551
