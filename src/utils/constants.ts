@@ -12,6 +12,7 @@ export class AddressByNetwork {
   public mainnet: string;
   public sepolia: string;
   public goerli: string;
+  public telosTestnet: string;
 }
 
 let network: string = dataSource.network();
@@ -20,6 +21,7 @@ let controllerAddressByNetwork: AddressByNetwork = {
   mainnet: '0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD',
   sepolia: '0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4',
   goerli: '0xBB1CE49b16d55A1f2c6e88102f32144C7334B116',
+  telosTestnet: '0x42cbd18265C829f50Ededd4E5B5E5F5855e25175',
 };
 
 function forNetwork(
@@ -30,6 +32,8 @@ function forNetwork(
     return Address.fromString(addressByNetwork.mainnet);
   } else if (network == 'sepolia') {
     return Address.fromString(addressByNetwork.sepolia);
+  } else if (network == 'telos-testnet') {
+    return Address.fromString(addressByNetwork.telosTestnet);
   }
   return Address.fromString(addressByNetwork.goerli);
 }
@@ -39,7 +43,7 @@ export const CONTROLLER_ADDRESS = forNetwork(
   network,
 );
 export const VAULT_ADDRESS = Address.fromString(
-  '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+  '0x16A870499268e25a5e8728F23BeFccB3ab357a4D',
 );
 
 export const ARBITRUM_ROOT_GAUGE_FACTORY = Address.fromString(
@@ -66,6 +70,9 @@ export const GOERLI_GAUGE_V2_FACTORY = Address.fromString(
 );
 export const SEPOLIA_GAUGE_V2_FACTORY = Address.fromString(
   '0x2FF226CD12C80511a641A6101F071d853A4e5363',
+);
+export const TELOSTESTNET_GAUGE_V2_FACTORY = Address.fromString(
+  '0x31191Dc484BC61CACE4c562C567181296e6eFB15',
 );
 export const ARBITRUM_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7',
@@ -105,11 +112,16 @@ export function isGoerliFactory(factory: Address): boolean {
 export function isSepoliaFactory(factory: Address): boolean {
   return factory == SEPOLIA_GAUGE_V2_FACTORY;
 }
+
+export function isTelosTestnetFactory(factory: Address): boolean {
+  return factory == TELOSTESTNET_GAUGE_V2_FACTORY;
+}
 export function isL1Factory(factory: Address): boolean {
   return (
     isMainnetFactory(factory) ||
     isGoerliFactory(factory) ||
-    isSepoliaFactory(factory)
+    isSepoliaFactory(factory) ||
+    isTelosTestnetFactory(factory)
   );
 }
 
