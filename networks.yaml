@@ -114,19 +114,19 @@ telos-testnet:
   supportTraces: true
   gaugeV2Factory:
     address: "0x31191Dc484BC61CACE4c562C567181296e6eFB15"
-    startBlock: 3425130
+    startBlock: 261830613
   singleRecipientGaugeV2Factory:
     address: "0x32415b046523Cd262Ec0191df1a66588Aff2cC58"
-    startBlock: 3425172
+    startBlock: 261831029
   gaugeController:
     address: "0x42cbd18265C829f50Ededd4E5B5E5F5855e25175"
-    startBlock: 3425067
+    startBlock: 261829142
   votingEscrow:
     address: "0x659D24f9266e3325F6f3c2aBf633f20b2f515AFe"
-    startBlock: 3425066
+    startBlock: 261829133
   authorizerAdaptorEntrypoint:
     address: "0x7924903f369e509e42E23fe8f519FCa41E4Afc26"
-    startBlock: 3421600
+    startBlock: 261830787
 polygon:
   network: matic
   # graft:
