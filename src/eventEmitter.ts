@@ -1,4 +1,3 @@
-import { ChildChainGaugeInjector } from './types/EventEmitter/ChildChainGaugeInjector';
 import { LogArgument } from './types/EventEmitter/EventEmitter';
 import { Pool, LiquidityGauge, GaugeInjector } from './types/schema';
 import { GaugeInjector as GaugeInjectorTemplate } from './types/templates';
