@@ -1,5 +1,7 @@
+import { ChildChainGaugeInjector } from './types/EventEmitter/ChildChainGaugeInjector';
 import { LogArgument } from './types/EventEmitter/EventEmitter';
-import { Pool, LiquidityGauge } from './types/schema';
+import { Pool, LiquidityGauge, GaugeInjector } from './types/schema';
+import { GaugeInjector as GaugeInjectorTemplate } from './types/templates';
 import { setRewardData } from './utils/gauge';
 import { bytesToAddress } from './utils/misc';
 
@@ -20,6 +22,13 @@ export function handleLogArgument(event: LogArgument): void {
     '0x94e5a0dff823a8fce9322f522279854e2370a9ef309a74a7a86367e2a2872b2d'
   ) {
     setGaugeRewardsData(event);
+  }
+  // keccak256(setGaugeInjector) = 0x109783b117ecbf8caf4e937abaf494b965e5d90c4d1b010b27eb2a3be80eaf21
+  if (
+    identifier ==
+    '0x109783b117ecbf8caf4e937abaf494b965e5d90c4d1b010b27eb2a3be80eaf21'
+  ) {
+    setGaugeInjector(event);
   }
 }
 
@@ -82,4 +91,22 @@ function setPreferentialGauge(event: LogArgument): void {
     pool.save();
   }
   gauge.save();
+}
+
+export function setGaugeInjector(event: LogArgument): void {
+  /**
+   * Sets a new GaugeInjector - creates entity and template
+   *
+   * @param message - The GaugeInjector address (eg. 0x12345abce... - all lowercase)
+   */
+  const injectorId = event.params.message.toHexString();
+
+  let injector = GaugeInjector.load(injectorId);
+  if (injector) return; // already exists, no need to re-create it
+
+  injector = new GaugeInjector(injectorId);
+  injector.save();
+
+  const injectorAddress = bytesToAddress(event.params.message);
+  GaugeInjectorTemplate.create(injectorAddress);
 }
