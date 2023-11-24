@@ -814,7 +814,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/gaugeInjection.ts
+      file: ./src/gaugeInjector.ts
       entities:
         - GaugeInjector
       abis:
