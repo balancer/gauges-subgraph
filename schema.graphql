@@ -313,3 +313,8 @@ type User @entity {
   " List of omni locks the user created "
   omniVotingLocks: [OmniVotingEscrowLock!] @derivedFrom(field: "localUser")
 }
+
+type GaugeInjector @entity {
+  " GaugeInjector contract address "
+  id: ID!
+}
