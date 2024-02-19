@@ -79,7 +79,11 @@ export function handleNewGauge(event: NewGauge): void {
     pool.preferentialGauge = liquidityGauge.id;
     pool.save();
 
-    if (currentPreferentialGaugeId === null) return;
+    if (
+      currentPreferentialGaugeId === null ||
+      currentPreferentialGaugeId == liquidityGauge.id
+    )
+      return;
     let currentPreferentialGauge = LiquidityGauge.load(
       currentPreferentialGaugeId,
     ) as LiquidityGauge;
