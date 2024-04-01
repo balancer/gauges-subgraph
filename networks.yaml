@@ -31,6 +31,9 @@ goerli:
 mainnet:
   network: mainnet
   supportTraces: true
+  graft:
+    base: QmbfxmF1pMSQPRtk4y4GC6Y946fNy7bjraJEp6aYpojTDt
+    block: 17331264
   EventEmitter:
     address: "0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290"
     startBlock: 16419620
@@ -111,9 +114,9 @@ sepolia:
     startBlock: 3421600
 polygon:
   network: matic
-  # graft:
-  #   block: 42610000
-  #   base: QmTMYUbqpYZEYAzBTbMLmNgb13UyzdvyuKbfWMKJFzPWWB
+  graft:
+    block: 43103222
+    base: QmXBbUTPQPMUM57xT5GnxMKuR4UAmZwk3Gk6GTYiR5q2qW
   EventEmitter:
     address: "0xcdcECFa416EE3022030E707dC3EA13a8997D74c8"
     startBlock: 38152461
@@ -131,9 +134,9 @@ polygon:
     startBlock: 36020863
 arbitrum:
   network: arbitrum-one
-  # graft:
-  #   block: 80501659
-  #   base: QmcKEX764wP6e62ywbZd28b1VFx5iq7jYzs8c3SM53PJce
+  graft:
+    block: 94050211
+    base: QmWRWxeDNcMTRsU35hF6aHKKXf9VsEDcaTzdcJnYS9gKLY
   EventEmitter:
     address: "0x8f32D631093B5418d0546f77442c5fa66187E59D"
     startBlock: 53475240
@@ -151,9 +154,9 @@ arbitrum:
     startBlock: 40916259
 optimism:
   network: optimism
-  # graft:
-  #   base: QmQVriEjvBtusHjLv88neMNPCwPzvHRsRhvFyQxbcZMepH
-  #   block: 99765962
+  graft:
+    base: Qme4tckejtJmmRDM6gVDre99wVUY6FeckSrtswkA2GDeTZ
+    block: 101185055
   EventEmitter:
     address: "0x082990116f256E078572a1b69772115d2cF6b0a2"
     startBlock: 99124541
@@ -171,9 +174,9 @@ optimism:
     startBlock: 41872979
 gnosis:
   network: gnosis
-  # graft:
-  #   block: 29344802
-  #   base: QmbF9ybzefDh29hdERkY9VxwMrvA15U5sgVcnPJxDpEwbC
+  graft:
+    block: 28110199
+    base: QmXpWX5esNz1JHHmmn4whNc6pHHZ8VPPmvVWnuxNLSmQYE
   EventEmitter:
     address: "0xd8bf95b44772213905a8a74881862347acbabc48"
     startBlock: 26892431
