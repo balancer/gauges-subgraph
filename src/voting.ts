@@ -141,7 +141,6 @@ export function handleUserBalToChain(event: UserBalToChain): void {
   if (omniLock == null) {
     omniLock = new OmniVotingEscrowLock(id);
     omniLock.localUser = userAddress.toHexString();
-    omniLock.remoteUser = event.params.remoteUser;
     omniLock.votingEscrowID = '0xc128a9954e6c874ea3d62ce62b468ba073093f25';
     omniLock.dstChainId = event.params.dstChainId;
   }
@@ -149,6 +148,7 @@ export function handleUserBalToChain(event: UserBalToChain): void {
   omniLock.bias = scaleDownBPT(event.params.userPoint.bias);
   omniLock.slope = scaleDownBPT(event.params.userPoint.slope);
   omniLock.timestamp = event.params.userPoint.ts.toI32();
+  omniLock.remoteUser = event.params.remoteUser;
 
   omniLock.save();
 }
