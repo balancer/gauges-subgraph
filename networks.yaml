@@ -2,130 +2,162 @@ goerli:
   network: goerli
   supportTraces: true
   EventEmitter:
-    address: "0x4bcFCEDF1114030ff85a647dD436B7b3dEb45d9E"
+    address: '0x4bcFCEDF1114030ff85a647dD436B7b3dEb45d9E'
     startBlock: 8305794
   gaugeFactory:
-    address: "0x224E808FBD9e491Be8988B8A0451FBF777C81B8A"
+    address: '0x224E808FBD9e491Be8988B8A0451FBF777C81B8A'
     startBlock: 7001506
   gaugeV2Factory:
-    address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
+    address: '0x3b8cA519122CdD8efb272b0D3085453404B25bD0'
     startBlock: 7460127
   singleRecipientGaugeFactory:
-    address: "0xd14FFA46C211eac64338c27549c3312380f850Fa"
+    address: '0xd14FFA46C211eac64338c27549c3312380f850Fa'
     startBlock: 7001540
   singleRecipientGaugeV2Factory:
-    address: "0xE3881627B8DeeBCCF9c23B291430a549Fc0bE5F7"
+    address: '0xE3881627B8DeeBCCF9c23B291430a549Fc0bE5F7'
     startBlock: 8538547
   gaugeController:
-    address: "0xBB1CE49b16d55A1f2c6e88102f32144C7334B116"
+    address: '0xBB1CE49b16d55A1f2c6e88102f32144C7334B116'
     startBlock: 7001464
   votingEscrow:
-    address: "0x33A99Dcc4C85C014cf12626959111D5898bbCAbF"
+    address: '0x33A99Dcc4C85C014cf12626959111D5898bbCAbF'
     startBlock: 7001463
   childChainGaugeV2Factory:
-    address: "0x7Ba29fE8E83dd6097A7298075C4AFfdBda3121cC"
+    address: '0x7Ba29fE8E83dd6097A7298075C4AFfdBda3121cC'
     startBlock: 8706166
   authorizerAdaptorEntrypoint:
-    address: "0xacAaC3e6D6Df918Bf3c809DFC7d42de0e4a72d4C"
+    address: '0xacAaC3e6D6Df918Bf3c809DFC7d42de0e4a72d4C'
     startBlock: 8013204
 mainnet:
   network: mainnet
   supportTraces: true
   EventEmitter:
-    address: "0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290"
+    address: '0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290'
     startBlock: 16419620
   gaugeFactory:
-    address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
+    address: '0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC'
     startBlock: 14457664
   gaugeV2Factory:
-    address: "0xf1665E19bc105BE4EDD3739F88315cC699cc5b65"
+    address: '0xf1665E19bc105BE4EDD3739F88315cC699cc5b65'
     startBlock: 15399251
   singleRecipientGaugeFactory:
-    address: "0x94f68b54191F62f781Fe8298A8A5Fa3ed772d227"
+    address: '0x94f68b54191F62f781Fe8298A8A5Fa3ed772d227'
     startBlock: 14457748
   singleRecipientGaugeV2Factory:
-    address: "0x4fb47126Fa83A8734991E41B942Ac29A3266C968"
+    address: '0x4fb47126Fa83A8734991E41B942Ac29A3266C968'
     startBlock: 16686720
   gaugeController:
-    address: "0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD"
+    address: '0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD'
     startBlock: 14457014
   votingEscrow:
-    address: "0xC128a9954e6c874eA3d62ce62B468bA073093F25"
+    address: '0xC128a9954e6c874eA3d62ce62B468bA073093F25'
     startBlock: 14457013
   omniVotingEscrow:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 17331264
   arbitrumRootGaugeFactory:
-    address: "0xad901309d9e9DbC5Df19c84f729f429F0189a633"
+    address: '0xad901309d9e9DbC5Df19c84f729f429F0189a633'
     startBlock: 14580456
   arbitrumRootGaugeV2Factory:
-    address: "0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7"
+    address: '0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7'
     startBlock: 15399347
   polygonRootGaugeFactory:
-    address: "0x4C4287b07d293E361281bCeEe8715c8CDeB64E34"
+    address: '0x4C4287b07d293E361281bCeEe8715c8CDeB64E34'
     startBlock: 14577894
   polygonRootGaugeV2Factory:
-    address: "0xa98Bce70c92aD2ef3288dbcd659bC0d6b62f8F13"
+    address: '0xa98Bce70c92aD2ef3288dbcd659bC0d6b62f8F13'
     startBlock: 15399420
   optimismRootGaugeFactory:
-    address: "0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8"
+    address: '0x3083A1C455ff38d39e58Dbac5040f465cF73C5c8'
     startBlock: 15141554
   optimismRootGaugeV2Factory:
-    address: "0x866D4B65694c66fbFD15Dd6fa933D0A6b3940A36"
+    address: '0x866D4B65694c66fbFD15Dd6fa933D0A6b3940A36'
     startBlock: 15399472
   gnosisRootGaugeV2Factory:
-    address: "0x2a18B396829bc29F66a1E59fAdd7a0269A6605E8"
+    address: '0x2a18B396829bc29F66a1E59fAdd7a0269A6605E8'
     startBlock: 16687758
   avalancheRootGaugeV2Factory:
-    address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
+    address: '0x22625eEDd92c81a219A83e1dc48f88d54786B017'
     startBlock: 18064732
   baseRootGaugeV2Factory:
-    address: "0x8e3B64b3737097F283E965869e3503AA20F31E4D"
+    address: '0x8e3B64b3737097F283E965869e3503AA20F31E4D'
     startBlock: 18077886
   polygonZkEVMRootGaugeV2Factory:
-    address: "0x9bF951848288cCD87d06FaC426150262cD3447De"
+    address: '0x9bF951848288cCD87d06FaC426150262cD3447De'
     startBlock: 17295833
   authorizerAdaptorEntrypoint:
-    address: "0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA"
+    address: '0xf5dECDB1f3d1ee384908Fbe16D2F0348AE43a9eA'
     startBlock: 16042168
 sepolia:
   network: sepolia
   supportTraces: true
   gaugeV2Factory:
-    address: "0x2FF226CD12C80511a641A6101F071d853A4e5363"
+    address: '0x2FF226CD12C80511a641A6101F071d853A4e5363'
     startBlock: 3425130
   singleRecipientGaugeV2Factory:
-    address: "0x7EE4D172Ae50C627a1BFA9A99E1260C54dA26fdF"
+    address: '0x7EE4D172Ae50C627a1BFA9A99E1260C54dA26fdF'
     startBlock: 3425172
   gaugeController:
-    address: "0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4"
+    address: '0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4'
     startBlock: 3425067
   votingEscrow:
-    address: "0x150A72e4D4d81BbF045565E232c50Ed0931ad795"
+    address: '0x150A72e4D4d81BbF045565E232c50Ed0931ad795'
     startBlock: 3425066
   childChainGaugeV2Factory:
-    address: "0xC370cD86d5488c1788b62f11b09adb0C47F47440"
+    address: '0xC370cD86d5488c1788b62f11b09adb0C47F47440'
     startBlock: 3425268
   authorizerAdaptorEntrypoint:
-    address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
+    address: '0xb9aD3466cdd42015cc05d4804DC68D562b6a2065'
     startBlock: 3421600
+telos:
+  network: telos
+  supportTraces: false
+  gaugeV2Factory:
+    address: '0x2564fA7CaFe82c527Ee788265FD4Dc863F65D2D1'
+    startBlock: 313408198
+  singleRecipientGaugeV2Factory:
+    address: '0xa025369dfC8280CC7e88451a0fbe33fE7138eD31'
+    startBlock: 313455707
+  gaugeController:
+    address: '0x7ac8CF03C7c48d1E1eEB2Cb2B3A50B1B1430ae7b'
+    startBlock: 311406598
+  votingEscrow:
+    address: '0x0D0b7efc6e20b96841f37b28219a595a81c4615A'
+    startBlock: 311406589
+
+meter:
+  network: meter
+  supportTraces: true
+  gaugeV2Factory:
+    address: '0xf85271dc6838944278E8Ee96981fbE98caa86b12'
+    startBlock: 52879258
+  singleRecipientGaugeV2Factory:
+    address: '0xF4D1405df236BB5bD654B40Db4C055cb59522939'
+    startBlock: 52879234
+  gaugeController:
+    address: '0x0563fe58FC886BE22cE1977cADE4bC80D4e01bc3'
+    startBlock: 52879204
+  votingEscrow:
+    address: '0xdAe34CFC2a0eF52aC8417eeFc2A1C5CEaC50bfe7'
+    startBlock: 52879200
+
 telos-testnet:
   network: telos-testnet
   supportTraces: true
   gaugeV2Factory:
-    address: "0x31191Dc484BC61CACE4c562C567181296e6eFB15"
+    address: '0x31191Dc484BC61CACE4c562C567181296e6eFB15'
     startBlock: 261830613
   singleRecipientGaugeV2Factory:
-    address: "0x32415b046523Cd262Ec0191df1a66588Aff2cC58"
+    address: '0x32415b046523Cd262Ec0191df1a66588Aff2cC58'
     startBlock: 261831029
   gaugeController:
-    address: "0x42cbd18265C829f50Ededd4E5B5E5F5855e25175"
+    address: '0x42cbd18265C829f50Ededd4E5B5E5F5855e25175'
     startBlock: 261829142
   votingEscrow:
-    address: "0x659D24f9266e3325F6f3c2aBf633f20b2f515AFe"
+    address: '0x659D24f9266e3325F6f3c2aBf633f20b2f515AFe'
     startBlock: 261829133
   authorizerAdaptorEntrypoint:
-    address: "0x7924903f369e509e42E23fe8f519FCa41E4Afc26"
+    address: '0x7924903f369e509e42E23fe8f519FCa41E4Afc26'
     startBlock: 261830787
 polygon:
   network: matic
@@ -133,19 +165,19 @@ polygon:
   #   block: 42610000
   #   base: QmTMYUbqpYZEYAzBTbMLmNgb13UyzdvyuKbfWMKJFzPWWB
   EventEmitter:
-    address: "0xcdcECFa416EE3022030E707dC3EA13a8997D74c8"
+    address: '0xcdcECFa416EE3022030E707dC3EA13a8997D74c8'
     startBlock: 38152461
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 43103222
   childChainGaugeFactory:
-    address: "0x3b8cA519122CdD8efb272b0D3085453404B25bD0"
+    address: '0x3b8cA519122CdD8efb272b0D3085453404B25bD0'
     startBlock: 27098624
   childChainGaugeV2Factory:
-    address: "0x22625eEDd92c81a219A83e1dc48f88d54786B017"
+    address: '0x22625eEDd92c81a219A83e1dc48f88d54786B017'
     startBlock: 40687417
   authorizerAdaptorEntrypoint:
-    address: "0xAB093cd16e765b5B23D34030aaFaF026558e0A19"
+    address: '0xAB093cd16e765b5B23D34030aaFaF026558e0A19'
     startBlock: 36020863
 arbitrum:
   network: arbitrum-one
@@ -153,19 +185,19 @@ arbitrum:
   #   block: 80501659
   #   base: QmcKEX764wP6e62ywbZd28b1VFx5iq7jYzs8c3SM53PJce
   EventEmitter:
-    address: "0x8f32D631093B5418d0546f77442c5fa66187E59D"
+    address: '0x8f32D631093B5418d0546f77442c5fa66187E59D'
     startBlock: 53475240
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 94050211
   childChainGaugeFactory:
-    address: "0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2"
+    address: '0xb08E16cFc07C684dAA2f93C70323BAdb2A6CBFd2'
     startBlock: 9756975
   childChainGaugeV2Factory:
-    address: "0x6817149cb753BF529565B4D023d7507eD2ff4Bc0"
+    address: '0x6817149cb753BF529565B4D023d7507eD2ff4Bc0'
     startBlock: 72942741
   authorizerAdaptorEntrypoint:
-    address: "0x97207B095e4D5C9a6e4cfbfcd2C3358E03B90c4A"
+    address: '0x97207B095e4D5C9a6e4cfbfcd2C3358E03B90c4A'
     startBlock: 40916259
 optimism:
   network: optimism
@@ -173,19 +205,19 @@ optimism:
   #   base: QmQVriEjvBtusHjLv88neMNPCwPzvHRsRhvFyQxbcZMepH
   #   block: 99765962
   EventEmitter:
-    address: "0x082990116f256E078572a1b69772115d2cF6b0a2"
+    address: '0x082990116f256E078572a1b69772115d2cF6b0a2'
     startBlock: 99124541
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 101185055
   childChainGaugeFactory:
-    address: "0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647"
+    address: '0x2E96068b3D5B5BAE3D7515da4A1D2E52d08A2647'
     startBlock: 9052485
   childChainGaugeV2Factory:
-    address: "0xa523f47A933D5020b23629dDf689695AA94612Dc"
+    address: '0xa523f47A933D5020b23629dDf689695AA94612Dc'
     startBlock: 83239534
   authorizerAdaptorEntrypoint:
-    address: "0xed86ff0c507D3AF5F35d3523B77C17415FCfFaCb"
+    address: '0xed86ff0c507D3AF5F35d3523B77C17415FCfFaCb'
     startBlock: 41872979
 gnosis:
   network: gnosis
@@ -193,62 +225,62 @@ gnosis:
   #   block: 29344802
   #   base: QmbF9ybzefDh29hdERkY9VxwMrvA15U5sgVcnPJxDpEwbC
   EventEmitter:
-    address: "0xd8bf95b44772213905a8a74881862347acbabc48"
+    address: '0xd8bf95b44772213905a8a74881862347acbabc48'
     startBlock: 26892431
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 28110199
   childChainGaugeFactory:
-    address: "0x809B79b53F18E9bc08A961ED4678B901aC93213a"
+    address: '0x809B79b53F18E9bc08A961ED4678B901aC93213a'
     startBlock: 26615210
   childChainGaugeV2Factory:
-    address: "0x83E443EF4f9963C77bd860f94500075556668cb8"
+    address: '0x83E443EF4f9963C77bd860f94500075556668cb8'
     startBlock: 27088528
   authorizerAdaptorEntrypoint:
-    address: "0x8F42aDBbA1B16EaAE3BB5754915E0D06059aDd75"
+    address: '0x8F42aDBbA1B16EaAE3BB5754915E0D06059aDd75'
     startBlock: 25140518
 avalanche:
   network: avalanche
   EventEmitter:
-    address: "0xf04378a3ff97b3f979a46f91f9b2d5A1D2394773"
+    address: '0xf04378a3ff97b3f979a46f91f9b2d5A1D2394773'
     startBlock: 33336746
   childChainGaugeV2Factory:
-    address: "0xf23b4DB826DbA14c0e857029dfF076b1c0264843"
+    address: '0xf23b4DB826DbA14c0e857029dfF076b1c0264843'
     startBlock: 32558551
   authorizerAdaptorEntrypoint:
-    address: "0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC"
+    address: '0x4E7bBd911cf1EFa442BC1b2e9Ea01ffE785412EC'
     startBlock: 26387586
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 30445851
 polygon-zkevm:
   network: polygon-zkevm
   EventEmitter:
-    address: "0x16e29e62cC00fCBa1234C7ad89BD731427c8D9aF"
+    address: '0x16e29e62cC00fCBa1234C7ad89BD731427c8D9aF'
     startBlock: 281361
   childChainGaugeV2Factory:
-    address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
+    address: '0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95'
     startBlock: 203653
   authorizerAdaptorEntrypoint:
-    address: "0xb9aD3466cdd42015cc05d4804DC68D562b6a2065"
+    address: '0xb9aD3466cdd42015cc05d4804DC68D562b6a2065'
     startBlock: 203624
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 394609
 base:
   network: base
   EventEmitter:
-    address: "0x94eA79f1dD4f1B89D87fE1E71c9723b8003AB3d3"
+    address: '0x94eA79f1dD4f1B89D87fE1E71c9723b8003AB3d3'
     startBlock: 1275405
   tempChildChainGaugeV2Factory:
-    address: "0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95"
+    address: '0x2498A2B0d6462d2260EAC50aE1C3e03F4829BA95'
     startBlock: 1204492
   childChainGaugeV2Factory:
-    address: "0xb1a4FE1C6d25a0DDAb47431A92A723dd71d9021f"
+    address: '0xb1a4FE1C6d25a0DDAb47431A92A723dd71d9021f'
     startBlock: 2555348
   authorizerAdaptorEntrypoint:
-    address: "0x9129E834e15eA19b6069e8f08a8EcFc13686B8dC"
+    address: '0x9129E834e15eA19b6069e8f08a8EcFc13686B8dC'
     startBlock: 1205742
   omniVotingEscrowChild:
-    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    address: '0xE241C6e48CA045C7f631600a0f1403b2bFea05ad'
     startBlock: 2417884

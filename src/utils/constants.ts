@@ -13,15 +13,29 @@ export class AddressByNetwork {
   public sepolia: string;
   public goerli: string;
   public telosTestnet: string;
+  public telos: string;
+  public meter: string;
 }
 
 let network: string = dataSource.network();
 
+// Add new networks here
 let controllerAddressByNetwork: AddressByNetwork = {
   mainnet: '0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD',
   sepolia: '0x577e5993B9Cc480F07F98B5Ebd055604bd9071C4',
   goerli: '0xBB1CE49b16d55A1f2c6e88102f32144C7334B116',
   telosTestnet: '0x42cbd18265C829f50Ededd4E5B5E5F5855e25175',
+  telos: '0x7ac8CF03C7c48d1E1eEB2Cb2B3A50B1B1430ae7b',
+  meter: '0x0563fe58FC886BE22cE1977cADE4bC80D4e01bc3',
+};
+
+let vaultAddressByNetwork: AddressByNetwork = {
+  mainnet: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+  sepolia: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+  goerli: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+  telosTestnet: '0x42cbd18265C829f50Ededd4E5B5E5F5855e25175',
+  telos: '0xbccc4b4c6530F82FE309c5E845E50b5E9C89f2AD',
+  meter: '0x913f21E596790aFC6AA45229E9ff8b7d0A473D5A',
 };
 
 function forNetwork(
@@ -34,17 +48,19 @@ function forNetwork(
     return Address.fromString(addressByNetwork.sepolia);
   } else if (network == 'telos-testnet') {
     return Address.fromString(addressByNetwork.telosTestnet);
+  } else if (network == 'telos') {
+    return Address.fromString(addressByNetwork.telos);
+  } else if (network == 'meter') {
+    return Address.fromString(addressByNetwork.meter);
   }
-  return Address.fromString(addressByNetwork.goerli);
+  return Address.fromString(addressByNetwork.telos);
 }
 
 export const CONTROLLER_ADDRESS = forNetwork(
   controllerAddressByNetwork,
   network,
 );
-export const VAULT_ADDRESS = Address.fromString(
-  '0x16A870499268e25a5e8728F23BeFccB3ab357a4D',
-);
+export const VAULT_ADDRESS = forNetwork(vaultAddressByNetwork, network);
 
 export const ARBITRUM_ROOT_GAUGE_FACTORY = Address.fromString(
   '0xad901309d9e9DbC5Df19c84f729f429F0189a633',
@@ -73,6 +89,21 @@ export const SEPOLIA_GAUGE_V2_FACTORY = Address.fromString(
 );
 export const TELOSTESTNET_GAUGE_V2_FACTORY = Address.fromString(
   '0x31191Dc484BC61CACE4c562C567181296e6eFB15',
+);
+export const TELOS_GAUGE_V2_FACTORY = Address.fromString(
+  '0x2564fA7CaFe82c527Ee788265FD4Dc863F65D2D1',
+);
+
+export const TELOS_GAUGE_V3_FACTORY = Address.fromString(
+  '0x2564fA7CaFe82c527Ee788265FD4Dc863F65D2D1',
+);
+
+export const METER_GAUGE_V2_FACTORY = Address.fromString(
+  '0xf85271dc6838944278E8Ee96981fbE98caa86b12',
+);
+
+export const METER_GAUGE_V3_FACTORY = Address.fromString(
+  '0xf85271dc6838944278E8Ee96981fbE98caa86b12',
 );
 export const ARBITRUM_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0x1c99324EDC771c82A0DCCB780CC7DDA0045E50e7',
@@ -116,12 +147,23 @@ export function isSepoliaFactory(factory: Address): boolean {
 export function isTelosTestnetFactory(factory: Address): boolean {
   return factory == TELOSTESTNET_GAUGE_V2_FACTORY;
 }
+
+export function isTelosFactory(factory: Address): boolean {
+  return factory == TELOS_GAUGE_V2_FACTORY;
+}
+
+export function isMeterFactory(factory: Address): boolean {
+  return factory == METER_GAUGE_V2_FACTORY;
+}
+
 export function isL1Factory(factory: Address): boolean {
   return (
     isMainnetFactory(factory) ||
     isGoerliFactory(factory) ||
     isSepoliaFactory(factory) ||
-    isTelosTestnetFactory(factory)
+    isTelosTestnetFactory(factory) ||
+    isTelosFactory(factory) ||
+    isMeterFactory(factory)
   );
 }
 
