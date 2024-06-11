@@ -16,6 +16,7 @@ import {
   isArbitrumFactory,
   isAvalancheFactory,
   isBaseFactory,
+  isFraxtalFactory,
   isGnosisFactory,
   isOptimismFactory,
   isPolygonFactory,
@@ -193,6 +194,8 @@ export function handleRootGaugeCreated(event: RootGaugeCreated): void {
     gauge.chain = 'PolygonZkEvm';
   } else if (isBaseFactory(factoryAddress)) {
     gauge.chain = 'Base';
+  } else if (isFraxtalFactory(factoryAddress)) {
+    gauge.chain = 'Fraxtal';
   }
 
   gauge.save();
