@@ -237,3 +237,19 @@ base:
   omniVotingEscrowChild:
     address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
     startBlock: 2417884
+fraxtal:
+  network: frax-mainnet
+  childChainGaugeV2Factory:
+    address: "0xc3ccacE87f6d3A81724075ADcb5ddd85a8A1bB68"
+    startBlock: 4712390
+  authorizerAdaptorEntrypoint:
+    address: "0xb9F8AB3ED3F3aCBa64Bc6cd2DcA74B7F38fD7B88"
+    startBlock: 4712283
+mode:
+  network: mode-mainnet
+  childChainGaugeV2Factory:
+    address: "0x4fb47126Fa83A8734991E41B942Ac29A3266C968"
+    startBlock: 8115571
+  authorizerAdaptorEntrypoint:
+    address: "0xf23b4DB826DbA14c0e857029dfF076b1c0264843"
+    startBlock: 8115416
