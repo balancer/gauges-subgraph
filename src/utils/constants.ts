@@ -89,6 +89,10 @@ export const POLYGON_ZKEVM_ROOT_GAUGE_V2_FACTORY = Address.fromString(
   '0x9bF951848288cCD87d06FaC426150262cD3447De',
 );
 
+export const FRAXTAL_ROOT_GAUGE_V2_FACTORY = Address.fromString(
+  '0x18CC3C68A5e64b40c846Aa6E45312cbcBb94f71b',
+);
+
 export function isArbitrumFactory(factory: Address): boolean {
   return [ARBITRUM_ROOT_GAUGE_FACTORY, ARBITRUM_ROOT_GAUGE_V2_FACTORY].includes(
     factory,
@@ -139,4 +143,8 @@ export function isPolygonZkEVMFactory(factory: Address): boolean {
 
 export function isBaseFactory(factory: Address): boolean {
   return factory == BASE_ROOT_GAUGE_V2_FACTORY;
+}
+
+export function isFraxtalFactory(factory: Address): boolean {
+  return factory == FRAXTAL_ROOT_GAUGE_V2_FACTORY;
 }

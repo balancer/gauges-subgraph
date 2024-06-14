@@ -5,6 +5,153 @@ on:
     branches: [staging]
 
 jobs:
+  deploy-mainnet:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.yaml"
+          graph_deploy_studio: true
+  deploy-goerli:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-goerli-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.goerli.yaml"
+          graph_deploy_studio: true
+  deploy-arbitrum:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-arbitrum-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.arbitrum.yaml"
+          graph_deploy_studio: true
+  deploy-polygon:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-polygon-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.polygon.yaml"
+          graph_deploy_studio: true
+  deploy-optimism:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-optimism-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.optimism.yaml"
+          graph_deploy_studio: true
+  deploy-gnosis:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-gnosis-chain-b"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.gnosis.yaml"
+          graph_deploy_studio: true
+  deploy-avalanche:
+    runs-on: ubuntu-latest
+    environment: graph
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - uses: balancer-labs/graph-deploy@v0.0.1
+        with:
+          graph_deploy_key: ${{secrets.GRAPH_NEW_DEPLOY_KEY}}
+          graph_version_label: ${GITHUB_SHA::8}
+          graph_subgraph_name: "balancer-gauges-avalanche-beta"
+          graph_account: "balancer-labs"
+          graph_config_file: "subgraph.avalanche.yaml"
+          graph_deploy_studio: true
   deploy-polygon-zkevm:
     runs-on: ubuntu-latest
     environment: graph

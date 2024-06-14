@@ -150,6 +150,7 @@ enum Chain {
   Avalanche
   PolygonZkEvm
   Base
+  Fraxtal
 }
 
 type RootGauge @entity {
