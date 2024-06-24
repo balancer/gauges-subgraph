@@ -245,6 +245,9 @@ fraxtal:
   authorizerAdaptorEntrypoint:
     address: "0xb9F8AB3ED3F3aCBa64Bc6cd2DcA74B7F38fD7B88"
     startBlock: 4712283
+  omniVotingEscrowChild:
+    address: "0xE241C6e48CA045C7f631600a0f1403b2bFea05ad"
+    startBlock: 5964686
 mode:
   network: mode-mainnet
   childChainGaugeV2Factory:
