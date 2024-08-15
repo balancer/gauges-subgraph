@@ -850,6 +850,8 @@ templates:
           file: ./abis/ChildChainGaugeInjector.json
         - name: ChildChainLiquidityGaugeV2
           file: ./abis/ChildChainLiquidityGaugeV2.json
+        - name: LiquidityGauge
+          file: ./abis/LiquidityGauge.json
       eventHandlers:
         - event: EmissionsInjection(address,address,uint256)
           handler: handleEmissionsInjection

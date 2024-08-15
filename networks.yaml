@@ -32,8 +32,8 @@ mainnet:
   network: mainnet
   supportTraces: true
   graft:
-    base: QmNjLuUukf1QcSDWyYYAvSpNThLKjX3KubckiS3H2mn6rG
-    block: 19994775
+    base: QmdV2TaFESPiEB9xcLJarbganJxVzu7u4GYGbhTies43EM
+    block: 20535178
   EventEmitter:
     address: "0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290"
     startBlock: 16419620
