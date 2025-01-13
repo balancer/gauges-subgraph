@@ -32,8 +32,8 @@ mainnet:
   network: mainnet
   supportTraces: true
   graft:
-    base: QmNjLuUukf1QcSDWyYYAvSpNThLKjX3KubckiS3H2mn6rG
-    block: 19994775
+    base: QmdmQBHbBtwD6wNypHbuGKB1uKHpHNVuSHbo9FsvrMhXSn
+    block: 21332121
   EventEmitter:
     address: "0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290"
     startBlock: 16419620
@@ -178,8 +178,8 @@ optimism:
 gnosis:
   network: gnosis
   graft:
-    block: 28110199
-    base: QmXpWX5esNz1JHHmmn4whNc6pHHZ8VPPmvVWnuxNLSmQYE
+    block: 37360338
+    base: Qme9hQY1NZ8ReVDSSQb893s2fGpeLkgfwXd3YU5rndACaP
   EventEmitter:
     address: "0xd8bf95b44772213905a8a74881862347acbabc48"
     startBlock: 26892431
