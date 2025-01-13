@@ -59,8 +59,10 @@ dataSources:
           file: ./abis/LiquidityGauge.json
         - name: WeightedPool
           file: ./abis/WeightedPool.json
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: VaultV2
+          file: ./abis/VaultV2.json
+        - name: VaultV3
+          file: ./abis/VaultV3.json
       entities:
         - GaugeFactory
         - LiquidityGauge
@@ -90,8 +92,10 @@ dataSources:
           file: ./abis/LiquidityGaugeV2.json
         - name: WeightedPool
           file: ./abis/WeightedPool.json
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: VaultV2
+          file: ./abis/VaultV2.json
+        - name: VaultV3
+          file: ./abis/VaultV3.json
       entities:
         - GaugeFactory
         - LiquidityGauge
@@ -485,8 +489,10 @@ dataSources:
           file: ./abis/LiquidityGauge.json
         - name: WeightedPool
           file: ./abis/WeightedPool.json
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: VaultV2
+          file: ./abis/VaultV2.json
+        - name: VaultV3
+          file: ./abis/VaultV3.json
       entities:
         - GaugeFactory
         - LiquidityGauge
@@ -516,8 +522,10 @@ dataSources:
           file: ./abis/LiquidityGauge.json
         - name: WeightedPool
           file: ./abis/WeightedPool.json
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: VaultV2
+          file: ./abis/VaultV2.json
+        - name: VaultV3
+          file: ./abis/VaultV3.json
       entities:
         - GaugeFactory
         - LiquidityGauge
@@ -547,8 +555,10 @@ dataSources:
           file: ./abis/LiquidityGauge.json
         - name: WeightedPool
           file: ./abis/WeightedPool.json
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: VaultV2
+          file: ./abis/VaultV2.json
+        - name: VaultV3
+          file: ./abis/VaultV3.json
       entities:
         - GaugeFactory
         - LiquidityGauge
