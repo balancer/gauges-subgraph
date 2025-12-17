@@ -38,8 +38,11 @@ export const CONTROLLER_ADDRESS = forNetwork(
   controllerAddressByNetwork,
   network,
 );
-export const VAULT_ADDRESS = Address.fromString(
+export const VAULT_V2_ADDRESS = Address.fromString(
   '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+);
+export const VAULT_V3_ADDRESS = Address.fromString(
+  '0xbA1333333333a1BA1108E8412f11850A5C319bA9',
 );
 
 export const ARBITRUM_ROOT_GAUGE_FACTORY = Address.fromString(

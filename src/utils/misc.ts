@@ -3,8 +3,9 @@ import { Address, Bytes } from '@graphprotocol/graph-ts';
 import { Pool, User } from '../types/schema';
 import { ERC20 } from '../types/templates/LiquidityGauge/ERC20';
 import { WeightedPool } from '../types/GaugeFactory/WeightedPool';
-import { Vault } from '../types/GaugeFactory/Vault';
-import { VAULT_ADDRESS } from './constants';
+import { VaultV2 } from '../types/GaugeFactory/VaultV2';
+import { VAULT_V2_ADDRESS, VAULT_V3_ADDRESS } from './constants';
+import { VaultV3 } from '../types/GaugeFactory/VaultV3';
 
 export function bytesToAddress(address: Bytes): Address {
   return Address.fromString(address.toHexString());
@@ -63,10 +64,19 @@ export function getPoolEntity(
 
 export function isPoolRegistered(poolAddress: Address): boolean {
   let poolId = getPoolId(poolAddress);
-  if (!poolId) return false;
 
-  let vault = Vault.bind(VAULT_ADDRESS);
-  let getPoolCall = vault.try_getPool(poolId);
+  // if pool has no ID, it's potentially a v3 pool
+  if (!poolId) {
+    let vaultV3 = VaultV3.bind(VAULT_V3_ADDRESS);
+    let getPoolConfigCall = vaultV3.try_getPoolConfig(poolAddress);
+    if (getPoolConfigCall.reverted) return false;
+
+    return getPoolConfigCall.value.isPoolRegistered;
+  }
+
+  // otherwise, we check if it's registered to v2
+  let vaultV2 = VaultV2.bind(VAULT_V2_ADDRESS);
+  let getPoolCall = vaultV2.try_getPool(poolId);
   if (getPoolCall.reverted) return false;
 
   return !!getPoolCall.value.value0;
