@@ -31,9 +31,6 @@ goerli:
 mainnet:
   network: mainnet
   supportTraces: true
-  graft:
-    base: QmdmQBHbBtwD6wNypHbuGKB1uKHpHNVuSHbo9FsvrMhXSn
-    block: 21332121
   EventEmitter:
     address: "0x1ACfEEA57d2ac674d7E65964f155AB9348A6C290"
     startBlock: 16419620
