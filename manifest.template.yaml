@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 1.0.0
 description: Liquidity Gauges of the Balancer Protocol
 {{#if graft}}
 features:
@@ -10,6 +10,8 @@ graft:
 repository: https://github.com/balancer-labs/gauges-subgraph/
 schema:
   file: ./schema.graphql
+indexerHints:
+  prune: never
 dataSources:
   {{#if EventEmitter}}
   - kind: ethereum/contract
